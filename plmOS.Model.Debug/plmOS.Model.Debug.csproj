@@ -50,9 +50,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Database\plmOS.Database\plmOS.Database.csproj">
+      <Project>{b0366598-cbbd-4a25-8d03-b97572c61a08}</Project>
+      <Name>plmOS.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Design\plmOS.Design\plmOS.Design.csproj">
       <Project>{bd26273c-24db-43ef-97b4-8a9e0f229c49}</Project>
       <Name>plmOS.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Memory\plmOS.Database.Memory\plmOS.Database.Memory.csproj">
+      <Project>{40be9a75-7d4d-4ca6-90bd-ee5d8d1ec370}</Project>
+      <Name>plmOS.Database.Memory</Name>
     </ProjectReference>
     <ProjectReference Include="..\plmOS.Model\plmOS.Model.csproj">
       <Project>{1556ca37-8b2e-4d29-bd7c-55e342dbc611}</Project>

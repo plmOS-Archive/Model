@@ -34,6 +34,8 @@ namespace plmOS.Model
 {
     public class Store
     {
+        internal Database.ISession Database { get; private set; }
+
         private Dictionary<String, ItemType> AllItemTypeCache;
 
         private Dictionary<String, ItemType> ItemTypeCache;
@@ -58,6 +60,28 @@ namespace plmOS.Model
             }
         }
 
+        private void AddItemTypeToCache(Type Type)
+        {
+            ItemType itemtype = new ItemType(this, Type);
+            this.AllItemTypeCache[itemtype.Name] = itemtype;
+            this.ItemTypeCache[itemtype.Name] = itemtype;
+        }
+
+        private void AddRelationshipTypeToCache(Type Type)
+        {
+            RelationshipType reltype = new RelationshipType(this, Type);
+            this.AllItemTypeCache[reltype.Name] = reltype;
+            this.RelationshipTypeCache[reltype.Name] = reltype;
+        }
+
+        private void LoadItemTypes()
+        {
+            foreach (RelationshipType reltype in this.RelationshipTypeCache.Values)
+            {
+                reltype.Load();
+            }
+        }
+
         public void LoadAssembly(String AssemblyFilename)
         {
             this.LoadAssembly(new FileInfo(AssemblyFilename));
@@ -73,24 +97,16 @@ namespace plmOS.Model
             {
                 if (type.IsSubclassOf(typeof(Relationship)))
                 {
-                    RelationshipType reltype = new RelationshipType(this, type);
-                    this.AllItemTypeCache[reltype.Name] = reltype;
-                    this.RelationshipTypeCache[reltype.Name] = reltype;
+                    this.AddRelationshipTypeToCache(type);
                 }
                 else if (type.IsSubclassOf(typeof(Item)))
                 {
-                    ItemType itemtype = new ItemType(this, type);
-                    this.AllItemTypeCache[itemtype.Name] = itemtype;
-                    this.ItemTypeCache[itemtype.Name] = itemtype;
+                    this.AddItemTypeToCache(type);
                 }
             }
 
             // Load RelationshipTypes
-
-            foreach(RelationshipType reltype in this.RelationshipTypeCache.Values)
-            {
-                reltype.Load();
-            }
+            this.LoadItemTypes();
         }
 
         public Session Login()
@@ -98,11 +114,17 @@ namespace plmOS.Model
             return new Session(this);
         }
 
-        public Store()
+        public Store(Database.ISession Database)
         {
+            this.Database = Database;
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
+
+            // Load Base ItemTypes
+            this.AddItemTypeToCache(typeof(Item));
+            this.AddRelationshipTypeToCache(typeof(Relationship));
+            this.LoadItemTypes();
         }
     }
 }

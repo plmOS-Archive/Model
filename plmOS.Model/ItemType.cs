@@ -44,6 +44,14 @@ namespace plmOS.Model
             }
         }
 
+        public Boolean IsAbstract
+        {
+            get
+            {
+                return this.Type.IsAbstract;
+            }
+        }
+
         private Dictionary<String, RelationshipType> RelationshipTypeCache;
 
         internal void AddRelationshipType(RelationshipType RelationshipType)

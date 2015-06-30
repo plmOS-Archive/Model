@@ -51,6 +51,12 @@
     <Compile Include="Store.cs" />
     <Compile Include="Session.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Database\plmOS.Database\plmOS.Database.csproj">
+      <Project>{b0366598-cbbd-4a25-8d03-b97572c61a08}</Project>
+      <Name>plmOS.Database</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

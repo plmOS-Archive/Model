@@ -35,7 +35,8 @@ namespace plmOS.Model.Debug
 
         public void Execute()
         {
-            Model.Store store = new Model.Store();
+            Database.Memory.Session database = new Database.Memory.Session();
+            Model.Store store = new Model.Store(database);
             store.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
 
             Model.Session session = store.Login();

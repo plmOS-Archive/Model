@@ -26,6 +26,10 @@ along with this program.  If not, see http://opensource.org/licenses/AGPL-3.0.
 Commercial projects that do not wish to publish derived work under the terms of the GNU Affero General Public License 
 must enter into a commercial licence agreement with Processwall Limited.
 
+#### Prerequisites
+
+ * [plmOS/Database](https://github.com/plmOS/Database)
+ 
 #### Contact Details
 
  * Company: Processwall Limited
