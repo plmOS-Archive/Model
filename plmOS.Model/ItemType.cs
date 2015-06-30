@@ -32,7 +32,7 @@ namespace plmOS.Model
 {
     public class ItemType
     {
-        public Server Server { get; private set; }
+        public Store Server { get; private set; }
 
         internal Type Type { get; private set; }
 
@@ -69,7 +69,7 @@ namespace plmOS.Model
             return this.Name;
         }
 
-        internal ItemType(Server Server, Type Type)
+        internal ItemType(Store Server, Type Type)
         {
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
             this.Server = Server;

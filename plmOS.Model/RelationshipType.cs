@@ -79,7 +79,7 @@ namespace plmOS.Model
             }
         }
 
-        internal RelationshipType(Server Server, Type Type)
+        internal RelationshipType(Store Server, Type Type)
             :base(Server, Type)
         {
             this.Loaded = false;

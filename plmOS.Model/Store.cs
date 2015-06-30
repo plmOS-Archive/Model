@@ -32,7 +32,7 @@ using System.Reflection;
 
 namespace plmOS.Model
 {
-    public class Server
+    public class Store
     {
         private Dictionary<String, ItemType> AllItemTypeCache;
 
@@ -98,7 +98,7 @@ namespace plmOS.Model
             return new Session(this);
         }
 
-        public Server()
+        public Store()
         {
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();

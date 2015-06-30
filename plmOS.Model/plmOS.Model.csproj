@@ -48,7 +48,7 @@
     <Compile Include="Props\String.cs" />
     <Compile Include="Props\Item.cs" />
     <Compile Include="Relationship.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Store.cs" />
     <Compile Include="Session.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

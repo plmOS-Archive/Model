@@ -35,12 +35,12 @@ namespace plmOS.Model.Debug
 
         public void Execute()
         {
-            Model.Server server = new Model.Server();
-            server.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
+            Model.Store store = new Model.Store();
+            store.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
 
-            Model.Session session = server.Login();
+            Model.Session session = store.Login();
 
-            ItemType parttype = server.ItemType("plmOS.Design.Part");
+            ItemType parttype = store.ItemType("plmOS.Design.Part");
             Item part = session.Create(parttype);
         }
 
