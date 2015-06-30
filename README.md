@@ -1,6 +1,6 @@
 ### plmOS Model
 
-plmOS Model provides a .NET client library for managing PLM (Product Lifecycle Management) data.
+plmOS Model provides a .NET library for managing PLM (Product Lifecycle Management) data.
 
 Copyright (C) 2015 [Processwall Limited](http://www.processwall.com).
 
