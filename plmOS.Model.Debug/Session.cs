@@ -37,8 +37,9 @@ namespace plmOS.Model.Debug
         {
             Model.Server server = new Model.Server();
             server.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
-            RelationshipType test = (RelationshipType)server.ItemType("plmOS.Design.BOMLine");
-            ItemType test2 = test.ChildItemType;
+            ItemType test = server.ItemType("plmOS.Design.Part");
+
+
 
             Model.Session session = server.Login();
         }

@@ -38,7 +38,6 @@ namespace plmOS.Model
         {
             get
             {
-                this.Load();
                 return this._parentItemType;
             }
         }
@@ -48,14 +47,13 @@ namespace plmOS.Model
         {
             get
             {
-                this.Load();
                 return this._childItemType;
             }
         }
 
         private Boolean Loaded;
 
-        private void Load()
+        internal void Load()
         {
             if (!this.Loaded)
             {
@@ -65,13 +63,15 @@ namespace plmOS.Model
 
                     if ((parameters.Length == 2) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.IsSubclassOf(typeof(Item))))
                     {
-                        this._parentItemType = this.Server.ItemType(parameters[1].ParameterType.FullName);
+                        this._parentItemType = this.Server.AllItemType(parameters[1].ParameterType.FullName);
+                        this._parentItemType.AddRelationshipType(this);
                         this._childItemType = null;
                     }
                     else if ((parameters.Length == 3) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.IsSubclassOf(typeof(Item))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))))
                     {
-                        this._parentItemType = this.Server.ItemType(parameters[1].ParameterType.FullName);
-                        this._childItemType = this.Server.ItemType(parameters[2].ParameterType.FullName);
+                        this._parentItemType = this.Server.AllItemType(parameters[1].ParameterType.FullName);
+                        this._parentItemType.AddRelationshipType(this);
+                        this._childItemType = this.Server.AllItemType(parameters[2].ParameterType.FullName);
                     }
                 }
 

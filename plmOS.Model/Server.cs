@@ -34,11 +34,28 @@ namespace plmOS.Model
 {
     public class Server
     {
+        private Dictionary<String, ItemType> AllItemTypeCache;
+
         private Dictionary<String, ItemType> ItemTypeCache;
+
+        private Dictionary<String, RelationshipType> RelationshipTypeCache;
+
+        internal ItemType AllItemType(String Name)
+        {
+            return this.AllItemTypeCache[Name];
+        }
 
         public ItemType ItemType(String Name)
         {
             return this.ItemTypeCache[Name];
+        }
+
+        public IEnumerable<ItemType> ItemTypes
+        {
+            get
+            {
+                return this.ItemTypeCache.Values;
+            }
         }
 
         public void LoadAssembly(String AssemblyFilename)
@@ -57,13 +74,22 @@ namespace plmOS.Model
                 if (type.IsSubclassOf(typeof(Relationship)))
                 {
                     RelationshipType reltype = new RelationshipType(this, type);
-                    this.ItemTypeCache[reltype.Name] = reltype;
+                    this.AllItemTypeCache[reltype.Name] = reltype;
+                    this.RelationshipTypeCache[reltype.Name] = reltype;
                 }
                 else if (type.IsSubclassOf(typeof(Item)))
                 {
                     ItemType itemtype = new ItemType(this, type);
+                    this.AllItemTypeCache[itemtype.Name] = itemtype;
                     this.ItemTypeCache[itemtype.Name] = itemtype;
                 }
+            }
+
+            // Load RelationshipTypes
+
+            foreach(RelationshipType reltype in this.RelationshipTypeCache.Values)
+            {
+                reltype.Load();
             }
         }
 
@@ -74,7 +100,9 @@ namespace plmOS.Model
 
         public Server()
         {
+            this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
+            this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
         }
     }
 }

@@ -44,6 +44,26 @@ namespace plmOS.Model
             }
         }
 
+        private Dictionary<String, RelationshipType> RelationshipTypeCache;
+
+        internal void AddRelationshipType(RelationshipType RelationshipType)
+        {
+            this.RelationshipTypeCache[RelationshipType.Name] = RelationshipType;
+        }
+
+        public RelationshipType RelationshipType(String Name)
+        {
+            return this.RelationshipTypeCache[Name];
+        }
+
+        public IEnumerable<RelationshipType> RelationshipTypes
+        {
+            get
+            {
+                return this.RelationshipTypeCache.Values;
+            }
+        }
+
         public override string ToString()
         {
             return this.Name;
@@ -51,6 +71,7 @@ namespace plmOS.Model
 
         internal ItemType(Server Server, Type Type)
         {
+            this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
             this.Server = Server;
             this.Type = Type;
         }
