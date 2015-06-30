@@ -51,9 +51,7 @@ namespace plmOS.Model
             }
         }
 
-        private Boolean Loaded;
-
-        internal void Load()
+        internal override void Load()
         {
             if (!this.Loaded)
             {
@@ -75,14 +73,14 @@ namespace plmOS.Model
                     }
                 }
 
-                this.Loaded = true;
+                base.Load();
             }
         }
 
         internal RelationshipType(Store Server, Type Type)
             :base(Server, Type)
         {
-            this.Loaded = false;
+
         }
     }
 }

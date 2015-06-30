@@ -34,22 +34,18 @@ namespace plmOS.Model
     {
         public Guid ID { get; private set; }
 
-        public Store Server { get; private set; }
+        public Store Store { get; private set; }
 
-        private Dictionary<Guid, Item> ItemCache;
-
-        public Item Create(ItemType ItemType)
+        public Transaction BeginTransaction()
         {
-            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { this, ItemType });
-            this.ItemCache[item.ID] = item;
-            return item;
+            return new Transaction(this);
         }
 
-        internal Session(Store Server)
+        internal Session(Store Store)
         {
             this.ID = Guid.NewGuid();
-            this.Server = Server;
-            this.ItemCache = new Dictionary<Guid, Item>();
+            this.Store = Store;
+            
         }
     }
 }

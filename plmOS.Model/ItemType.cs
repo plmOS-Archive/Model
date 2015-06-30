@@ -52,6 +52,15 @@ namespace plmOS.Model
             }
         }
 
+        private ItemType _baseItemType;
+        public ItemType BaseItemType
+        {
+            get
+            {
+                return this._baseItemType;
+            }
+        }
+
         private Dictionary<String, RelationshipType> RelationshipTypeCache;
 
         internal void AddRelationshipType(RelationshipType RelationshipType)
@@ -72,6 +81,25 @@ namespace plmOS.Model
             }
         }
 
+        protected Boolean Loaded { get; private set; }
+
+        internal virtual void Load()
+        {
+            if (!this.Loaded)
+            {
+                if (this.Type.Equals(typeof(Item)))
+                {
+                    this._baseItemType = null;
+                }
+                else
+                {
+                    this._baseItemType = this.Server.AllItemType(this.Type.BaseType.FullName);
+                }
+
+                this.Loaded = true;
+            }
+        }
+
         public override string ToString()
         {
             return this.Name;
@@ -82,6 +110,7 @@ namespace plmOS.Model
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
             this.Server = Server;
             this.Type = Type;
+            this.Loaded = false;
         }
     }
 }

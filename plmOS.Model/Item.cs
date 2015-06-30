@@ -34,14 +34,14 @@ namespace plmOS.Model
     {
         public Guid ID { get; private set; }
 
-        public Session Session { get; private set; }
+        public Store Store { get; private set; }
 
         public ItemType ItemType { get; private set; }
 
-        protected Item(Session Session, ItemType ItemType)
+        protected Item(Store Store, ItemType ItemType)
         {
             this.ID = Guid.NewGuid();
-            this.Session = Session;
+            this.Store = Store;
             this.ItemType = ItemType;
         }
     }

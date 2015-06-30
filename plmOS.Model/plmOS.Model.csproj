@@ -50,6 +50,7 @@
     <Compile Include="Relationship.cs" />
     <Compile Include="Store.cs" />
     <Compile Include="Session.cs" />
+    <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Database\plmOS.Database\plmOS.Database.csproj">

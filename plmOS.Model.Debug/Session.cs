@@ -42,7 +42,11 @@ namespace plmOS.Model.Debug
             Model.Session session = store.Login();
 
             ItemType parttype = store.ItemType("plmOS.Design.Part");
-            Item part = session.Create(parttype);
+
+            using (Transaction transaction = session.BeginTransaction())
+            {
+                Item part = transaction.Create(parttype);
+            }
         }
 
         public Session()

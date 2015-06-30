@@ -76,9 +76,9 @@ namespace plmOS.Model
 
         private void LoadItemTypes()
         {
-            foreach (RelationshipType reltype in this.RelationshipTypeCache.Values)
+            foreach (ItemType itemtype in this.AllItemTypeCache.Values)
             {
-                reltype.Load();
+                itemtype.Load();
             }
         }
 
@@ -114,12 +114,22 @@ namespace plmOS.Model
             return new Session(this);
         }
 
+        private Dictionary<Guid, Item> ItemCache;
+
+        internal Item Create(ItemType ItemType)
+        {
+            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { this, ItemType });
+            this.ItemCache[item.ID] = item;
+            return item;
+        }
+
         public Store(Database.ISession Database)
         {
             this.Database = Database;
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
+            this.ItemCache = new Dictionary<Guid, Item>();
 
             // Load Base ItemTypes
             this.AddItemTypeToCache(typeof(Item));

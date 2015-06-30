@@ -44,15 +44,15 @@ namespace plmOS.Model
 
         public Properties.Item Child { get; private set; }
 
-        protected Relationship(Session Session, RelationshipType RelationshipType, Item Parent)
-            :base(Session, RelationshipType)
+        protected Relationship(Store Store, RelationshipType RelationshipType, Item Parent)
+            : base(Store, RelationshipType)
         {
             this.Parent = new Properties.Item(this);
             this.Child = null;
         }
 
-        protected Relationship(Session Session, RelationshipType RelationshipType, Item Parent, Item Child)
-            :base(Session, RelationshipType)
+        protected Relationship(Store Store, RelationshipType RelationshipType, Item Parent, Item Child)
+            : base(Store, RelationshipType)
         {
             this.Parent = new Properties.Item(this);
             this.Child = new Properties.Item(this);
