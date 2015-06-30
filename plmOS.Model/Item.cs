@@ -36,10 +36,13 @@ namespace plmOS.Model
 
         public Session Session { get; private set; }
 
-        protected Item(Session Session)
+        public ItemType ItemType { get; private set; }
+
+        protected Item(Session Session, ItemType ItemType)
         {
             this.ID = Guid.NewGuid();
             this.Session = Session;
+            this.ItemType = ItemType;
         }
     }
 }

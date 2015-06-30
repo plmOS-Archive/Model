@@ -36,6 +36,12 @@ namespace plmOS.Model
 
         public Server Server { get; private set; }
 
+        public Item Create(ItemType ItemType)
+        {
+            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { this, ItemType });
+            return item;
+        }
+
         internal Session(Server Server)
         {
             this.ID = Guid.NewGuid();

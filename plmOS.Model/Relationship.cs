@@ -32,19 +32,27 @@ namespace plmOS.Model
 {
     public abstract class Relationship : Item
     {
+        public RelationshipType RelationshipType
+        {
+            get
+            {
+                return (RelationshipType)this.ItemType;
+            }
+        }
+
         public Properties.Item Parent { get; private set; }
 
         public Properties.Item Child { get; private set; }
 
-        protected Relationship(Session Session, Item Parent)
-            :base(Session)
+        protected Relationship(Session Session, RelationshipType RelationshipType, Item Parent)
+            :base(Session, RelationshipType)
         {
             this.Parent = new Properties.Item(this);
             this.Child = null;
         }
 
-        protected Relationship(Session Session, Item Parent, Item Child)
-            :base(Session)
+        protected Relationship(Session Session, RelationshipType RelationshipType, Item Parent, Item Child)
+            :base(Session, RelationshipType)
         {
             this.Parent = new Properties.Item(this);
             this.Child = new Properties.Item(this);

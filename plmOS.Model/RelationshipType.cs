@@ -61,17 +61,17 @@ namespace plmOS.Model
                 {
                     ParameterInfo[] parameters = constructorinfo.GetParameters();
 
-                    if ((parameters.Length == 2) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.IsSubclassOf(typeof(Item))))
+                    if ((parameters.Length == 3) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.Equals(typeof(RelationshipType))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))))
                     {
-                        this._parentItemType = this.Server.AllItemType(parameters[1].ParameterType.FullName);
+                        this._parentItemType = this.Server.AllItemType(parameters[2].ParameterType.FullName);
                         this._parentItemType.AddRelationshipType(this);
                         this._childItemType = null;
                     }
-                    else if ((parameters.Length == 3) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.IsSubclassOf(typeof(Item))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))))
+                    else if ((parameters.Length == 4) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.Equals(typeof(RelationshipType))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))) && (parameters[3].ParameterType.IsSubclassOf(typeof(Item))))
                     {
-                        this._parentItemType = this.Server.AllItemType(parameters[1].ParameterType.FullName);
+                        this._parentItemType = this.Server.AllItemType(parameters[2].ParameterType.FullName);
                         this._parentItemType.AddRelationshipType(this);
-                        this._childItemType = this.Server.AllItemType(parameters[2].ParameterType.FullName);
+                        this._childItemType = this.Server.AllItemType(parameters[3].ParameterType.FullName);
                     }
                 }
 
