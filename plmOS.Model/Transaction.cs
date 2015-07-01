@@ -25,19 +25,25 @@ namespace plmOS.Model
 
         }
 
-        private Dictionary<Guid, Item> ItemCache;
+        private List<Item> ItemCache;
 
-        public Item Create(ItemType ItemType)
+        internal void AddItem(Item Item)
         {
-            Item item = this.Session.Store.Create(ItemType);
-            this.ItemCache[item.ID] = item;
-            return item;
+            if (Item.LockedBy != null && !Item.LockedBy.Equals(this))
+            {
+                throw new Exceptions.ItemLockedException(Item);
+            }
+            else
+            {
+                this.ItemCache.Add(Item);
+                Item.LockedBy = this;
+            }
         }
 
         internal Transaction(Session Session)
         {
             this.Session = Session;
-            this.ItemCache = new Dictionary<Guid, Item>();
+            this.ItemCache = new List<Item>();
         }
     }
 }

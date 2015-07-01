@@ -32,16 +32,94 @@ namespace plmOS.Model
 {
     public abstract class Item
     {
-        public Guid ID { get; private set; }
-
-        public Store Store { get; private set; }
-
         public ItemType ItemType { get; private set; }
 
-        protected Item(Store Store, ItemType ItemType)
+        public Guid ItemID { get; internal set; }
+
+        public Guid BranchID { get; internal set; }
+
+        public Guid VersionID { get; internal set; }
+
+        public Int64 Created { get; internal set; }
+
+        public Int64 Superceded { get; internal set; }
+
+        public Transaction LockedBy { get; internal set; }
+
+        private void CopyProperties(Item Item)
         {
-            this.ID = Guid.NewGuid();
-            this.Store = Store;
+
+        }
+
+        public Item Version(Transaction Transaction)
+        {
+            // Add this Item to Transaction
+            Transaction.AddItem(this);
+
+            // Create new Version
+            Item item = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
+            item.ItemID = this.ItemID;
+            item.BranchID = this.BranchID;
+            item.VersionID = Guid.NewGuid();
+            item.Created = DateTime.UtcNow.Ticks;
+
+            if (item.Created <= this.Created)
+            {
+                item.Created = this.Created + 1;
+            }
+
+            item.Superceded = -1;
+            this.CopyProperties(item);
+
+            // Add new version to Transaction
+            Transaction.AddItem(item);
+
+            // Add to Cache
+            this.ItemType.Store.AddItemToCache(item);
+
+            // Supercede this Item
+            this.Superceded = item.Created - 1;
+
+            return item;
+        }
+
+        public Item Branch(Transaction Transaction)
+        {
+            // Create new Branch
+            Item item = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
+            item.ItemID = this.ItemID;
+            item.BranchID = Guid.NewGuid();
+            item.VersionID = Guid.NewGuid();
+            item.Created = DateTime.UtcNow.Ticks;
+
+            if (item.Created <= this.Created)
+            {
+                item.Created = this.Created + 1;
+            }
+
+            item.Superceded = -1;
+            this.CopyProperties(item);
+
+            // Add new Branch to Transaction
+            Transaction.AddItem(item);
+
+            // Add to Cache
+            this.ItemType.Store.AddItemToCache(item);
+
+            return item;
+        }
+
+        public void Delete(Transaction Transaction)
+        {
+            // Add this Item to Transaction
+            Transaction.AddItem(this);
+
+            // Set Superceded
+            this.Superceded = DateTime.UtcNow.Ticks;
+        }
+
+        protected Item(ItemType ItemType)
+        {
             this.ItemType = ItemType;
         }
     }

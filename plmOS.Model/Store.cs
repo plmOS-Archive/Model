@@ -36,6 +36,8 @@ namespace plmOS.Model
     {
         internal Database.ISession Database { get; private set; }
 
+        internal Vault.ISession Vault { get; private set; }
+
         private Dictionary<String, ItemType> AllItemTypeCache;
 
         private Dictionary<String, ItemType> ItemTypeCache;
@@ -116,16 +118,15 @@ namespace plmOS.Model
 
         private Dictionary<Guid, Item> ItemCache;
 
-        internal Item Create(ItemType ItemType)
+        internal void AddItemToCache(Item Item)
         {
-            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { this, ItemType });
-            this.ItemCache[item.ID] = item;
-            return item;
+            this.ItemCache[Item.VersionID] = Item;
         }
 
-        public Store(Database.ISession Database)
+        public Store(Database.ISession Database, Vault.ISession Vault)
         {
             this.Database = Database;
+            this.Vault = Vault;
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();

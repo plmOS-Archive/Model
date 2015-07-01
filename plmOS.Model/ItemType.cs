@@ -32,7 +32,7 @@ namespace plmOS.Model
 {
     public class ItemType
     {
-        public Store Server { get; private set; }
+        public Store Store { get; private set; }
 
         internal Type Type { get; private set; }
 
@@ -93,11 +93,30 @@ namespace plmOS.Model
                 }
                 else
                 {
-                    this._baseItemType = this.Server.AllItemType(this.Type.BaseType.FullName);
+                    this._baseItemType = this.Store.AllItemType(this.Type.BaseType.FullName);
                 }
 
                 this.Loaded = true;
             }
+        }
+
+        public Item Create(Transaction Transaction)
+        {
+            // Create Item
+            Item item = (Item)Activator.CreateInstance(this.Type, new object[] { this });
+            item.ItemID = Guid.NewGuid();
+            item.BranchID = Guid.NewGuid();
+            item.VersionID = Guid.NewGuid();
+            item.Created = DateTime.UtcNow.Ticks;
+            item.Superceded = -1;
+
+            // Add to Transaction
+            Transaction.AddItem(item);
+
+            // Add to Cache
+            this.Store.AddItemToCache(item);
+            
+            return item;
         }
 
         public override string ToString()
@@ -105,10 +124,10 @@ namespace plmOS.Model
             return this.Name;
         }
 
-        internal ItemType(Store Server, Type Type)
+        internal ItemType(Store Store, Type Type)
         {
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
-            this.Server = Server;
+            this.Store = Store;
             this.Type = Type;
             this.Loaded = false;
         }
