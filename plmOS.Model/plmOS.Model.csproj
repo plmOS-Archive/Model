@@ -54,6 +54,10 @@
     <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Auth\plmOS.Auth\plmOS.Auth.csproj">
+      <Project>{7975d9da-95cb-404c-96d5-4a219bb3c31e}</Project>
+      <Name>plmOS.Auth</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Database\plmOS.Database\plmOS.Database.csproj">
       <Project>{b0366598-cbbd-4a25-8d03-b97572c61a08}</Project>
       <Name>plmOS.Database</Name>
