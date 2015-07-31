@@ -47,15 +47,15 @@ namespace plmOS.Model
         protected Relationship(RelationshipType RelationshipType, Item Parent)
             : base(RelationshipType)
         {
-            this.Parent = new Properties.Item(this);
+            this.Parent = new Properties.Item(this, true);
             this.Child = null;
         }
 
-        protected Relationship(RelationshipType RelationshipType, Item Parent, Item Child)
+        public Relationship(RelationshipType RelationshipType, Item Parent, Item Child)
             : base(RelationshipType)
         {
-            this.Parent = new Properties.Item(this);
-            this.Child = new Properties.Item(this);
+            this.Parent = new Properties.Item(this, true);
+            this.Child = new Properties.Item(this, false);
         }
     }
 }

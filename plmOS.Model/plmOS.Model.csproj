@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\StringLengthException.cs" />
+    <Compile Include="Exceptions\ReadOnlyException.cs" />
     <Compile Include="Exceptions\ItemLockedException.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="RelationshipType.cs" />
@@ -61,10 +63,6 @@
     <ProjectReference Include="..\..\Database\plmOS.Database\plmOS.Database.csproj">
       <Project>{b0366598-cbbd-4a25-8d03-b97572c61a08}</Project>
       <Name>plmOS.Database</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Vault\plmOS.Vault\plmOS.Vault.csproj">
-      <Project>{ca6a4723-f334-42b1-8f67-2d688d1a7861}</Project>
-      <Name>plmOS.Vault</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

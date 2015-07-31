@@ -62,14 +62,6 @@
       <Project>{bd26273c-24db-43ef-97b4-8a9e0f229c49}</Project>
       <Name>plmOS.Design</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Vault.FileSystem\plmOS.Vault.FileSystem\plmOS.Vault.FileSystem.csproj">
-      <Project>{d3a54827-2691-4fd1-a128-30b813d35e03}</Project>
-      <Name>plmOS.Vault.FileSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Vault\plmOS.Vault\plmOS.Vault.csproj">
-      <Project>{ca6a4723-f334-42b1-8f67-2d688d1a7861}</Project>
-      <Name>plmOS.Vault</Name>
-    </ProjectReference>
     <ProjectReference Include="..\plmOS.Model\plmOS.Model.csproj">
       <Project>{1556ca37-8b2e-4d29-bd7c-55e342dbc611}</Project>
       <Name>plmOS.Model</Name>

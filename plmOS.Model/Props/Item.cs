@@ -30,22 +30,11 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model.Properties
 {
-    public class Item : Property
+    public class Item : Property<Model.Item>
     {
-        public Model.Item Value
-        {
-            get
-            {
-                return (Model.Item)this.Object;
-            }
-            set
-            {
-                this.Object = value;
-            }
-        }
 
-        public Item(Model.Item Item)
-            :base(Item)
+        public Item(Model.Item Item, System.Boolean ReadOnly)
+            :base(Item, ReadOnly)
         {
 
         }

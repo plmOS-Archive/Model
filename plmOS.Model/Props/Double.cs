@@ -30,22 +30,10 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model.Properties
 {
-    public class Double : Property
+    public class Double : Property<System.Double?>
     {
-        public System.Double Value
-        {
-            get
-            {
-                return (System.Double)this.Object;
-            }
-            set
-            {
-                this.Object = value;
-            }
-        }
-
-        public Double(Model.Item Item)
-            :base(Item)
+        public Double(Model.Item Item, System.Boolean ReadOnly)
+            :base(Item, ReadOnly)
         {
 
         }

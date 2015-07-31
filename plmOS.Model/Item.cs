@@ -46,6 +46,43 @@ namespace plmOS.Model
 
         public Transaction LockedBy { get; internal set; }
 
+        public Properties.String String { get; private set; }
+
+        private Dictionary<String, System.Reflection.PropertyInfo> _propertyInfoCache;
+        private Dictionary<String, System.Reflection.PropertyInfo> PropertyInfoCache
+        {
+            get
+            {
+                if (this._propertyInfoCache == null)
+                {
+                    this._propertyInfoCache = new Dictionary<String, System.Reflection.PropertyInfo>();
+
+                    foreach (System.Reflection.PropertyInfo propinfo in this.GetType().GetProperties())
+                    {
+                        if (propinfo.PropertyType.IsSubclassOf(typeof(Property<>)))
+                        {
+                            this._propertyInfoCache[propinfo.Name] = propinfo;
+                        }
+                    }
+                }
+
+                return this._propertyInfoCache;
+            }
+        }
+
+        public IEnumerable<String> Properties
+        {
+            get
+            {
+                return this.PropertyInfoCache.Keys;
+            }
+        }
+
+        public Boolean HasProperty(String Name)
+        {
+            return this.PropertyInfoCache.ContainsKey(Name);
+        }
+
         private void CopyProperties(Item Item)
         {
 
@@ -118,9 +155,11 @@ namespace plmOS.Model
             this.Superceded = DateTime.UtcNow.Ticks;
         }
 
-        protected Item(ItemType ItemType)
+        public Item(ItemType ItemType)
         {
             this.ItemType = ItemType;
+            this.String = new Properties.String(this, true, 32);
+ 
         }
     }
 }

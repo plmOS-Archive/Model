@@ -27,29 +27,85 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace plmOS.Model
 {
-    public abstract class Property
+    public abstract class Property<T> : INotifyPropertyChanged
     {
-        public Item Item { get; private set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private Object _object;
-        public Object Object
+        protected void OnPropertyChanged(String Name)
         {
-            get
+            if (this.PropertyChanged != null)
             {
-                return this._object;
-            }
-            set
-            {
-                this._object = value;
+                PropertyChangedEventArgs args = new PropertyChangedEventArgs(Name);
+                this.PropertyChanged(this, args);
             }
         }
 
-        public Property (Item Item)
+        public Item Item { get; private set; }
+
+        private Boolean _readOnly;
+        public Boolean ReadOnly 
+        {
+            get
+            {
+                return this._readOnly;
+            }
+            internal set
+            {
+                if (this._readOnly != value)
+                {
+                    this._readOnly = value;
+                    this.OnPropertyChanged("ReadOnly");
+                }
+            }
+        }
+
+        private T _value;
+
+        internal virtual void SetValue(T Value)
+        {
+            this._value = Value;
+            this.OnPropertyChanged("Value");
+        }
+
+        public T Value
+        {
+            get
+            {
+                return this._value;
+            }
+            set
+            {
+                if (!this.ReadOnly)
+                {
+                    this.SetValue(value);
+                }
+                else
+                {
+                    throw new Exceptions.ReadOnlyException();
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            if (this._value == null)
+            {
+                return "null";
+            }
+            else
+            {
+                return this._value.ToString();
+            }
+        }
+
+        public Property (Item Item, Boolean ReadOnly)
         {
             this.Item = Item;
+            this._readOnly = ReadOnly;
         }
     }
 }

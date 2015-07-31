@@ -30,25 +30,24 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model.Properties
 {
-    public class String : Property
+    public class String : Property<System.String>
     {
         public System.Int32 Length { get; private set; }
 
-        public System.String Value
+        internal override void SetValue(System.String Value)
         {
-            get
+            if (Value == null || Value.Length <= this.Length)
             {
-                return (System.String)this.Object;
+                base.SetValue(Value);
             }
-            set
+            else
             {
-                this.Object = value;
+                throw new Exceptions.StringLengthException(this.Length);
             }
         }
 
-
-        public String (Model.Item Item, System.Int32 Length)
-            :base(Item)
+        public String (Model.Item Item, System.Boolean ReadOnly, System.Int32 Length)
+            :base(Item, ReadOnly)
         {
             this.Length = Length;
         }

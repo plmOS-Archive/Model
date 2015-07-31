@@ -36,8 +36,7 @@ namespace plmOS.Model.Debug
         public void Execute()
         {
             Database.Memory.Session database = new Database.Memory.Session();
-            Vault.FileSystem.Session vault = new Vault.FileSystem.Session(new System.IO.DirectoryInfo("c:\\temp\\"));
-            Model.Store store = new Model.Store(database, vault);
+            Model.Store store = new Model.Store(database);
             store.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
 
             Model.Session session = store.Login();
@@ -46,8 +45,11 @@ namespace plmOS.Model.Debug
 
             using (Transaction transaction = session.BeginTransaction())
             {
-                Item part = parttype.Create(transaction);
-                Item part2 = part.Version(transaction);
+                Design.Part part = (Design.Part)parttype.Create(transaction);
+                part.Number.Value = "1234";
+                part.Revision.Value = "01";
+                part.Name.Value = "Test Part";
+                Design.Part part2 = (Design.Part)part.Version(transaction);
             }
         }
 
