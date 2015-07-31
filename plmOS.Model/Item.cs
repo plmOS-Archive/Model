@@ -65,7 +65,25 @@ namespace plmOS.Model
 
         internal void CopyProperties(Item Item)
         {
+            foreach(String prop in this.ItemType.Properties)
+            {
+                System.Reflection.PropertyInfo propinfo = this.ItemType.PropertyInfo(prop);
 
+                switch(propinfo.PropertyType.Name)
+                {
+                    case "String":
+                        ((Properties.String)propinfo.GetValue(Item)).SetValue(((Properties.String)propinfo.GetValue(this)).Value);
+                        break;
+                    case "Item":
+                        ((Properties.Item)propinfo.GetValue(Item)).SetValue(((Properties.Item)propinfo.GetValue(this)).Value);
+                        break;
+                    case "Double":
+                        ((Properties.Double)propinfo.GetValue(Item)).SetValue(((Properties.Double)propinfo.GetValue(this)).Value);
+                        break;
+                    default:
+                        throw new NotImplementedException("PropertyType not implmented: " + propinfo.PropertyType.Name);
+                }
+            }
         }
 
         public Item Branch(Transaction Transaction)
