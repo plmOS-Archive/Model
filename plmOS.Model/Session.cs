@@ -30,17 +30,47 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    public class Session
+    public class Session : IDisposable
     {
-        public Guid ID { get; private set; }
-
         public Store Store { get; private set; }
+
+        public Guid ID { get; private set; }
 
         public Auth.IIdentity Identity { get; private set; }
 
         public Transaction BeginTransaction()
         {
             return new Transaction(this);
+        }
+
+        public Item Create(ItemType ItemType, Transaction Transaction)
+        {
+            // Create Item
+            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { ItemType });
+            item.ItemID = Guid.NewGuid();
+            item.BranchID = Guid.NewGuid();
+            item.VersionID = Guid.NewGuid();
+            item.Versioned = DateTime.UtcNow.Ticks;
+            item.Branched = item.Versioned;
+            item.Superceded = -1;
+
+            // Add to Transaction
+            Transaction.LockItem(item, LockActions.Create);
+
+            // Add to Item Store Cache
+            this.Store.AddItemToCache(item);
+
+            return item;
+        }
+
+        public override string ToString()
+        {
+            return this.Identity.Name;
+        }
+
+        public void Dispose()
+        {
+
         }
 
         internal Session(Store Store, Auth.IIdentity Identity)

@@ -37,21 +37,27 @@ namespace plmOS.Model.Debug
         {
             Auth.Windows.Manager auth = new Auth.Windows.Manager();
             Database.Memory.Session database = new Database.Memory.Session();
-            Model.Store store = new Model.Store(auth, database);
-            store.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
 
-            Auth.Windows.Credentials credentials = new Auth.Windows.Credentials();
-            Model.Session session = store.Login(credentials);
-
-            ItemType parttype = store.ItemType("plmOS.Design.Part");
-
-            using (Transaction transaction = session.BeginTransaction())
+            using (Model.Store store = new Model.Store(auth, database))
             {
-                Design.Part part = (Design.Part)parttype.Create(transaction);
-                part.Number.Value = "1234";
-                part.Revision.Value = "01";
-                part.Name.Value = "Test Part";
-                Design.Part part2 = (Design.Part)part.Version(transaction);
+                store.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
+
+                Auth.Windows.Credentials credentials = new Auth.Windows.Credentials();
+
+                using (Model.Session session = store.Login(credentials))
+                {
+                    ItemType parttype = store.ItemType("plmOS.Design.Part");
+
+                    using (Transaction transaction = session.BeginTransaction())
+                    {
+                        Design.Part part = (Design.Part)session.Create(parttype, transaction);
+                        part.Number.Value = "1234";
+                        part.Revision.Value = "01";
+                        part.Name.Value = "Test Part";
+
+                        transaction.Commit();
+                    }
+                }
             }
         }
 

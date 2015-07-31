@@ -44,6 +44,7 @@
     <Compile Include="Exceptions\ReadOnlyException.cs" />
     <Compile Include="Exceptions\ItemLockedException.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="Lock.cs" />
     <Compile Include="RelationshipType.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

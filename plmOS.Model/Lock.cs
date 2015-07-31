@@ -30,32 +30,26 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    public abstract class Relationship : Item
+    public enum LockActions {Create, Supercede};
+
+    public class Lock
     {
-        public RelationshipType RelationshipType
+        public Transaction Transaction { get; private set; }
+
+        public LockActions Action { get; private set; }
+
+        public Item Item { get; private set; }
+
+        public override string ToString()
         {
-            get
-            {
-                return (RelationshipType)this.ItemType;
-            }
+            return this.Action.ToString() + " (" + this.Transaction.Session.ToString() + ")";
         }
 
-        public Properties.Item Parent { get; private set; }
-
-        public Properties.Item Child { get; private set; }
-
-        public Relationship(RelationshipType RelationshipType, Item Parent)
-            : base(RelationshipType)
+        internal Lock(Transaction Transaction, LockActions Action, Item Item)
         {
-            this.Parent = new Properties.Item(this, true);
-            this.Child = null;
-        }
-
-        public Relationship(RelationshipType RelationshipType, Item Parent, Item Child)
-            : base(RelationshipType)
-        {
-            this.Parent = new Properties.Item(this, true);
-            this.Child = new Properties.Item(this, false);
+            this.Transaction = Transaction;
+            this.Action = Action;
+            this.Item = Item;
         }
     }
 }

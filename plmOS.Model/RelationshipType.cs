@@ -55,25 +55,74 @@ namespace plmOS.Model
         {
             if (!this.Loaded)
             {
+
                 foreach (ConstructorInfo constructorinfo in Type.GetConstructors())
                 {
                     ParameterInfo[] parameters = constructorinfo.GetParameters();
 
-                    if ((parameters.Length == 3) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.Equals(typeof(RelationshipType))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))))
+                    if ((parameters.Length == 2) && (parameters[0].ParameterType.Equals(typeof(RelationshipType))) && ((parameters[1].ParameterType.IsSubclassOf(typeof(Item))) || (parameters[1].ParameterType.Equals(typeof(Item)))))
                     {
-                        this._parentItemType = this.Store.AllItemType(parameters[2].ParameterType.FullName);
+                        this._parentItemType = this.Store.AllItemType(parameters[1].ParameterType.FullName);
                         this._parentItemType.AddRelationshipType(this);
                         this._childItemType = null;
                     }
-                    else if ((parameters.Length == 4) && (parameters[0].ParameterType.Equals(typeof(Session))) && (parameters[1].ParameterType.Equals(typeof(RelationshipType))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))) && (parameters[3].ParameterType.IsSubclassOf(typeof(Item))))
+                    else if ((parameters.Length == 3) && (parameters[0].ParameterType.Equals(typeof(RelationshipType))) && (parameters[1].ParameterType.IsSubclassOf(typeof(Item))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))))
                     {
-                        this._parentItemType = this.Store.AllItemType(parameters[2].ParameterType.FullName);
+                        this._parentItemType = this.Store.AllItemType(parameters[1].ParameterType.FullName);
                         this._parentItemType.AddRelationshipType(this);
-                        this._childItemType = this.Store.AllItemType(parameters[3].ParameterType.FullName);
+                        this._childItemType = this.Store.AllItemType(parameters[2].ParameterType.FullName);
                     }
                 }
 
                 base.Load();
+            }
+        }
+
+        internal Database.IRelationshipType DatabaseRelationshipType
+        {
+            get
+            {
+                return (Database.IRelationshipType)this.DatabaseItemType;
+            }
+        }
+
+        internal override void Create()
+        {
+            if (this.DatabaseItemType == null)
+            {
+                // Create Parent ItemType
+                this.ParentItemType.Create();
+
+                // Create Database ItemType
+                if (this.BaseItemType.Name != "plmOS.Model.Item")
+                {
+                    this.BaseItemType.Create();
+
+                    if (this.ChildItemType != null)
+                    {
+                        this.ChildItemType.Create();
+                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType((Database.IRelationshipType)this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, this.ChildItemType.DatabaseItemType);
+                    }
+                    else
+                    {
+                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType((Database.IRelationshipType)this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, null);
+                    }
+                }
+                else
+                {
+                    if (this.ChildItemType != null)
+                    {
+                        this.ChildItemType.Create();
+                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType(this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, this.ChildItemType.DatabaseItemType);
+                    }
+                    else
+                    {
+                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType(this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, null);
+                    }
+                }
+
+                // Add Database PropertyTypes
+                this.CreatePropertyTypes();
             }
         }
 

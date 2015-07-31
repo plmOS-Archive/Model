@@ -81,6 +81,46 @@ namespace plmOS.Model
             }
         }
 
+        private Dictionary<String, System.Reflection.PropertyInfo> _propertyInfoCache;
+        private Dictionary<String, System.Reflection.PropertyInfo> PropertyInfoCache
+        {
+            get
+            {
+                if (this._propertyInfoCache == null)
+                {
+                    this._propertyInfoCache = new Dictionary<String, System.Reflection.PropertyInfo>();
+
+                    foreach (System.Reflection.PropertyInfo propinfo in this.Type.GetProperties())
+                    {
+                        if (propinfo.PropertyType.BaseType != null && propinfo.PropertyType.BaseType.IsGenericType && propinfo.PropertyType.BaseType.GetGenericTypeDefinition().Equals(typeof(Property<>)))
+                        {
+                            this._propertyInfoCache[propinfo.Name] = propinfo;
+                        }
+                    }
+                }
+
+                return this._propertyInfoCache;
+            }
+        }
+
+        public IEnumerable<String> Properties
+        {
+            get
+            {
+                return this.PropertyInfoCache.Keys;
+            }
+        }
+
+        public Boolean HasProperty(String Name)
+        {
+            return this.PropertyInfoCache.ContainsKey(Name);
+        }
+
+        internal System.Reflection.PropertyInfo PropertyInfo(String Name)
+        {
+            return this.PropertyInfoCache[Name];
+        }
+
         protected Boolean Loaded { get; private set; }
 
         internal virtual void Load()
@@ -100,23 +140,52 @@ namespace plmOS.Model
             }
         }
 
-        public Item Create(Transaction Transaction)
+        internal Database.IItemType DatabaseItemType { get; set; }
+
+        internal virtual void Create()
         {
-            // Create Item
-            Item item = (Item)Activator.CreateInstance(this.Type, new object[] { this });
-            item.ItemID = Guid.NewGuid();
-            item.BranchID = Guid.NewGuid();
-            item.VersionID = Guid.NewGuid();
-            item.Created = DateTime.UtcNow.Ticks;
-            item.Superceded = -1;
+            if (this.DatabaseItemType == null)
+            {
+                // Create Database ItemType
+                if (this.BaseItemType != null)
+                {
+                    this.BaseItemType.Create();
+                    this.DatabaseItemType = this.Store.Database.CreateItemType(this.BaseItemType.DatabaseItemType, this.Name);
+                }
+                else
+                {
+                    this.DatabaseItemType = this.Store.Database.CreateItemType(this.Name);
+                }
 
-            // Add to Transaction
-            Transaction.AddItem(item);
+                // Add Database PropertyTypes
+                this.CreatePropertyTypes();
+            }
+        }
 
-            // Add to Cache
-            this.Store.AddItemToCache(item);
-            
-            return item;
+        protected void CreatePropertyTypes()
+        {
+            foreach (String name in this.Properties)
+            {
+                switch (this.PropertyInfo(name).PropertyType.Name)
+                {
+                    case "Item":
+
+                        if (name != "Parent" && name != "Child")
+                        {
+                            this.DatabaseItemType.AddPropertyType(name, Database.PropertyValueTypes.Item);
+                        }
+
+                        break;
+                    case "String":
+                        this.DatabaseItemType.AddPropertyType(name, Database.PropertyValueTypes.String);
+                        break;
+                    case "Double":
+                        this.DatabaseItemType.AddPropertyType(name, Database.PropertyValueTypes.Double);
+                        break;
+                    default:
+                        throw new NotImplementedException("PropertyType not implemented: " + this.PropertyInfo(name).PropertyType.Name);
+                }
+            }
         }
 
         public override string ToString()

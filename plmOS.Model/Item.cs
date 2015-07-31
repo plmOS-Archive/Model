@@ -40,126 +40,99 @@ namespace plmOS.Model
 
         public Guid VersionID { get; internal set; }
 
-        public Int64 Created { get; internal set; }
+        public Int64 Branched { get; internal set; }
+
+        public Int64 Versioned { get; internal set; }
 
         public Int64 Superceded { get; internal set; }
 
-        public Transaction LockedBy { get; internal set; }
+        public Lock Lock { get; internal set; }
 
-        public Properties.String String { get; private set; }
-
-        private Dictionary<String, System.Reflection.PropertyInfo> _propertyInfoCache;
-        private Dictionary<String, System.Reflection.PropertyInfo> PropertyInfoCache
+        public String PropertyStringValue(String Name)
         {
-            get
-            {
-                if (this._propertyInfoCache == null)
-                {
-                    this._propertyInfoCache = new Dictionary<String, System.Reflection.PropertyInfo>();
-
-                    foreach (System.Reflection.PropertyInfo propinfo in this.GetType().GetProperties())
-                    {
-                        if (propinfo.PropertyType.IsSubclassOf(typeof(Property<>)))
-                        {
-                            this._propertyInfoCache[propinfo.Name] = propinfo;
-                        }
-                    }
-                }
-
-                return this._propertyInfoCache;
-            }
+            return ((Properties.String)this.ItemType.PropertyInfo(Name).GetValue(this)).Value;
         }
 
-        public IEnumerable<String> Properties
+        public Double? PropertyDoubleValue(String Name)
         {
-            get
-            {
-                return this.PropertyInfoCache.Keys;
-            }
+            return ((Properties.Double)this.ItemType.PropertyInfo(Name).GetValue(this)).Value;
         }
 
-        public Boolean HasProperty(String Name)
+        public Item PropertyItemValue(String Name)
         {
-            return this.PropertyInfoCache.ContainsKey(Name);
+            return ((Properties.Item)this.ItemType.PropertyInfo(Name).GetValue(this)).Value;
         }
 
-        private void CopyProperties(Item Item)
+        internal void CopyProperties(Item Item)
         {
 
-        }
-
-        public Item Version(Transaction Transaction)
-        {
-            // Add this Item to Transaction
-            Transaction.AddItem(this);
-
-            // Create new Version
-            Item item = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
-            item.ItemID = this.ItemID;
-            item.BranchID = this.BranchID;
-            item.VersionID = Guid.NewGuid();
-            item.Created = DateTime.UtcNow.Ticks;
-
-            if (item.Created <= this.Created)
-            {
-                item.Created = this.Created + 1;
-            }
-
-            item.Superceded = -1;
-            this.CopyProperties(item);
-
-            // Add new version to Transaction
-            Transaction.AddItem(item);
-
-            // Add to Cache
-            this.ItemType.Store.AddItemToCache(item);
-
-            // Supercede this Item
-            this.Superceded = item.Created - 1;
-
-            return item;
         }
 
         public Item Branch(Transaction Transaction)
         {
             // Create new Branch
-            Item item = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
-            item.ItemID = this.ItemID;
-            item.BranchID = Guid.NewGuid();
-            item.VersionID = Guid.NewGuid();
-            item.Created = DateTime.UtcNow.Ticks;
+            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
+            newitem.ItemID = this.ItemID;
+            newitem.BranchID = Guid.NewGuid();
+            newitem.VersionID = Guid.NewGuid();
+            newitem.Versioned = DateTime.UtcNow.Ticks;
 
-            if (item.Created <= this.Created)
+            if (newitem.Versioned <= this.Versioned)
             {
-                item.Created = this.Created + 1;
+                newitem.Versioned = this.Versioned + 1;
             }
 
-            item.Superceded = -1;
-            this.CopyProperties(item);
+            newitem.Branched = newitem.Versioned;
+            newitem.Superceded = -1;
+            this.CopyProperties(newitem);
 
             // Add new Branch to Transaction
-            Transaction.AddItem(item);
+            Transaction.LockItem(newitem, LockActions.Create);
 
-            // Add to Cache
-            this.ItemType.Store.AddItemToCache(item);
+            // Add to Item Store Cache
+            this.ItemType.Store.AddItemToCache(newitem);
 
-            return item;
+            return newitem;
+        }
+
+        public Item Version(Transaction Transaction)
+        {
+            // Add Item to Transaction
+            Transaction.LockItem(this, LockActions.Supercede);
+
+            // Create new Version
+            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
+            newitem.ItemID = this.ItemID;
+            newitem.BranchID = this.BranchID;
+            newitem.VersionID = Guid.NewGuid();
+            newitem.Versioned = DateTime.UtcNow.Ticks;
+
+            if (newitem.Versioned <= this.Versioned)
+            {
+                newitem.Versioned = this.Versioned + 1;
+            }
+
+            newitem.Superceded = -1;
+            this.CopyProperties(newitem);
+
+            // Add new version to Transaction
+            Transaction.LockItem(newitem, LockActions.Create);
+
+            // Add to Item Store Cache
+            this.ItemType.Store.AddItemToCache(newitem);
+
+            return newitem;
         }
 
         public void Delete(Transaction Transaction)
         {
             // Add this Item to Transaction
-            Transaction.AddItem(this);
-
-            // Set Superceded
-            this.Superceded = DateTime.UtcNow.Ticks;
+            Transaction.LockItem(this, LockActions.Supercede);
         }
 
         public Item(ItemType ItemType)
         {
             this.ItemType = ItemType;
-            this.String = new Properties.String(this, true, 32);
- 
         }
     }
 }

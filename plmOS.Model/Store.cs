@@ -32,7 +32,7 @@ using System.Reflection;
 
 namespace plmOS.Model
 {
-    public class Store
+    public class Store : IDisposable
     {
         public Auth.IManager Auth { get; private set; }
 
@@ -78,9 +78,16 @@ namespace plmOS.Model
 
         private void LoadItemTypes()
         {
+            // Load All ItemTypes
             foreach (ItemType itemtype in this.AllItemTypeCache.Values)
             {
                 itemtype.Load();
+            }
+
+            // Create ItemTypes and RelationshipTypes in Database
+            foreach (ItemType itemtype in this.AllItemTypeCache.Values)
+            {
+                itemtype.Create();
             }
         }
 
@@ -130,6 +137,11 @@ namespace plmOS.Model
         internal void AddItemToCache(Item Item)
         {
             this.ItemCache[Item.VersionID] = Item;
+        }
+
+        public void Dispose()
+        {
+
         }
 
         public Store(Auth.IManager Auth, Database.ISession Database)
