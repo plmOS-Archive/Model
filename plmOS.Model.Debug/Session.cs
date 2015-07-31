@@ -35,11 +35,13 @@ namespace plmOS.Model.Debug
 
         public void Execute()
         {
+            Auth.Windows.Manager auth = new Auth.Windows.Manager();
             Database.Memory.Session database = new Database.Memory.Session();
-            Model.Store store = new Model.Store(database);
+            Model.Store store = new Model.Store(auth, database);
             store.LoadAssembly("C:\\dev\\plmOS\\Model\\plmOS.Model.Debug\\bin\\Debug\\plmOS.Design.dll");
 
-            Model.Session session = store.Login();
+            Auth.Windows.Credentials credentials = new Auth.Windows.Credentials();
+            Model.Session session = store.Login(credentials);
 
             ItemType parttype = store.ItemType("plmOS.Design.Part");
 

@@ -36,16 +36,18 @@ namespace plmOS.Model
 
         public Store Store { get; private set; }
 
+        public Auth.IIdentity Identity { get; private set; }
+
         public Transaction BeginTransaction()
         {
             return new Transaction(this);
         }
 
-        internal Session(Store Store)
+        internal Session(Store Store, Auth.IIdentity Identity)
         {
             this.ID = Guid.NewGuid();
             this.Store = Store;
-            
+            this.Identity = Identity;
         }
     }
 }

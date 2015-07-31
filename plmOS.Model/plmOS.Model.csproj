@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\LoginException.cs" />
     <Compile Include="Exceptions\StringLengthException.cs" />
     <Compile Include="Exceptions\ReadOnlyException.cs" />
     <Compile Include="Exceptions\ItemLockedException.cs" />

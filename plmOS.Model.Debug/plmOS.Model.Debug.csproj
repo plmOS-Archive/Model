@@ -50,6 +50,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Auth.Windows\plmOS.Auth.Windows\plmOS.Auth.Windows.csproj">
+      <Project>{e8985f58-9a3d-478f-afff-4bd2a931151a}</Project>
+      <Name>plmOS.Auth.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Auth\plmOS.Auth\plmOS.Auth.csproj">
+      <Project>{7975d9da-95cb-404c-96d5-4a219bb3c31e}</Project>
+      <Name>plmOS.Auth</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Database.Memory\plmOS.Database.Memory\plmOS.Database.Memory.csproj">
       <Project>{40be9a75-7d4d-4ca6-90bd-ee5d8d1ec370}</Project>
       <Name>plmOS.Database.Memory</Name>

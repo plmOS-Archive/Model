@@ -34,7 +34,9 @@ namespace plmOS.Model
 {
     public class Store
     {
-        internal Database.ISession Database { get; private set; }
+        public Auth.IManager Auth { get; private set; }
+
+        public Database.ISession Database { get; private set; }
 
         private Dictionary<String, ItemType> AllItemTypeCache;
 
@@ -109,9 +111,18 @@ namespace plmOS.Model
             this.LoadItemTypes();
         }
 
-        public Session Login()
+        public Session Login(Auth.ICredentials Credentials)
         {
-            return new Session(this);
+            Auth.IIdentity identity =  this.Auth.Login(Credentials);
+
+            if (identity.IsAuthenticated)
+            {
+                return new Session(this, identity);
+            }
+            else
+            {
+                throw new Exceptions.LoginException();
+            }
         }
 
         private Dictionary<Guid, Item> ItemCache;
@@ -121,8 +132,9 @@ namespace plmOS.Model
             this.ItemCache[Item.VersionID] = Item;
         }
 
-        public Store(Database.ISession Database)
+        public Store(Auth.IManager Auth, Database.ISession Database)
         {
+            this.Auth = Auth;
             this.Database = Database;
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
