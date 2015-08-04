@@ -124,7 +124,7 @@ namespace plmOS.Model
 
                     foreach (System.Reflection.PropertyInfo propinfo in this.Type.GetProperties())
                     {
-                        if (propinfo.DeclaringType.Equals(this.Type) && propinfo.PropertyType.BaseType != null && propinfo.PropertyType.BaseType.IsGenericType && propinfo.PropertyType.BaseType.GetGenericTypeDefinition().Equals(typeof(Property<>)))
+                        if (propinfo.DeclaringType.Equals(this.Type) && propinfo.PropertyType.BaseType != null && propinfo.PropertyType.BaseType.Equals(typeof(Model.Property)))
                         {
                             foreach(object custatt in propinfo.GetCustomAttributes(true))
                             {
@@ -191,49 +191,16 @@ namespace plmOS.Model
                     this._baseItemType = this.Store.AllItemType(this.Type.BaseType.FullName);
                 }
 
+                // Enssure created in Database
+                this.Create();
+
                 this.Loaded = true;
             }
         }
 
         internal virtual void Create()
         {
-            /*
-            if (this.DatabaseItemType == null)
-            {
-                // Create Database ItemType
-                if (this.BaseItemType != null)
-                {
-                    this.BaseItemType.Create();
-                    this.DatabaseItemType = this.Store.Database.CreateItemType(this.BaseItemType.DatabaseItemType, this.Name);
-                }
-                else
-                {
-                    this.DatabaseItemType = this.Store.Database.CreateItemType(this.Name);
-                }
-
-                // Add Database PropertyTypes
-                this.CreatePropertyTypes();
-            }*/
-        }
-
-        protected void CreatePropertyTypes()
-        {
-            /*
-            foreach (PropertyType proptype in this.PropertyTypes)
-            {
-                switch (proptype.Type)
-                {
-                    case PropertyTypeValues.Item:
-                        this.DatabaseItemType.AddPropertyType(proptype.Name, Database.PropertyValueTypes.Item);
-                        break;
-                    case PropertyTypeValues.String:
-                        this.DatabaseItemType.AddPropertyType(proptype.Name, Database.PropertyValueTypes.String);
-                        break;
-                    case PropertyTypeValues.Double:
-                        this.DatabaseItemType.AddPropertyType(proptype.Name, Database.PropertyValueTypes.Double);
-                        break;
-                }
-            }*/
+            this.Store.Database.Create(this);
         }
 
         public override string ToString()

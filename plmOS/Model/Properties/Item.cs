@@ -30,8 +30,45 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model.Properties
 {
-    public class Item : Property<Model.Item>
+    public class Item : Property
     {
+        public Model.Item Value
+        {
+            get
+            {
+                if (this.Object == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return (Model.Item)this.Object;
+                }
+            }
+            set
+            {
+                this.Object = value;
+            }
+        }
+
+        internal override void SetObject(Object Object)
+        {
+            if (Object == null)
+            {
+                base.SetObject(Object);
+            }
+            else
+            {
+                if (Object is Model.Item)
+                {
+                    base.SetObject(Object);
+                }
+                else
+                {
+                    throw new ArgumentException("Value must be of type: plmOS.Model.Item");
+                }
+            }
+        }
 
         public Item(Model.Item Item, PropertyTypes.Item PropertyType)
             : base(Item, PropertyType)

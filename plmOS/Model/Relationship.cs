@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 namespace plmOS.Model
 {
     [RelationshipAttribute(typeof(Item))]
-    public abstract class Relationship : Item
+    public abstract class Relationship : Item, Database.IRelationship
     {
         public RelationshipType RelationshipType
         {
@@ -42,10 +42,10 @@ namespace plmOS.Model
         }
 
         [PropertyAttributes.ItemProperty(true, true)]
-        public Properties.Item Parent { get; private set; }
+        public Database.Properties.IItem Parent { get; private set; }
 
         [PropertyAttributes.ItemProperty(false, false)]
-        public Properties.Item Child { get; private set; }
+        public Database.Properties.IItem Child { get; private set; }
 
         public Relationship(RelationshipType RelationshipType, Item Parent, Item Child)
             : base(RelationshipType)
@@ -67,8 +67,8 @@ namespace plmOS.Model
 
             this.InitialiseProperty("Parent");
             this.InitialiseProperty("Child");
-            this.Parent.SetValue(Parent);
-            this.Child.SetValue(Child);
+            ((Model.Properties.Item)this.Parent).SetObject(Parent);
+            ((Model.Properties.Item)this.Child).SetObject(Child);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace plmOS.Model
 {
     public enum PropertyTypeValues { String, Double, Item };
 
-    public abstract class Property<T> : INotifyPropertyChanged
+    public abstract class Property : Database.IProperty, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -88,25 +88,28 @@ namespace plmOS.Model
             }
         }
 
-        private T _value;
+        private Object _object;
 
-        internal virtual void SetValue(T Value)
+        internal virtual void SetObject(Object Object)
         {
-            this._value = Value;
-            this.OnPropertyChanged("Value");
+            if (this._object != Object)
+            {
+                this._object = Object;
+                this.OnPropertyChanged("Object");
+            }
         }
 
-        public T Value
+        public Object Object
         {
             get
             {
-                return this._value;
+                return this._object;
             }
             set
             {
                 if (!this.ReadOnly)
                 {
-                    this.SetValue(value);
+                    this.SetObject(value);
                 }
                 else
                 {
@@ -117,13 +120,13 @@ namespace plmOS.Model
 
         public override string ToString()
         {
-            if (this._value == null)
+            if (this._object == null)
             {
                 return "null";
             }
             else
             {
-                return this._value.ToString();
+                return this._object.ToString();
             }
         }
 

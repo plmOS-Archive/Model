@@ -7,8 +7,8 @@
     <ProjectGuid>{1556CA37-8B2E-4D29-BD7C-55E342DBC611}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>plmOS.Model</RootNamespace>
-    <AssemblyName>plmOS.Model</AssemblyName>
+    <RootNamespace>plmOS</RootNamespace>
+    <AssemblyName>plmOS</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,7 +44,14 @@
     <Compile Include="Auth\IManager.cs" />
     <Compile Include="Auth\IPrincipal.cs" />
     <Compile Include="Auth\LoginException.cs" />
+    <Compile Include="Database\IRelationship.cs" />
+    <Compile Include="Database\IItem.cs" />
+    <Compile Include="Database\IProperty.cs" />
     <Compile Include="Database\ISession.cs" />
+    <Compile Include="Database\ITransactioncs.cs" />
+    <Compile Include="Database\Properties\IDouble.cs" />
+    <Compile Include="Database\Properties\IString.cs" />
+    <Compile Include="Database\Properties\IItem.cs" />
     <Compile Include="Model\Exceptions\LoginException.cs" />
     <Compile Include="Model\Exceptions\StringLengthException.cs" />
     <Compile Include="Model\Exceptions\ReadOnlyException.cs" />

@@ -35,5 +35,11 @@ namespace plmOS.Database
         void Create(Model.ItemType ItemType);
 
         void Create(Model.RelationshipType RelationshipType);
+
+        void Create(IItem Item, ITransaction Transaction);
+
+        void Supercede(IItem Item, ITransaction Transaction);
+
+        ITransaction BeginTransaction();
     }
 }

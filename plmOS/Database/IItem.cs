@@ -28,52 +28,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Model.Properties
+namespace plmOS.Database
 {
-    public class Double : Property
+    public interface IItem
     {
-        public System.Double? Value
-        {
-            get
-            {
-                if (this.Object == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (System.Double)this.Object;
-                }
-            }
-            set
-            {
-                this.Object = value;
-            }
-        }
+        Model.ItemType ItemType { get; }
 
-        internal override void SetObject(Object Object)
-        {
-            if (Object == null)
-            {
-                base.SetObject(Object);
-            }
-            else
-            {
-                if (Object is System.Double)
-                {
-                    base.SetObject(Object);
-                }
-                else
-                {
-                    throw new ArgumentException("Value must be of type: System.Double");
-                }
-            }
-        }
+        Guid ItemID { get; }
 
-        public Double(Model.Item Item, PropertyTypes.Double PropertyType)
-            : base(Item, PropertyType)
-        {
+        Guid BranchID { get; }
 
-        }
+        Guid VersionID { get; }
+
+        Int64 Branched { get; }
+
+        Int64 Versioned { get; }
+
+        Int64 Superceded { get; }
+
+        IEnumerable<IProperty> Properties { get; }
     }
 }

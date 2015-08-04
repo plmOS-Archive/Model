@@ -71,43 +71,7 @@ namespace plmOS.Model
 
         internal override void Create()
         {
-            /*
-            if (this.DatabaseItemType == null)
-            {
-                // Create Parent ItemType
-                this.ParentItemType.Create();
-
-                // Create Database ItemType
-                if (this.BaseItemType.Name != "plmOS.Model.Item")
-                {
-                    this.BaseItemType.Create();
-
-                    if (this.ChildItemType != null)
-                    {
-                        this.ChildItemType.Create();
-                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType((Database.IRelationshipType)this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, this.ChildItemType.DatabaseItemType);
-                    }
-                    else
-                    {
-                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType((Database.IRelationshipType)this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, null);
-                    }
-                }
-                else
-                {
-                    if (this.ChildItemType != null)
-                    {
-                        this.ChildItemType.Create();
-                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType(this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, this.ChildItemType.DatabaseItemType);
-                    }
-                    else
-                    {
-                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType(this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, this.ParentItemType.DatabaseItemType);
-                    }
-                }
-
-                // Add Database PropertyTypes
-                this.CreatePropertyTypes();
-            }*/
+            this.Store.Database.Create(this);
         }
 
         internal RelationshipType(Store Server, Type Type)

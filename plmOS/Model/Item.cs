@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    public abstract class Item
+    public abstract class Item : Database.IItem
     {
         public ItemType ItemType { get; private set; }
 
@@ -47,6 +47,16 @@ namespace plmOS.Model
         public Int64 Superceded { get; internal set; }
 
         public Lock Lock { get; internal set; }
+
+        private Dictionary<PropertyType, Property> PropertiesCache;
+
+        public IEnumerable<Database.IProperty> Properties
+        {
+            get
+            {
+                return this.PropertiesCache.Values;
+            }
+        }
 
         public String PropertyStringValue(String Name)
         {
@@ -70,16 +80,14 @@ namespace plmOS.Model
                 switch(proptype.Type)
                 {
                     case PropertyTypeValues.String:
-                        ((Properties.String)proptype.PropertyInfo.GetValue(Item)).SetValue(((Properties.String)proptype.PropertyInfo.GetValue(this)).Value);
+                        ((Properties.String)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.String)proptype.PropertyInfo.GetValue(this)).Object);
                         break;
                     case PropertyTypeValues.Item:
-                        ((Properties.Item)proptype.PropertyInfo.GetValue(Item)).SetValue(((Properties.Item)proptype.PropertyInfo.GetValue(this)).Value);
+                        ((Properties.Item)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Item)proptype.PropertyInfo.GetValue(this)).Object);
                         break;
                     case PropertyTypeValues.Double:
-                        ((Properties.Double)proptype.PropertyInfo.GetValue(Item)).SetValue(((Properties.Double)proptype.PropertyInfo.GetValue(this)).Value);
+                        ((Properties.Double)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Double)proptype.PropertyInfo.GetValue(this)).Object);
                         break;
-                    default:
-                        throw new NotImplementedException("PropertyType not implmented: " + proptype.GetType().Name);
                 }
             }
         }
@@ -153,20 +161,23 @@ namespace plmOS.Model
             switch(proptype.Type)
             {
                 case PropertyTypeValues.Double:
-                    proptype.PropertyInfo.SetValue(this, new Properties.Double(this, (PropertyTypes.Double)proptype));
+                    this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
                     break;
                 case PropertyTypeValues.Item:
-                    proptype.PropertyInfo.SetValue(this, new Properties.Item(this, (PropertyTypes.Item)proptype));
+                    this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
                     break;
                 case PropertyTypeValues.String:
-                    proptype.PropertyInfo.SetValue(this, new Properties.String(this, (PropertyTypes.String)proptype));
+                    this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
                     break;
             }
+
+            proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
         }
 
         public Item(ItemType ItemType)
         {
             this.ItemType = ItemType;
+            this.PropertiesCache = new Dictionary<PropertyType, Property>();
         }
     }
 }
