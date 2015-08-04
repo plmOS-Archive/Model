@@ -50,38 +50,36 @@ namespace plmOS.Model
 
         public String PropertyStringValue(String Name)
         {
-            return ((Properties.String)this.ItemType.PropertyInfo(Name).GetValue(this)).Value;
+            return ((Properties.String)this.ItemType.PropertyType(Name).PropertyInfo.GetValue(this)).Value;
         }
 
         public Double? PropertyDoubleValue(String Name)
         {
-            return ((Properties.Double)this.ItemType.PropertyInfo(Name).GetValue(this)).Value;
+            return ((Properties.Double)this.ItemType.PropertyType(Name).PropertyInfo.GetValue(this)).Value;
         }
 
         public Item PropertyItemValue(String Name)
         {
-            return ((Properties.Item)this.ItemType.PropertyInfo(Name).GetValue(this)).Value;
+            return ((Properties.Item)this.ItemType.PropertyType(Name).PropertyInfo.GetValue(this)).Value;
         }
 
         internal void CopyProperties(Item Item)
         {
-            foreach(String prop in this.ItemType.Properties)
+            foreach(PropertyType proptype in this.ItemType.PropertyTypes)
             {
-                System.Reflection.PropertyInfo propinfo = this.ItemType.PropertyInfo(prop);
-
-                switch(propinfo.PropertyType.Name)
+                switch(proptype.Type)
                 {
-                    case "String":
-                        ((Properties.String)propinfo.GetValue(Item)).SetValue(((Properties.String)propinfo.GetValue(this)).Value);
+                    case PropertyTypeValues.String:
+                        ((Properties.String)proptype.PropertyInfo.GetValue(Item)).SetValue(((Properties.String)proptype.PropertyInfo.GetValue(this)).Value);
                         break;
-                    case "Item":
-                        ((Properties.Item)propinfo.GetValue(Item)).SetValue(((Properties.Item)propinfo.GetValue(this)).Value);
+                    case PropertyTypeValues.Item:
+                        ((Properties.Item)proptype.PropertyInfo.GetValue(Item)).SetValue(((Properties.Item)proptype.PropertyInfo.GetValue(this)).Value);
                         break;
-                    case "Double":
-                        ((Properties.Double)propinfo.GetValue(Item)).SetValue(((Properties.Double)propinfo.GetValue(this)).Value);
+                    case PropertyTypeValues.Double:
+                        ((Properties.Double)proptype.PropertyInfo.GetValue(Item)).SetValue(((Properties.Double)proptype.PropertyInfo.GetValue(this)).Value);
                         break;
                     default:
-                        throw new NotImplementedException("PropertyType not implmented: " + propinfo.PropertyType.Name);
+                        throw new NotImplementedException("PropertyType not implmented: " + proptype.GetType().Name);
                 }
             }
         }
@@ -146,6 +144,24 @@ namespace plmOS.Model
         {
             // Add this Item to Transaction
             Transaction.LockItem(this, LockActions.Supercede);
+        }
+
+        protected void InitialiseProperty(String Name)
+        {
+            PropertyType proptype = this.ItemType.PropertyType(Name);
+
+            switch(proptype.Type)
+            {
+                case PropertyTypeValues.Double:
+                    proptype.PropertyInfo.SetValue(this, new Properties.Double(this, (PropertyTypes.Double)proptype));
+                    break;
+                case PropertyTypeValues.Item:
+                    proptype.PropertyInfo.SetValue(this, new Properties.Item(this, (PropertyTypes.Item)proptype));
+                    break;
+                case PropertyTypeValues.String:
+                    proptype.PropertyInfo.SetValue(this, new Properties.String(this, (PropertyTypes.String)proptype));
+                    break;
+            }
         }
 
         public Item(ItemType ItemType)

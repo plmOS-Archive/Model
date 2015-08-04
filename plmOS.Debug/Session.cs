@@ -37,46 +37,41 @@ namespace plmOS.Model.Debug
         public void Execute()
         {
             Auth.Windows.Manager auth = new Auth.Windows.Manager();
-            Database.Memory.Session database = new Database.Memory.Session();
+            Database.SQLServer.Session database = new Database.SQLServer.Session(Properties.Settings.Default.ConnectionString);
 
             using (Model.Store store = new Model.Store(auth, database))
             {
-
                 store.LoadAssembly(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\plmOS.Design.dll");
 
+                ItemType parttype = store.ItemType("plmOS.Design.Part");
+                RelationshipType bomlinetype = parttype.RelationshipType("plmOS.Design.BOMLine");
+  
                 Auth.Windows.Credentials credentials = new Auth.Windows.Credentials();
 
                 using (Model.Session session = store.Login(credentials))
-                {
-                    ItemType parttype = store.ItemType("plmOS.Design.Part");
+                { 
                     Design.Part part1 = null;
                     Design.Part part2 = null;
-                    Design.Part part3 = null;
-
+                    Design.BOMLine bomline = null;
 
                     using (Transaction transaction = session.BeginTransaction())
                     {
                         part1 = (Design.Part)session.Create(parttype, transaction);
                         part1.Number.Value = "1234";
                         part1.Revision.Value = "01";
-                        part1.Name.Value = "Test Part";
-                        transaction.Commit();
-                    }
+                        part1.Name.Value = "Test Assembly";
 
-                    using (Transaction transaction = session.BeginTransaction())
-                    {
-                        part2 = (Design.Part)part1.Branch(transaction);
-                        part2.Revision.Value = "02";
-                        transaction.Commit();
-                    }
+                        part2 = (Design.Part)session.Create(parttype, transaction);
+                        part2.Number.Value = "5678";
+                        part2.Revision.Value = "01";
+                        part2.Name.Value = "Test Part";
 
-                    using (Transaction transaction = session.BeginTransaction())
-                    {
-                        part3 = (Design.Part)part2.Version(transaction);
-                        part3.Name.Value = "Test Part 1234";
+                        bomline = (Design.BOMLine)session.Create(bomlinetype, part1, part2, transaction);
+                        bomline.Quantity.Value = 3.0;
+
                         transaction.Commit();
                     }
-                }
+                }  
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿/*  
-  plmOS Model provides a .NET client library for managing PLM (Product Lifecycle Management) data.
+  plmOS Auth is a .NET library that implements the Interface for a plmOS Authentication.
 
   Copyright (C) 2015 Processwall Limited.
 
@@ -28,28 +28,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Model.Properties
+namespace plmOS.Auth
 {
-    public class String : Property<System.String>
+    public class LoginException : Exception
     {
-        public System.Int32 Length { get; private set; }
-
-        internal override void SetValue(System.String Value)
+        public LoginException()
+            : base("Login Failed")
         {
-            if (Value == null || Value.Length <= this.Length)
-            {
-                base.SetValue(Value);
-            }
-            else
-            {
-                throw new Exceptions.StringLengthException(this.Length);
-            }
-        }
-
-        public String (Model.Item Item, System.Boolean ReadOnly, System.Int32 Length)
-            :base(Item, ReadOnly)
-        {
-            this.Length = Length;
         }
     }
 }

@@ -55,39 +55,23 @@ namespace plmOS.Model
         {
             if (!this.Loaded)
             {
+                RelationshipAttribute relatt = (RelationshipAttribute)this.Type.GetCustomAttribute(typeof(RelationshipAttribute));
 
-                foreach (ConstructorInfo constructorinfo in Type.GetConstructors())
+                this._parentItemType = this.Store.AllItemType(relatt.ParentType.FullName);
+                this._parentItemType.AddRelationshipType(this);
+
+                if (relatt.ChildType != null)
                 {
-                    ParameterInfo[] parameters = constructorinfo.GetParameters();
-
-                    if ((parameters.Length == 2) && (parameters[0].ParameterType.Equals(typeof(RelationshipType))) && ((parameters[1].ParameterType.IsSubclassOf(typeof(Item))) || (parameters[1].ParameterType.Equals(typeof(Item)))))
-                    {
-                        this._parentItemType = this.Store.AllItemType(parameters[1].ParameterType.FullName);
-                        this._parentItemType.AddRelationshipType(this);
-                        this._childItemType = null;
-                    }
-                    else if ((parameters.Length == 3) && (parameters[0].ParameterType.Equals(typeof(RelationshipType))) && (parameters[1].ParameterType.IsSubclassOf(typeof(Item))) && (parameters[2].ParameterType.IsSubclassOf(typeof(Item))))
-                    {
-                        this._parentItemType = this.Store.AllItemType(parameters[1].ParameterType.FullName);
-                        this._parentItemType.AddRelationshipType(this);
-                        this._childItemType = this.Store.AllItemType(parameters[2].ParameterType.FullName);
-                    }
+                    this._childItemType = this.Store.AllItemType(relatt.ChildType.FullName);
                 }
 
                 base.Load();
             }
         }
 
-        internal Database.IRelationshipType DatabaseRelationshipType
-        {
-            get
-            {
-                return (Database.IRelationshipType)this.DatabaseItemType;
-            }
-        }
-
         internal override void Create()
         {
+            /*
             if (this.DatabaseItemType == null)
             {
                 // Create Parent ItemType
@@ -117,13 +101,13 @@ namespace plmOS.Model
                     }
                     else
                     {
-                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType(this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, null);
+                        this.DatabaseItemType = this.Store.Database.CreateRelationshipType(this.BaseItemType.DatabaseItemType, this.Name, this.ParentItemType.DatabaseItemType, this.ParentItemType.DatabaseItemType);
                     }
                 }
 
                 // Add Database PropertyTypes
                 this.CreatePropertyTypes();
-            }
+            }*/
         }
 
         internal RelationshipType(Store Server, Type Type)

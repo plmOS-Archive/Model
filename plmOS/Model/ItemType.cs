@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    public class ItemType
+    public class ItemType : IEquatable<ItemType>
     {
         public Store Store { get; private set; }
 
@@ -49,6 +49,30 @@ namespace plmOS.Model
             get
             {
                 return this.Type.IsAbstract;
+            }
+        }
+
+        public bool Equals(ItemType other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return this.Type.Equals(other.Type);
+            }
+        }
+
+        public Boolean IsSubclassOf(ItemType ItemType)
+        {
+            if (ItemType == null)
+            {
+                return false;
+            }
+            else
+            {
+                return this.Type.IsSubclassOf(ItemType.Type);
             }
         }
 
@@ -81,44 +105,75 @@ namespace plmOS.Model
             }
         }
 
-        private Dictionary<String, System.Reflection.PropertyInfo> _propertyInfoCache;
-        private Dictionary<String, System.Reflection.PropertyInfo> PropertyInfoCache
+        private Dictionary<String, PropertyType> _propertyTypeCache;
+        private Dictionary<String, PropertyType> PropertyTypeCache
         {
             get
             {
-                if (this._propertyInfoCache == null)
+                if (this._propertyTypeCache == null)
                 {
-                    this._propertyInfoCache = new Dictionary<String, System.Reflection.PropertyInfo>();
+                    this._propertyTypeCache = new Dictionary<String, PropertyType>();
+
+                    if (this.BaseItemType != null)
+                    {
+                        foreach(PropertyType proptype in this.BaseItemType.PropertyTypes)
+                        {
+                            this._propertyTypeCache[proptype.Name] = proptype;
+                        }
+                    }
 
                     foreach (System.Reflection.PropertyInfo propinfo in this.Type.GetProperties())
                     {
-                        if (propinfo.PropertyType.BaseType != null && propinfo.PropertyType.BaseType.IsGenericType && propinfo.PropertyType.BaseType.GetGenericTypeDefinition().Equals(typeof(Property<>)))
+                        if (propinfo.DeclaringType.Equals(this.Type) && propinfo.PropertyType.BaseType != null && propinfo.PropertyType.BaseType.IsGenericType && propinfo.PropertyType.BaseType.GetGenericTypeDefinition().Equals(typeof(Property<>)))
                         {
-                            this._propertyInfoCache[propinfo.Name] = propinfo;
+                            foreach(object custatt in propinfo.GetCustomAttributes(true))
+                            {
+                                if (custatt.GetType().BaseType.Equals(typeof(Model.PropertyAttribute)))
+                                {
+                                    switch (custatt.GetType().Name)
+                                    {
+               
+                                        case "DoublePropertyAttribute":
+                                            this._propertyTypeCache[propinfo.Name] = new PropertyTypes.Double(this, propinfo, (PropertyAttributes.DoublePropertyAttribute)custatt);
+                                            break;
+
+                                        case "ItemPropertyAttribute":
+                                            this._propertyTypeCache[propinfo.Name] = new PropertyTypes.Item(this, propinfo, (PropertyAttributes.ItemPropertyAttribute)custatt);
+                                            break;
+
+                                        case "StringPropertyAttribute":
+                                            this._propertyTypeCache[propinfo.Name] = new PropertyTypes.String(this, propinfo, (PropertyAttributes.StringPropertyAttribute)custatt);
+                                            break;
+
+                                        default:
+                                            throw new NotImplementedException("Property Attribute Type not implemented: " + custatt.GetType().Name);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
 
-                return this._propertyInfoCache;
+                return this._propertyTypeCache;
             }
         }
 
-        public IEnumerable<String> Properties
+        public IEnumerable<PropertyType> PropertyTypes
         {
             get
             {
-                return this.PropertyInfoCache.Keys;
+                return this.PropertyTypeCache.Values;
             }
         }
 
-        public Boolean HasProperty(String Name)
+        public Boolean HasPropertyType(String Name)
         {
-            return this.PropertyInfoCache.ContainsKey(Name);
+            return this.PropertyTypeCache.ContainsKey(Name);
         }
 
-        internal System.Reflection.PropertyInfo PropertyInfo(String Name)
+        public PropertyType PropertyType(String Name)
         {
-            return this.PropertyInfoCache[Name];
+            return this.PropertyTypeCache[Name];
         }
 
         protected Boolean Loaded { get; private set; }
@@ -140,10 +195,9 @@ namespace plmOS.Model
             }
         }
 
-        internal Database.IItemType DatabaseItemType { get; set; }
-
         internal virtual void Create()
         {
+            /*
             if (this.DatabaseItemType == null)
             {
                 // Create Database ItemType
@@ -159,33 +213,27 @@ namespace plmOS.Model
 
                 // Add Database PropertyTypes
                 this.CreatePropertyTypes();
-            }
+            }*/
         }
 
         protected void CreatePropertyTypes()
         {
-            foreach (String name in this.Properties)
+            /*
+            foreach (PropertyType proptype in this.PropertyTypes)
             {
-                switch (this.PropertyInfo(name).PropertyType.Name)
+                switch (proptype.Type)
                 {
-                    case "Item":
-
-                        if (name != "Parent" && name != "Child")
-                        {
-                            this.DatabaseItemType.AddPropertyType(name, Database.PropertyValueTypes.Item);
-                        }
-
+                    case PropertyTypeValues.Item:
+                        this.DatabaseItemType.AddPropertyType(proptype.Name, Database.PropertyValueTypes.Item);
                         break;
-                    case "String":
-                        this.DatabaseItemType.AddPropertyType(name, Database.PropertyValueTypes.String);
+                    case PropertyTypeValues.String:
+                        this.DatabaseItemType.AddPropertyType(proptype.Name, Database.PropertyValueTypes.String);
                         break;
-                    case "Double":
-                        this.DatabaseItemType.AddPropertyType(name, Database.PropertyValueTypes.Double);
+                    case PropertyTypeValues.Double:
+                        this.DatabaseItemType.AddPropertyType(proptype.Name, Database.PropertyValueTypes.Double);
                         break;
-                    default:
-                        throw new NotImplementedException("PropertyType not implemented: " + this.PropertyInfo(name).PropertyType.Name);
                 }
-            }
+            }*/
         }
 
         public override string ToString()

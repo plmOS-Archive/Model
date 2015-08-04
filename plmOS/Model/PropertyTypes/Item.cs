@@ -28,34 +28,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Model
+namespace plmOS.Model.PropertyTypes
 {
-    public abstract class Relationship : Item
+    public class Item : PropertyType
     {
-        public RelationshipType RelationshipType
+        public override PropertyTypeValues Type
         {
             get
             {
-                return (RelationshipType)this.ItemType;
+                return PropertyTypeValues.Item;
             }
         }
 
-        public Properties.Item Parent { get; private set; }
-
-        public Properties.Item Child { get; private set; }
-
-        public Relationship(RelationshipType RelationshipType, Item Parent)
-            : base(RelationshipType)
+        internal Item(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.ItemPropertyAttribute AttributeInfo)
+            :base(ItemType, PropertyInfo, AttributeInfo)
         {
-            this.Parent = new Properties.Item(this, true);
-            this.Child = null;
-        }
 
-        public Relationship(RelationshipType RelationshipType, Item Parent, Item Child)
-            : base(RelationshipType)
-        {
-            this.Parent = new Properties.Item(this, true);
-            this.Child = new Properties.Item(this, false);
         }
     }
 }

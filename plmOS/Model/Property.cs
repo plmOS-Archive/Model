@@ -31,6 +31,8 @@ using System.ComponentModel;
 
 namespace plmOS.Model
 {
+    public enum PropertyTypeValues { String, Double, Item };
+
     public abstract class Property<T> : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,20 +48,43 @@ namespace plmOS.Model
 
         public Item Item { get; private set; }
 
+        public PropertyType PropertyType { get; private set; }
+
+        private Boolean _required;
+
+        internal void SetRequired(Boolean Value)
+        {
+            if (this._required != Value)
+            {
+                this._required = Value;
+                this.OnPropertyChanged("Required");
+            }
+        }
+
+        public Boolean Required
+        {
+            get
+            {
+                return this._required;
+            }
+        }
+
         private Boolean _readOnly;
+
+        internal void SetReadOnly(Boolean Value)
+        {
+            if (this._readOnly != Value)
+            {
+                this._readOnly = Value;
+                this.OnPropertyChanged("ReadOnly");
+            }
+        }
+
         public Boolean ReadOnly 
         {
             get
             {
                 return this._readOnly;
-            }
-            internal set
-            {
-                if (this._readOnly != value)
-                {
-                    this._readOnly = value;
-                    this.OnPropertyChanged("ReadOnly");
-                }
             }
         }
 
@@ -102,10 +127,16 @@ namespace plmOS.Model
             }
         }
 
-        public Property (Item Item, Boolean ReadOnly)
+        public Property (Item Item, PropertyType PropertyType)
         {
             this.Item = Item;
-            this._readOnly = ReadOnly;
+            this.PropertyType = PropertyType;
+
+            // Set Default ReadOnly
+            this.SetReadOnly(this.PropertyType.ReadOnly);
+
+            // Set Default Required
+            this.SetRequired(this.PropertyType.Required);
         }
     }
 }

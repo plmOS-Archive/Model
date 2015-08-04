@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1556CA37-8B2E-4D29-BD7C-55E342DBC611}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{1F66C591-DCB9-4C2E-A86A-229F43D8DFB5}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>plmOS.Model</RootNamespace>
-    <AssemblyName>plmOS.Model</AssemblyName>
+    <RootNamespace>plmOS.Model.Debug</RootNamespace>
+    <AssemblyName>plmOS.Model.Debug</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,32 +42,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\LoginException.cs" />
-    <Compile Include="Exceptions\StringLengthException.cs" />
-    <Compile Include="Exceptions\ReadOnlyException.cs" />
-    <Compile Include="Exceptions\ItemLockedException.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="Lock.cs" />
-    <Compile Include="RelationshipType.cs" />
-    <Compile Include="ItemType.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Property.cs" />
-    <Compile Include="Props\Double.cs" />
-    <Compile Include="Props\String.cs" />
-    <Compile Include="Props\Item.cs" />
-    <Compile Include="Relationship.cs" />
-    <Compile Include="Store.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Session.cs" />
-    <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Auth\plmOS.Auth\plmOS.Auth.csproj">
-      <Project>{7975d9da-95cb-404c-96d5-4a219bb3c31e}</Project>
-      <Name>plmOS.Auth</Name>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Auth.Windows\plmOS.Auth.Windows\plmOS.Auth.Windows.csproj">
+      <Project>{e8985f58-9a3d-478f-afff-4bd2a931151a}</Project>
+      <Name>plmOS.Auth.Windows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Database\plmOS.Database\plmOS.Database.csproj">
-      <Project>{b0366598-cbbd-4a25-8d03-b97572c61a08}</Project>
-      <Name>plmOS.Database</Name>
+    <ProjectReference Include="..\..\Database.SQLServer\plmOS.Database.SQLServer\plmOS.Database.SQLServer.csproj">
+      <Project>{599bbb9e-3217-4ded-8d2d-dbc955ef410f}</Project>
+      <Name>plmOS.Database.SQLServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Design\plmOS.Design\plmOS.Design.csproj">
+      <Project>{bd26273c-24db-43ef-97b4-8a9e0f229c49}</Project>
+      <Name>plmOS.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\plmOS\plmOS.csproj">
+      <Project>{1556ca37-8b2e-4d29-bd7c-55e342dbc611}</Project>
+      <Name>plmOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -28,13 +28,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Model.Properties
+namespace plmOS.Model.PropertyAttributes
 {
-    public class Item : Property<Model.Item>
+    public class DoublePropertyAttribute : PropertyAttribute
     {
-
-        public Item(Model.Item Item, System.Boolean ReadOnly)
-            :base(Item, ReadOnly)
+        public DoublePropertyAttribute(Boolean Required, Boolean ReadOnly)
+            :base(Required, ReadOnly)
         {
 
         }

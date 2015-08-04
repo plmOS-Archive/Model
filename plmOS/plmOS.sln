@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plmOS.Model", "plmOS.Model.csproj", "{1556CA37-8B2E-4D29-BD7C-55E342DBC611}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plmOS.Database", "..\..\Database\plmOS.Database\plmOS.Database.csproj", "{B0366598-CBBD-4A25-8D03-B97572C61A08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plmOS", "plmOS.csproj", "{1556CA37-8B2E-4D29-BD7C-55E342DBC611}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{1556CA37-8B2E-4D29-BD7C-55E342DBC611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1556CA37-8B2E-4D29-BD7C-55E342DBC611}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1556CA37-8B2E-4D29-BD7C-55E342DBC611}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0366598-CBBD-4A25-8D03-B97572C61A08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0366598-CBBD-4A25-8D03-B97572C61A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0366598-CBBD-4A25-8D03-B97572C61A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0366598-CBBD-4A25-8D03-B97572C61A08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,14 +28,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Model.Properties
+namespace plmOS.Database
 {
-    public class Double : Property<System.Double?>
+    public interface ISession
     {
-        public Double(Model.Item Item, System.Boolean ReadOnly)
-            :base(Item, ReadOnly)
-        {
+        void Create(Model.ItemType ItemType);
 
-        }
+        void Create(Model.RelationshipType RelationshipType);
     }
 }

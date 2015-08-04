@@ -30,54 +30,50 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    public class Session : IDisposable
+    public abstract class PropertyType
     {
-        public Store Store { get; private set; }
+        public ItemType ItemType { get; private set; }
 
-        public Guid ID { get; private set; }
-
-        public Auth.IIdentity Identity { get; private set; }
-
-        public Transaction BeginTransaction()
+        public String Name
         {
-            return new Transaction(this);
+            get
+            {
+                return this.PropertyInfo.Name;
+            }
         }
 
-        public Item Create(ItemType ItemType, Transaction Transaction)
+        public abstract PropertyTypeValues Type { get; }
+ 
+        public Boolean Required
         {
-            // Create Item
-            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { ItemType });
-            item.ItemID = Guid.NewGuid();
-            item.BranchID = Guid.NewGuid();
-            item.VersionID = Guid.NewGuid();
-            item.Versioned = DateTime.UtcNow.Ticks;
-            item.Branched = item.Versioned;
-            item.Superceded = -1;
-
-            // Add to Transaction
-            Transaction.LockItem(item, LockActions.Create);
-
-            // Add to Item Store Cache
-            this.Store.AddItemToCache(item);
-
-            return item;
+            get
+            {
+                return this.AttributeInfo.Required;
+            }
         }
+
+        public Boolean ReadOnly
+        {
+            get
+            {
+                return this.AttributeInfo.ReadOnly;
+            }
+        }
+
+        internal System.Reflection.PropertyInfo PropertyInfo { get; private set; }
+
+        internal PropertyAttribute AttributeInfo { get; private set; }
 
         public override string ToString()
         {
-            return this.Identity.Name;
+            return this.Name;
         }
 
-        public void Dispose()
+        internal PropertyType(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttribute AttributeInfo)
         {
-
-        }
-
-        internal Session(Store Store, Auth.IIdentity Identity)
-        {
-            this.ID = Guid.NewGuid();
-            this.Store = Store;
-            this.Identity = Identity;
+            this.ItemType = ItemType;
+            this.PropertyInfo = PropertyInfo;
+            this.AttributeInfo = AttributeInfo;
         }
     }
 }
