@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model.Properties
 {
-    public class Double : Property
+    public class Double : Property, Database.Properties.IDouble
     {
         public System.Double? Value
         {

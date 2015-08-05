@@ -124,7 +124,7 @@ namespace plmOS.Model
 
                     foreach (System.Reflection.PropertyInfo propinfo in this.Type.GetProperties())
                     {
-                        if (propinfo.DeclaringType.Equals(this.Type) && propinfo.PropertyType.BaseType != null && propinfo.PropertyType.BaseType.Equals(typeof(Model.Property)))
+                        if (propinfo.DeclaringType.Equals(this.Type))
                         {
                             foreach(object custatt in propinfo.GetCustomAttributes(true))
                             {

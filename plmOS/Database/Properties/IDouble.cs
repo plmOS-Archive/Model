@@ -32,6 +32,6 @@ namespace plmOS.Database.Properties
 {
     public interface IDouble : IProperty
     {
-        System.Double Value { get; }
+        System.Double? Value { get; }
     }
 }

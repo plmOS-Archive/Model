@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model.Properties
 {
-    public class String : Property
+    public class String : Property, Database.Properties.IString
     {
         public System.Int32 Length
         {
