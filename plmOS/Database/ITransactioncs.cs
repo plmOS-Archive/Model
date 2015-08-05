@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Database
 {
-    public interface ITransaction
+    public interface ITransaction: IDisposable
     {
         void Commit();
 

@@ -41,7 +41,6 @@ namespace plmOS.Model
             // Get Transaction Time
             Int64 transactiontime = DateTime.UtcNow.Ticks;
 
-            /*
             // Make Required Changes to Database
             using(Database.ITransaction databasetransaction = this.Session.Store.Database.BeginTransaction())
             {
@@ -50,39 +49,10 @@ namespace plmOS.Model
                     switch(thislock.Action)
                     {
                         case LockActions.Create:
-                            Database.IItem databaseitem = this.Session.Store.Database.Create(thislock.Item.ItemType.DatabaseItemType, thislock.Item.ItemID, thislock.Item.BranchID, thislock.Item.VersionID, thislock.Item.Branched, thislock.Item.Versioned, databasetransaction);
-
-                            foreach(PropertyType proptype in thislock.Item.ItemType.PropertyTypes)
-                            {
-                                Database.IPropertyType databaseproptype = databaseitem.Type.PropertyType(proptype.Name);
-
-                                switch (databaseproptype.ValueType)
-                                {
-                                    case Database.PropertyValueTypes.Double:
-                                        databaseitem.AddProperty(databaseproptype, thislock.Item.PropertyDoubleValue(proptype.Name));
-                                        break;
-                                    case Database.PropertyValueTypes.Item:
-                                        Item propitem = thislock.Item.PropertyItemValue(proptype.Name);
-
-                                        if (propitem != null)
-                                        {
-                                            databaseitem.AddProperty(databaseproptype, propitem.VersionID);
-                                        }
-                                        else
-                                        {
-                                            databaseitem.AddProperty(databaseproptype, null);
-                                        }
-
-                                        break;
-                                    case Database.PropertyValueTypes.String:
-                                        databaseitem.AddProperty(databaseproptype, thislock.Item.PropertyStringValue(proptype.Name));
-                                        break;
-                                }
-                            }
-
+                            this.Session.Store.Database.Create(thislock.Item, databasetransaction);
                             break;
                         case LockActions.Supercede:
-                            this.Session.Store.Database.Supercede(thislock.Item.VersionID, transactiontime, databasetransaction);
+                            this.Session.Store.Database.Supercede(thislock.Item, transactiontime, databasetransaction);
                             break;
                     }
                 }
@@ -103,7 +73,7 @@ namespace plmOS.Model
                 }
 
                 thislock.Item.Lock = null;
-            }*/
+            }
         }
 
         public void Rollback()
