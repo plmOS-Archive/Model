@@ -85,7 +85,7 @@ namespace plmOS.Model.Properties
             }
         }
 
-        public String (Model.Item Item, PropertyTypes.String PropertyType)
+        internal String (Model.Item Item, PropertyTypes.String PropertyType)
             : base(Item, PropertyType)
         {
         }

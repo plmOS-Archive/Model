@@ -28,20 +28,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Database
+namespace plmOS.Model.Conditions
 {
-    public interface ISession
+    public class Or : Condition
     {
-        void Create(Model.ItemType ItemType);
+        public void AddCondition(Condition Condition)
+        {
+            this.AddChild(Condition);
+        }
 
-        void Create(Model.RelationshipType RelationshipType);
-
-        void Create(IItem Item, ITransaction Transaction);
-
-        void Supercede(IItem Item, System.Int64 Time, ITransaction Transaction);
-
-        IEnumerable<IItem> Get(Model.Queries.Item Query);
-
-        ITransaction BeginTransaction();
+        public Or(Condition Left, Condition Right)
+            :base()
+        {
+            this.AddChild(Left);
+            this.AddChild(Right);
+        }
     }
 }

@@ -28,20 +28,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Database
+namespace plmOS.Model.Conditions
 {
-    public interface ISession
+    public enum Operators { eq, ne, lt, gt, le, ge }
+
+    public class Property : Condition
     {
-        void Create(Model.ItemType ItemType);
+        public PropertyType PropertyType { get; private set; }
 
-        void Create(Model.RelationshipType RelationshipType);
+        public Operators Operator { get; private set; }
 
-        void Create(IItem Item, ITransaction Transaction);
+        public Object Value { get; private set; }
 
-        void Supercede(IItem Item, System.Int64 Time, ITransaction Transaction);
-
-        IEnumerable<IItem> Get(Model.Queries.Item Query);
-
-        ITransaction BeginTransaction();
+        public Property(PropertyType PropertyType, Operators Operator, Object Value)
+            : base()
+        {
+            this.PropertyType = PropertyType;
+            this.Operator = Operator;
+            this.Value = Value;
+        }
     }
 }

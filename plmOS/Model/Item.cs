@@ -174,10 +174,71 @@ namespace plmOS.Model
             proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
         }
 
+        private static Database.IProperty DatabaseProperty(Database.IItem DatabaseItem, PropertyType PropertyType)
+        {
+            foreach(Database.IProperty prop in DatabaseItem.Properties)
+            {
+                if (prop.PropertyType.Equals(PropertyType))
+                {
+                    return prop;
+                }
+            }
+
+            return null;
+        }
+
+        protected void InitialiseProperty(String Name, Database.IItem DatabaseItem)
+        {
+            PropertyType proptype = this.ItemType.PropertyType(Name);
+            Database.IProperty databaseprop = DatabaseProperty(DatabaseItem, proptype);
+
+            switch (proptype.Type)
+            {
+                case PropertyTypeValues.Double:
+                    this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
+                    this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                    break;
+                case PropertyTypeValues.Item:
+                    this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
+
+                    if (databaseprop.Object != null)
+                    {
+                        this.PropertiesCache[proptype].SetObject(this.ItemType.Store.Create((Database.IItem)databaseprop.Object));
+                    }
+
+                    break;
+                case PropertyTypeValues.String:
+                    this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
+                    this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                    break;
+            }
+
+            
+            proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
+        }
+
         public Item(ItemType ItemType)
         {
             this.ItemType = ItemType;
+            this.ItemID = Guid.NewGuid();
+            this.BranchID = Guid.NewGuid();
+            this.VersionID = Guid.NewGuid();
+            this.Versioned = DateTime.UtcNow.Ticks;
+            this.Branched = this.Versioned;
+            this.Superceded = -1;
             this.PropertiesCache = new Dictionary<PropertyType, Property>();
+        }
+
+        public Item(Database.IItem DatabaseItem)
+        {
+            this.PropertiesCache = new Dictionary<PropertyType, Property>();
+            this.ItemType = DatabaseItem.ItemType;
+            this.VersionID = DatabaseItem.VersionID;
+            this.BranchID = DatabaseItem.BranchID;
+            this.ItemID = DatabaseItem.ItemID;
+            this.Branched = DatabaseItem.Branched;
+            this.Versioned = DatabaseItem.Versioned;
+            this.Superceded = DatabaseItem.Superceded;
         }
     }
 }

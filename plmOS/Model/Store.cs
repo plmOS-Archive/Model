@@ -139,6 +139,34 @@ namespace plmOS.Model
             this.ItemCache[Item.VersionID] = Item;
         }
 
+        internal Item GetItemFromCache(Guid VersionID)
+        {
+            if (this.ItemCache.ContainsKey(VersionID))
+            {
+                return this.ItemCache[VersionID];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        internal Item Create(Database.IItem DatabaseItem)
+        {
+            Item ret = this.GetItemFromCache(DatabaseItem.VersionID);
+
+            if (ret != null)
+            {
+                ret.Superceded = DatabaseItem.Superceded;
+            }
+            else
+            {
+                ret = (Item)Activator.CreateInstance(DatabaseItem.ItemType.Type, new object[] { DatabaseItem });
+            }
+
+            return ret;
+        }
+
         public void Dispose()
         {
 

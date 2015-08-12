@@ -47,12 +47,6 @@ namespace plmOS.Model
         {
             // Create Item
             Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { ItemType });
-            item.ItemID = Guid.NewGuid();
-            item.BranchID = Guid.NewGuid();
-            item.VersionID = Guid.NewGuid();
-            item.Versioned = DateTime.UtcNow.Ticks;
-            item.Branched = item.Versioned;
-            item.Superceded = -1;
 
             // Add to Transaction
             Transaction.LockItem(item, LockActions.Create);
@@ -67,12 +61,6 @@ namespace plmOS.Model
         {
             // Create Relationship
             Relationship relationship = (Relationship)Activator.CreateInstance(RelationshipType.Type, new object[] { RelationshipType, Parent, Child });
-            relationship.ItemID = Guid.NewGuid();
-            relationship.BranchID = Guid.NewGuid();
-            relationship.VersionID = Guid.NewGuid();
-            relationship.Versioned = DateTime.UtcNow.Ticks;
-            relationship.Branched = relationship.Versioned;
-            relationship.Superceded = -1;
 
             // Add to Transaction
             Transaction.LockItem(relationship, LockActions.Create);
@@ -81,6 +69,23 @@ namespace plmOS.Model
             this.Store.AddItemToCache(relationship);
 
             return relationship;
+        }
+
+        public Queries.Item Create(ItemType ItemType)
+        {
+            return new Queries.Item(this, ItemType);
+        }
+
+        public Queries.Relationship Create(Item Parent, RelationshipType RelationshipType)
+        {
+            if (Parent.ItemType.RelationshipTypes.Contains(RelationshipType))
+            {
+                return new Queries.Relationship(this, Parent, RelationshipType);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid RelationshipType");
+            }
         }
 
         public override string ToString()

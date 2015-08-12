@@ -28,20 +28,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Database
+namespace plmOS.Model.Queries
 {
-    public interface ISession
+    public class Item : Query
     {
-        void Create(Model.ItemType ItemType);
+        private List<Model.Item> _items;
 
-        void Create(Model.RelationshipType RelationshipType);
+        public IEnumerable<Model.Item> Items
+        {
+            get
+            {
+                return this._items;
+            }
+        }
 
-        void Create(IItem Item, ITransaction Transaction);
+        public override void Execute()
+        {
+            this._items.Clear();
 
-        void Supercede(IItem Item, System.Int64 Time, ITransaction Transaction);
+            foreach(Database.IItem databaseitem in this.Session.Store.Database.Get(this))
+            {
+                this._items.Add(this.Session.Store.Create(databaseitem));
+            }
+        }
 
-        IEnumerable<IItem> Get(Model.Queries.Item Query);
-
-        ITransaction BeginTransaction();
+        internal Item(Session Session, ItemType ItemType)
+            :base(Session, ItemType)
+        {
+            this._items = new List<Model.Item>();
+        }
     }
 }

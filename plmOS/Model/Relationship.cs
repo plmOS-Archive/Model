@@ -70,5 +70,12 @@ namespace plmOS.Model
             ((Model.Properties.Item)this.Parent).SetObject(Parent);
             ((Model.Properties.Item)this.Child).SetObject(Child);
         }
+
+        public Relationship(Database.IRelationship DatabaseRelationship)
+            :base(DatabaseRelationship)
+        {
+            this.InitialiseProperty("Parent", DatabaseRelationship);
+            this.InitialiseProperty("Child", DatabaseRelationship);
+        }
     }
 }

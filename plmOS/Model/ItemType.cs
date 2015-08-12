@@ -76,6 +76,15 @@ namespace plmOS.Model
             }
         }
 
+        private ItemType _rootItemType;
+        public ItemType RootItemType
+        {
+            get
+            {
+                return this._rootItemType;
+            }
+        }
+
         private ItemType _baseItemType;
         public ItemType BaseItemType
         {
@@ -185,10 +194,12 @@ namespace plmOS.Model
                 if (this.Type.Equals(typeof(Item)))
                 {
                     this._baseItemType = null;
+                    this._rootItemType = this;
                 }
                 else
                 {
                     this._baseItemType = this.Store.AllItemType(this.Type.BaseType.FullName);
+                    this._rootItemType = this._baseItemType.RootItemType;
                 }
 
                 // Enssure created in Database

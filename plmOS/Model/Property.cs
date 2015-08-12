@@ -130,7 +130,7 @@ namespace plmOS.Model
             }
         }
 
-        public Property (Item Item, PropertyType PropertyType)
+        internal Property (Item Item, PropertyType PropertyType)
         {
             this.Item = Item;
             this.PropertyType = PropertyType;

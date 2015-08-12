@@ -70,7 +70,7 @@ namespace plmOS.Model.Properties
             }
         }
 
-        public Double(Model.Item Item, PropertyTypes.Double PropertyType)
+        internal Double(Model.Item Item, PropertyTypes.Double PropertyType)
             : base(Item, PropertyType)
         {
 

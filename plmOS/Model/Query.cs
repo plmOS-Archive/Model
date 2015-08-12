@@ -28,20 +28,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Database
+namespace plmOS.Model
 {
-    public interface ISession
+    public abstract class Query
     {
-        void Create(Model.ItemType ItemType);
+        public Session Session { get; private set; }
 
-        void Create(Model.RelationshipType RelationshipType);
+        public ItemType ItemType { get; private set; }
 
-        void Create(IItem Item, ITransaction Transaction);
+        public Condition Condition { get; set; }
 
-        void Supercede(IItem Item, System.Int64 Time, ITransaction Transaction);
+        public abstract void Execute();
 
-        IEnumerable<IItem> Get(Model.Queries.Item Query);
-
-        ITransaction BeginTransaction();
+        internal Query(Session Session, ItemType ItemType)
+        {
+            this.Session = Session;
+            this.ItemType = ItemType;
+        }
     }
 }
