@@ -114,58 +114,7 @@ namespace plmOS.Model
             }
         }
 
-        private Dictionary<String, PropertyType> _propertyTypeCache;
-        private Dictionary<String, PropertyType> PropertyTypeCache
-        {
-            get
-            {
-                if (this._propertyTypeCache == null)
-                {
-                    this._propertyTypeCache = new Dictionary<String, PropertyType>();
-
-                    if (this.BaseItemType != null)
-                    {
-                        foreach(PropertyType proptype in this.BaseItemType.PropertyTypes)
-                        {
-                            this._propertyTypeCache[proptype.Name] = proptype;
-                        }
-                    }
-
-                    foreach (System.Reflection.PropertyInfo propinfo in this.Type.GetProperties())
-                    {
-                        if (propinfo.DeclaringType.Equals(this.Type))
-                        {
-                            foreach(object custatt in propinfo.GetCustomAttributes(true))
-                            {
-                                if (custatt.GetType().BaseType.Equals(typeof(Model.PropertyAttribute)))
-                                {
-                                    switch (custatt.GetType().Name)
-                                    {
-               
-                                        case "DoublePropertyAttribute":
-                                            this._propertyTypeCache[propinfo.Name] = new PropertyTypes.Double(this, propinfo, (PropertyAttributes.DoublePropertyAttribute)custatt);
-                                            break;
-
-                                        case "ItemPropertyAttribute":
-                                            this._propertyTypeCache[propinfo.Name] = new PropertyTypes.Item(this, propinfo, (PropertyAttributes.ItemPropertyAttribute)custatt);
-                                            break;
-
-                                        case "StringPropertyAttribute":
-                                            this._propertyTypeCache[propinfo.Name] = new PropertyTypes.String(this, propinfo, (PropertyAttributes.StringPropertyAttribute)custatt);
-                                            break;
-
-                                        default:
-                                            throw new NotImplementedException("Property Attribute Type not implemented: " + custatt.GetType().Name);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                return this._propertyTypeCache;
-            }
-        }
+        private Dictionary<String, PropertyType> PropertyTypeCache;
 
         public IEnumerable<PropertyType> PropertyTypes
         {
@@ -202,8 +151,56 @@ namespace plmOS.Model
                     this._rootItemType = this._baseItemType.RootItemType;
                 }
 
-                // Enssure created in Database
-                this.Create();
+                // Load PropertyTypes
+                this.PropertyTypeCache = new Dictionary<String, PropertyType>();
+
+                this.PropertyTypeCache = new Dictionary<String, PropertyType>();
+
+                if (this.BaseItemType != null)
+                {
+                    foreach (PropertyType proptype in this.BaseItemType.PropertyTypes)
+                    {
+                        switch (proptype.Type)
+                        {
+                            case PropertyTypeValues.Double:
+                                this.PropertyTypeCache[proptype.Name] = new PropertyTypes.Double(this, proptype.PropertyInfo, (PropertyAttributes.DoublePropertyAttribute)proptype.AttributeInfo, (PropertyTypes.Double)proptype);
+                                break;
+                            case PropertyTypeValues.Item:
+                                this.PropertyTypeCache[proptype.Name] = new PropertyTypes.Item(this, proptype.PropertyInfo, (PropertyAttributes.ItemPropertyAttribute)proptype.AttributeInfo, (PropertyTypes.Item)proptype);
+                                break;
+                            case PropertyTypeValues.String:
+                                this.PropertyTypeCache[proptype.Name] = new PropertyTypes.String(this, proptype.PropertyInfo, (PropertyAttributes.StringPropertyAttribute)proptype.AttributeInfo, (PropertyTypes.String)proptype);
+                                break;
+                        }
+                    }
+                }
+
+                foreach (System.Reflection.PropertyInfo propinfo in this.Type.GetProperties())
+                {
+                    if (propinfo.DeclaringType.Equals(this.Type))
+                    {
+                        foreach (object custatt in propinfo.GetCustomAttributes(true))
+                        {
+                            if (custatt.GetType().BaseType.Equals(typeof(Model.PropertyAttribute)))
+                            {
+                                switch (custatt.GetType().Name)
+                                {
+                                    case "DoublePropertyAttribute":
+                                        this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.Double(this, propinfo, (PropertyAttributes.DoublePropertyAttribute)custatt, null);
+                                        break;
+                                    case "ItemPropertyAttribute":
+                                        this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.Item(this, propinfo, (PropertyAttributes.ItemPropertyAttribute)custatt, null);
+                                        break;
+                                    case "StringPropertyAttribute":
+                                        this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.String(this, propinfo, (PropertyAttributes.StringPropertyAttribute)custatt, null);
+                                        break;
+                                    default:
+                                        throw new NotImplementedException("Property Attribute Type not implemented: " + custatt.GetType().Name);
+                                }
+                            }
+                        }
+                    }
+                }
 
                 this.Loaded = true;
             }

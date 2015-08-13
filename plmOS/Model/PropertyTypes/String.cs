@@ -48,8 +48,8 @@ namespace plmOS.Model.PropertyTypes
             }
         }
 
-        internal String(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.StringPropertyAttribute AttributeInfo)
-            :base(ItemType, PropertyInfo, AttributeInfo)
+        internal String(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.StringPropertyAttribute AttributeInfo, PropertyTypes.String BasePropertyType)
+            :base(ItemType, PropertyInfo, AttributeInfo, BasePropertyType)
         {
 
         }

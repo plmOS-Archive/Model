@@ -42,6 +42,8 @@ namespace plmOS.Database
 
         IEnumerable<IItem> Get(Model.Queries.Item Query);
 
+        IEnumerable<IRelationship> Get(Model.Queries.Relationship Query);
+
         ITransaction BeginTransaction();
     }
 }

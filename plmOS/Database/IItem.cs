@@ -47,5 +47,7 @@ namespace plmOS.Database
         Int64 Superceded { get; }
 
         IEnumerable<IProperty> Properties { get; }
+
+        IProperty Property(Model.PropertyType PropertyType);
     }
 }

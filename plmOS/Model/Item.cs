@@ -58,6 +58,19 @@ namespace plmOS.Model
             }
         }
 
+        public Database.IProperty Property(PropertyType PropertyType)
+        {
+            foreach(PropertyType proptype in this.PropertiesCache.Keys)
+            {
+                if (proptype.Name.Equals(PropertyType.Name))
+                {
+                    return this.PropertiesCache[proptype];
+                }
+            }
+
+            throw new ArgumentException("Invalud PropertyType");
+        }
+
         public String PropertyStringValue(String Name)
         {
             return ((Properties.String)this.ItemType.PropertyType(Name).PropertyInfo.GetValue(this)).Value;

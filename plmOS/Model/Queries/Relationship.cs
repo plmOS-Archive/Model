@@ -46,7 +46,12 @@ namespace plmOS.Model.Queries
 
         public override void Execute()
         {
+            this._relationships.Clear();
 
+            foreach (Database.IRelationship databaserelationship in this.Session.Store.Database.Get(this))
+            {
+                this._relationships.Add(this.Session.Store.Create(databaserelationship));
+            }
         }
 
         internal Relationship(Session Session, Model.Item Parent, RelationshipType RelationshipType)

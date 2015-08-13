@@ -95,14 +95,25 @@ namespace plmOS.Model.Debug
 
                 foreach(Item item in query.Items)
                 {
-                    String test = ((Design.Part)item).Number.Value;
-                }
+                    Design.Part part = (Design.Part)item;
+                    Console.WriteLine(part.Number.Value + "/" + part.Revision.Value);
 
+                    Queries.Relationship bomquery = session.Create(item, bomlinetype);
+                    bomquery.Execute();
+
+                    foreach(Relationship rel in bomquery.Relationships)
+                    {
+                        Design.BOMLine bomline = (Design.BOMLine)rel;
+                        Design.Part child = (Design.Part)bomline.Child.Value;
+                        Console.WriteLine("  - " + child.Number.Value + "/" + child.Revision.Value + " " + bomline.Quantity.Value.ToString());
+                    }
+                }
             }
         }
 
         public void Execute()
         {
+            //this.CreateBOM();
             this.GetBOM();
         }
 

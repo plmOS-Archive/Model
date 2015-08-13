@@ -167,6 +167,22 @@ namespace plmOS.Model
             return ret;
         }
 
+        internal Relationship Create(Database.IRelationship DatabaseRelationship)
+        {
+            Relationship ret = (Relationship)this.GetItemFromCache(DatabaseRelationship.VersionID);
+
+            if (ret != null)
+            {
+                ret.Superceded = DatabaseRelationship.Superceded;
+            }
+            else
+            {
+                ret = (Relationship)Activator.CreateInstance(DatabaseRelationship.RelationshipType.Type, new object[] { DatabaseRelationship });
+            }
+
+            return ret;
+        }
+
         public void Dispose()
         {
 

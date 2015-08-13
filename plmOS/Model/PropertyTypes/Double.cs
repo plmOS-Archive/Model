@@ -40,8 +40,8 @@ namespace plmOS.Model.PropertyTypes
             }
         }
 
-        internal Double(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.DoublePropertyAttribute AttributeInfo)
-            :base(ItemType, PropertyInfo, AttributeInfo)
+        internal Double(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.DoublePropertyAttribute AttributeInfo, PropertyTypes.Double BasePropertyType)
+            :base(ItemType, PropertyInfo, AttributeInfo, BasePropertyType)
         {
 
         }

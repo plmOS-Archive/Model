@@ -34,6 +34,21 @@ namespace plmOS.Model
     {
         public ItemType ItemType { get; private set; }
 
+        public ItemType DefinitionItemType
+        {
+            get
+            {
+                if (this.BasePropertyType == null)
+                {
+                    return this.ItemType;
+                }
+                else
+                {
+                    return this.BasePropertyType.DefinitionItemType;
+                }
+            }
+        }
+
         public String Name
         {
             get
@@ -60,6 +75,23 @@ namespace plmOS.Model
             }
         }
 
+        public Boolean IsInherited
+        {
+            get
+            {
+                if (this.BasePropertyType != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public PropertyType BasePropertyType { get; private set; }
+
         internal System.Reflection.PropertyInfo PropertyInfo { get; private set; }
 
         internal PropertyAttribute AttributeInfo { get; private set; }
@@ -69,11 +101,12 @@ namespace plmOS.Model
             return this.Name;
         }
 
-        internal PropertyType(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttribute AttributeInfo)
+        internal PropertyType(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttribute AttributeInfo, PropertyType BasePropertyType)
         {
             this.ItemType = ItemType;
             this.PropertyInfo = PropertyInfo;
             this.AttributeInfo = AttributeInfo;
+            this.BasePropertyType = BasePropertyType;
         }
     }
 }

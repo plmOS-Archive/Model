@@ -32,6 +32,25 @@ namespace plmOS.Model.PropertyTypes
 {
     public class Item : PropertyType
     {
+        public ItemType PropertyItemType
+        {
+            get
+            {
+                if (this.Name.Equals("Parent"))
+                {
+                    return ((RelationshipType)this.ItemType).ParentItemType;
+                }
+                else if (this.Name.Equals("Child"))
+                {
+                    return ((RelationshipType)this.ItemType).ChildItemType;
+                }
+                else
+                {
+                    throw new NotImplementedException("Implement Item Property Type");
+                }
+            }
+        }
+
         public override PropertyTypeValues Type
         {
             get
@@ -40,8 +59,8 @@ namespace plmOS.Model.PropertyTypes
             }
         }
 
-        internal Item(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.ItemPropertyAttribute AttributeInfo)
-            :base(ItemType, PropertyInfo, AttributeInfo)
+        internal Item(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.ItemPropertyAttribute AttributeInfo, PropertyTypes.Item BasePropertyType)
+            :base(ItemType, PropertyInfo, AttributeInfo, BasePropertyType)
         {
 
         }
