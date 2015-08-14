@@ -177,24 +177,25 @@ namespace plmOS.Model
             Transaction.LockItem(this, LockActions.Supercede);
         }
 
-        protected void InitialiseProperty(String Name)
+        protected void Initialise()
         {
-            PropertyType proptype = this.ItemType.PropertyType(Name);
-
-            switch(proptype.Type)
+            foreach (PropertyType proptype in this.ItemType.PropertyTypes)
             {
-                case PropertyTypeValues.Double:
-                    this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
-                    break;
-                case PropertyTypeValues.Item:
-                    this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
-                    break;
-                case PropertyTypeValues.String:
-                    this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
-                    break;
-            }
+                switch (proptype.Type)
+                {
+                    case PropertyTypeValues.Double:
+                        this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
+                        break;
+                    case PropertyTypeValues.Item:
+                        this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
+                        break;
+                    case PropertyTypeValues.String:
+                        this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
+                        break;
+                }
 
-            proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
+                proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
+            }
         }
 
         private static Database.IProperty DatabaseProperty(Database.IItem DatabaseItem, PropertyType PropertyType)
@@ -210,34 +211,35 @@ namespace plmOS.Model
             return null;
         }
 
-        protected void InitialiseProperty(String Name, Database.IItem DatabaseItem)
+        protected void Initialise(Database.IItem DatabaseItem)
         {
-            PropertyType proptype = this.ItemType.PropertyType(Name);
-            Database.IProperty databaseprop = DatabaseProperty(DatabaseItem, proptype);
-
-            switch (proptype.Type)
+            foreach (PropertyType proptype in this.ItemType.PropertyTypes)
             {
-                case PropertyTypeValues.Double:
-                    this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
-                    this.PropertiesCache[proptype].SetObject(databaseprop.Object);
-                    break;
-                case PropertyTypeValues.Item:
-                    this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
+                Database.IProperty databaseprop = DatabaseProperty(DatabaseItem, proptype);
 
-                    if (databaseprop.Object != null)
-                    {
-                        this.PropertiesCache[proptype].SetObject(this.Session.Create((Database.IItem)databaseprop.Object));
-                    }
+                switch (proptype.Type)
+                {
+                    case PropertyTypeValues.Double:
+                        this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
+                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                        break;
+                    case PropertyTypeValues.Item:
+                        this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
 
-                    break;
-                case PropertyTypeValues.String:
-                    this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
-                    this.PropertiesCache[proptype].SetObject(databaseprop.Object);
-                    break;
+                        if (databaseprop.Object != null)
+                        {
+                            this.PropertiesCache[proptype].SetObject(this.Session.Create((Database.IItem)databaseprop.Object));
+                        }
+
+                        break;
+                    case PropertyTypeValues.String:
+                        this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
+                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                        break;
+                }
+
+                proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
             }
-
-            
-            proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
         }
 
         public Item(Session Session, ItemType ItemType)
