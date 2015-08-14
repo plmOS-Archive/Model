@@ -27,28 +27,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace plmOS.Database
 {
-    public interface ISession
+    internal class File : Item, IFile
     {
-        void Create(Model.ItemType ItemType);
 
-        void Create(Model.RelationshipType RelationshipType);
+        internal File(Model.File File)
+            :base(File)
+        {
 
-        void Create(IItem Item, ITransaction Transaction);
-
-        void Supercede(IItem Item, ITransaction Transaction);
-
-        IEnumerable<IItem> Get(Model.Queries.Item Query);
-
-        IEnumerable<IRelationship> Get(Model.Queries.Relationship Query);
-
-        FileStream ReadFromVault(IFile File);
-
-        FileStream WriteToVault(IFile File);
-
-        ITransaction BeginTransaction();
+        }
     }
 }

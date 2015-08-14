@@ -32,5 +32,14 @@ namespace plmOS.Model.Debug.Properties {
                 return ((string)(this["ConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\temp\\plmOSVault")]
+        public string VaultDirectory {
+            get {
+                return ((string)(this["VaultDirectory"]));
+            }
+        }
     }
 }

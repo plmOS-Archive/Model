@@ -56,6 +56,28 @@ namespace plmOS.Model
 
         public Lock Lock { get; internal set; }
 
+        public Boolean LockedForCreate
+        {
+            get
+            {
+                if (this.Lock != null)
+                {
+                    if (this.Lock.Action == LockActions.Create)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         public Boolean IsRelationship
         {
             get

@@ -37,16 +37,12 @@ namespace plmOS.Model.Debug
         private Model.Session Login()
         {
             Auth.Windows.Manager auth = new Auth.Windows.Manager();
-            Database.SQLServer.Session database = new Database.SQLServer.Session(Properties.Settings.Default.ConnectionString);
-
+            Database.SQLServer.Session database = new Database.SQLServer.Session(Properties.Settings.Default.ConnectionString, new DirectoryInfo(Properties.Settings.Default.VaultDirectory));
+    
             using (Model.Store store = new Model.Store(auth, database))
             {
                 store.LoadAssembly(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\plmOS.Design.dll");
-
-
-
                 Auth.Windows.Credentials credentials = new Auth.Windows.Credentials();
-
                 return store.Login(credentials);
             }
         }
@@ -160,12 +156,61 @@ namespace plmOS.Model.Debug
             }
         }
 
+        private void CreateFile()
+        {
+            FileInfo tempfilename = new FileInfo(Path.GetTempPath() + "\\test.txt");
+
+            using (StreamWriter tempfile = new StreamWriter(tempfilename.FullName))
+            {
+                tempfile.WriteLine("Testing");
+            }
+
+            using (Model.Session session = this.Login())
+            {
+                ItemType filetype = session.Store.ItemType("plmOS.Model.File");
+
+                using (Transaction transaction = session.BeginTransaction())
+                {
+                    Model.File file = (Model.File)session.Create(filetype, transaction);
+                    file.Write(tempfilename);
+                    transaction.Commit();
+                }
+
+            }
+
+
+            tempfilename.Delete();
+        }
+
+        private void ReadFile()
+        {
+            FileInfo tempfilename = new FileInfo("c:\\temp\\test-read.txt");
+
+            using (Model.Session session = this.Login())
+            {
+                ItemType filetype = session.Store.ItemType("plmOS.Model.File");
+
+
+                Queries.Item query = session.Create(filetype);
+                query.Condition = new Conditions.Property(filetype.PropertyType("Name"), Conditions.Operators.eq, "test.txt");
+                query.Execute();
+
+                foreach (Item item in query.Items)
+                {
+                    File file = (File)item;
+                    file.Read(tempfilename);
+                }
+            }
+        }
+
         public void Execute()
         {
-            this.CreateBOM();
+            //this.CreateBOM();
             //this.BranchPart();
             //this.VersionPart();
-            this.GetBOM();
+            //this.GetBOM();
+            //this.CreateFile();
+            this.ReadFile();
         }
 
         public Session()

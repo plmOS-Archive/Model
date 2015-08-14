@@ -79,6 +79,23 @@ namespace plmOS.Model
             return ret;
         }
 
+        internal File Create(Database.IFile DatabaseFile)
+        {
+            File ret = (File)this.GetItemFromCache(DatabaseFile.VersionID);
+
+            if (ret != null)
+            {
+                ret.Superceded = DatabaseFile.Superceded;
+            }
+            else
+            {
+                ret = (File)Activator.CreateInstance(DatabaseFile.ItemType.Type, new object[] { this, DatabaseFile });
+                this.AddItemToCache(ret);
+            }
+
+            return ret;
+        }
+
         internal Relationship Create(Database.IRelationship DatabaseRelationship)
         {
             Relationship ret = (Relationship)this.GetItemFromCache(DatabaseRelationship.VersionID);

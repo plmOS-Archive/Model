@@ -48,7 +48,14 @@ namespace plmOS.Model.Queries
 
             foreach(Database.IItem databaseitem in this.Session.Store.Database.Get(this))
             {
-                this._items.Add(this.Session.Create(databaseitem));
+                if (databaseitem is Database.IFile)
+                {
+                    this._items.Add(this.Session.Create((Database.IFile)databaseitem));
+                }
+                else
+                {
+                    this._items.Add(this.Session.Create(databaseitem));
+                }
             }
         }
 

@@ -147,6 +147,7 @@ namespace plmOS.Model
             
             // Load Base ItemTypes
             this.AddItemTypeToCache(typeof(Item));
+            this.AddItemTypeToCache(typeof(File));
             this.AddRelationshipTypeToCache(typeof(Relationship));
             this.LoadItemTypes();
         }
