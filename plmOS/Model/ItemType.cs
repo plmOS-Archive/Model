@@ -52,6 +52,14 @@ namespace plmOS.Model
             }
         }
 
+        public virtual Boolean IsRelationshipType
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public bool Equals(ItemType other)
         {
             if (other == null)

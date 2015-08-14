@@ -27,60 +27,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
 
-namespace plmOS.Model
+namespace plmOS.Database
 {
-    public class RelationshipType : ItemType
+    internal class Property : IProperty
     {
-        public override bool IsRelationshipType
+        internal Model.Property ModelProperty { get; private set; }
+
+        public Model.PropertyType PropertyType
         {
             get
             {
-                return true;
+                return this.ModelProperty.PropertyType;
             }
         }
 
-        private ItemType _parentItemType;
-        public ItemType ParentItemType
+        public Object Object
         {
             get
             {
-                return this._parentItemType;
-            }
-        }
-
-        internal override void Load()
-        {
-            if (!this.Loaded)
-            {
-                ConstructorInfo[] constructors = this.Type.GetConstructors();
-
-                for(int i=0; i<constructors.Length; i++)
+                switch(this.PropertyType.Type)
                 {
-                    ParameterInfo[] parameters = constructors[i].GetParameters();
+                    case Model.PropertyTypeValues.Double:
+                    case Model.PropertyTypeValues.String:
+                        return this.ModelProperty.Object;
+                    case Model.PropertyTypeValues.Item:
 
-                    if (parameters.Length == 3)
-                    {
-                        this._parentItemType = this.Store.AllItemType(parameters[2].ParameterType.FullName);
-                        this._parentItemType.AddRelationshipType(this);
-                        break;
-                    }
+                        if (((Model.Properties.Item)this.ModelProperty).Value == null)
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            return ((Model.Properties.Item)this.ModelProperty).Value.BranchID;
+                        }
+                    default:
+                        throw new NotImplementedException("PropertyType not implemented: " + this.PropertyType.Type);
                 }
-
-                base.Load();
             }
         }
 
-        internal override void Create()
+        internal Property (Model.Property ModelProperty)
         {
-            this.Store.Database.Create(this);
-        }
-
-        internal RelationshipType(Store Server, Type Type)
-            :base(Server, Type)
-        {
-
+            this.ModelProperty = ModelProperty;
         }
     }
 }

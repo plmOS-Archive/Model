@@ -34,8 +34,6 @@ namespace plmOS.Database
     {
         Model.RelationshipType RelationshipType { get; }
 
-        Properties.IItem Parent { get; }
-
-        Properties.IItem Child { get; }
+        Guid ParentBranchID { get; }
     }
 }

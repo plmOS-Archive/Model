@@ -48,10 +48,13 @@
     <Compile Include="Database\IItem.cs" />
     <Compile Include="Database\IProperty.cs" />
     <Compile Include="Database\ISession.cs" />
+    <Compile Include="Database\Item.cs" />
     <Compile Include="Database\ITransactioncs.cs" />
     <Compile Include="Database\Properties\IDouble.cs" />
     <Compile Include="Database\Properties\IString.cs" />
     <Compile Include="Database\Properties\IItem.cs" />
+    <Compile Include="Database\Property.cs" />
+    <Compile Include="Database\Relationship.cs" />
     <Compile Include="Model\Condition.cs" />
     <Compile Include="Model\Conditions\Or.cs" />
     <Compile Include="Model\Conditions\And.cs" />
@@ -64,8 +67,6 @@
     <Compile Include="Model\Queries\Relationship.cs" />
     <Compile Include="Model\Queries\Item.cs" />
     <Compile Include="Model\Query.cs" />
-    <Compile Include="Model\RelationshipAttribute.cs" />
-    <Compile Include="Model\ItemAttribute.cs" />
     <Compile Include="Model\Lock.cs" />
     <Compile Include="Model\PropertyAttribute.cs" />
     <Compile Include="Model\PropertyAttributes\DoublePropertyAttribute.cs" />

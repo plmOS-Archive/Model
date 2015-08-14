@@ -36,18 +36,7 @@ namespace plmOS.Model.PropertyTypes
         {
             get
             {
-                if (this.Name.Equals("Parent"))
-                {
-                    return ((RelationshipType)this.ItemType).ParentItemType;
-                }
-                else if (this.Name.Equals("Child"))
-                {
-                    return ((RelationshipType)this.ItemType).ChildItemType;
-                }
-                else
-                {
-                    throw new NotImplementedException("Implement Item Property Type");
-                }
+                return this.ItemType.Store.AllItemType(((Model.PropertyAttributes.ItemPropertyAttribute)this.AttributeInfo).Type.FullName);
             }
         }
 

@@ -46,14 +46,33 @@ namespace plmOS.Model
             {
                 foreach(Lock thislock in this.LockCache)
                 {
-                    switch(thislock.Action)
+                    if (thislock.Item.IsRelationship)
                     {
-                        case LockActions.Create:
-                            this.Session.Store.Database.Create(thislock.Item, databasetransaction);
-                            break;
-                        case LockActions.Supercede:
-                            this.Session.Store.Database.Supercede(thislock.Item, transactiontime, databasetransaction);
-                            break;
+                        Database.Relationship databaserelationship = new Database.Relationship((Relationship)thislock.Item);
+
+                        switch (thislock.Action)
+                        {
+                            case LockActions.Create:
+                                this.Session.Store.Database.Create(databaserelationship, databasetransaction);
+                                break;
+                            case LockActions.Supercede:
+                                this.Session.Store.Database.Supercede(databaserelationship, transactiontime, databasetransaction);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Database.Item databaseitem = new Database.Item(thislock.Item);
+
+                        switch (thislock.Action)
+                        {
+                            case LockActions.Create:
+                                this.Session.Store.Database.Create(databaseitem, databasetransaction);
+                                break;
+                            case LockActions.Supercede:
+                                this.Session.Store.Database.Supercede(databaseitem, transactiontime, databasetransaction);
+                                break;
+                        }
                     }
                 }
 

@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    public abstract class Item : Database.IItem
+    public abstract class Item
     {
         public Session Session { get; private set; }
 
@@ -50,9 +50,17 @@ namespace plmOS.Model
 
         public Lock Lock { get; internal set; }
 
+        public Boolean IsRelationship
+        {
+            get
+            {
+                return this.ItemType.IsRelationshipType;
+            }
+        }
+
         private Dictionary<PropertyType, Property> PropertiesCache;
 
-        public IEnumerable<Database.IProperty> Properties
+        public IEnumerable<Property> Properties
         {
             get
             {
@@ -60,7 +68,7 @@ namespace plmOS.Model
             }
         }
 
-        public Database.IProperty Property(PropertyType PropertyType)
+        public Property Property(PropertyType PropertyType)
         {
             foreach(PropertyType proptype in this.PropertiesCache.Keys)
             {
@@ -70,7 +78,7 @@ namespace plmOS.Model
                 }
             }
 
-            throw new ArgumentException("Invalud PropertyType");
+            throw new ArgumentException("Invalid PropertyType");
         }
 
         public String PropertyStringValue(String Name)

@@ -108,10 +108,10 @@ namespace plmOS.Model
             return item;
         }
 
-        public Relationship Create(RelationshipType RelationshipType, Item Parent, Item Child, Transaction Transaction)
+        public Relationship Create(RelationshipType RelationshipType, Item Parent, Transaction Transaction)
         {
             // Create Relationship
-            Relationship relationship = (Relationship)Activator.CreateInstance(RelationshipType.Type, new object[] { this, RelationshipType, Parent, Child });
+            Relationship relationship = (Relationship)Activator.CreateInstance(RelationshipType.Type, new object[] { this, RelationshipType, Parent });
 
             // Add to Transaction
             Transaction.LockItem(relationship, LockActions.Create);

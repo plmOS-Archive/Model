@@ -28,19 +28,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Model
+namespace plmOS.Database
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class RelationshipAttribute : ItemAttribute
+    internal class Relationship : Item, IRelationship
     {
-        public Type ParentType { get; private set; }
-
-        public Type ChildType { get; set; }
-
-        public RelationshipAttribute(Type ParentType)
-            :base()
+        public Model.RelationshipType RelationshipType
         {
-            this.ParentType = ParentType;
+            get
+            {
+                return (Model.RelationshipType)this.ItemType;
+            }
+        }
+
+        public Guid ParentBranchID 
+        { 
+            get
+            {
+                return ((Model.Relationship)this.ModelItem).Parent.BranchID;
+            }
+        }
+
+        internal Relationship(Model.Relationship ModelRelationship)
+            :base(ModelRelationship)
+        {
+
         }
     }
 }

@@ -74,7 +74,8 @@ namespace plmOS.Model.Debug
                     part2.Revision.Value = "01";
                     part2.Name.Value = "Test Part";
 
-                    bomline = (Design.BOMLine)session.Create(bomlinetype, part1, part2, transaction);
+                    bomline = (Design.BOMLine)session.Create(bomlinetype, part1, transaction);
+                    bomline.Child.Value = part2;
                     bomline.Quantity.Value = 3.0;
 
                     transaction.Commit();

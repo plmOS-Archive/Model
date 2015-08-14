@@ -30,8 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    [RelationshipAttribute(typeof(Item))]
-    public abstract class Relationship : Item, Database.IRelationship
+    public abstract class Relationship : Item
     {
         public RelationshipType RelationshipType
         {
@@ -41,41 +40,18 @@ namespace plmOS.Model
             }
         }
 
-        [PropertyAttributes.ItemProperty(true, true)]
-        public Database.Properties.IItem Parent { get; private set; }
+        public Item Parent { get; internal set; }
 
-        [PropertyAttributes.ItemProperty(false, false)]
-        public Database.Properties.IItem Child { get; private set; }
-
-        public Relationship(Session Session, RelationshipType RelationshipType, Item Parent, Item Child)
+        public Relationship(Session Session, RelationshipType RelationshipType, Item Parent)
             : base(Session, RelationshipType)
         {
-            // Check Parent is correct ItemType
-            if (!this.RelationshipType.ParentItemType.IsSubclassOf(Parent.ItemType) && !this.RelationshipType.ParentItemType.Equals(Parent.ItemType))
-            {
-                throw new ArgumentException("Parent must be of type: " + this.RelationshipType.ParentItemType.Name);
-            }
-
-            // Check Child is correct ItemType
-            if(Child != null && this.RelationshipType.ChildItemType != null)
-            {
-                if (!this.RelationshipType.ChildItemType.IsSubclassOf(Child.ItemType) && !this.RelationshipType.ChildItemType.Equals(Child.ItemType))
-                {
-                    throw new ArgumentException("Child must be of type: " + this.RelationshipType.ChildItemType.Name);
-                }
-            }
-
-            this.InitialiseProperty("Parent");
-            this.InitialiseProperty("Child");
-            ((Model.Properties.Item)this.Parent).SetObject(Parent);
-            ((Model.Properties.Item)this.Child).SetObject(Child);
+            this.Parent = Parent;
         }
 
         public Relationship(Session Session, Database.IRelationship DatabaseRelationship)
             :base(Session, DatabaseRelationship)
         {
-            this.InitialiseProperty("Parent", DatabaseRelationship);
-            this.InitialiseProperty("Child", DatabaseRelationship);
+
         }
     }
 }
