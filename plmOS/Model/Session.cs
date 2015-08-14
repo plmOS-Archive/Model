@@ -97,7 +97,7 @@ namespace plmOS.Model
         public Item Create(ItemType ItemType, Transaction Transaction)
         {
             // Create Item
-            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { this, ItemType });
+            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { this });
 
             // Add to Transaction
             Transaction.LockItem(item, LockActions.Create);
@@ -111,7 +111,7 @@ namespace plmOS.Model
         public Relationship Create(RelationshipType RelationshipType, Item Parent, Transaction Transaction)
         {
             // Create Relationship
-            Relationship relationship = (Relationship)Activator.CreateInstance(RelationshipType.Type, new object[] { this, RelationshipType, Parent });
+            Relationship relationship = (Relationship)Activator.CreateInstance(RelationshipType.Type, new object[] { this, Parent });
 
             // Add to Transaction
             Transaction.LockItem(relationship, LockActions.Create);

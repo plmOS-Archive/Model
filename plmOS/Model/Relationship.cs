@@ -42,8 +42,8 @@ namespace plmOS.Model
 
         public Item Parent { get; internal set; }
 
-        public Relationship(Session Session, RelationshipType RelationshipType, Item Parent)
-            : base(Session, RelationshipType)
+        public Relationship(Session Session, Item Parent)
+            : base(Session)
         {
             this.Parent = Parent;
         }

@@ -60,9 +60,9 @@ namespace plmOS.Model
                 {
                     ParameterInfo[] parameters = constructors[i].GetParameters();
 
-                    if (parameters.Length == 3)
+                    if (parameters.Length == 2 && parameters[1].Name == "Parent")
                     {
-                        this._parentItemType = this.Store.AllItemType(parameters[2].ParameterType.FullName);
+                        this._parentItemType = this.Store.AllItemType(parameters[1].ParameterType.FullName);
                         this._parentItemType.AddRelationshipType(this);
                         break;
                     }

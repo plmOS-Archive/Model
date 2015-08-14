@@ -242,10 +242,10 @@ namespace plmOS.Model
             }
         }
 
-        public Item(Session Session, ItemType ItemType)
+        public Item(Session Session)
         {
             this.Session = Session;
-            this.ItemType = ItemType;
+            this.ItemType = this.Session.Store.AllItemType(this.GetType().FullName);
             this.ItemID = Guid.NewGuid();
             this.BranchID = Guid.NewGuid();
             this.VersionID = Guid.NewGuid();
@@ -258,14 +258,14 @@ namespace plmOS.Model
         public Item(Session Session, Database.IItem DatabaseItem)
         {
             this.Session = Session;
-            this.PropertiesCache = new Dictionary<PropertyType, Property>();
-            this.ItemType = DatabaseItem.ItemType;
+            this.ItemType = this.Session.Store.AllItemType(this.GetType().FullName);
             this.VersionID = DatabaseItem.VersionID;
             this.BranchID = DatabaseItem.BranchID;
             this.ItemID = DatabaseItem.ItemID;
             this.Branched = DatabaseItem.Branched;
             this.Versioned = DatabaseItem.Versioned;
             this.Superceded = DatabaseItem.Superceded;
+            this.PropertiesCache = new Dictionary<PropertyType, Property>();
         }
     }
 }
