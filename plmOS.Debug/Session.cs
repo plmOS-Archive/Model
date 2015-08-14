@@ -112,9 +112,34 @@ namespace plmOS.Model.Debug
             }
         }
 
+        private void BranchPart()
+        {
+            using (Model.Session session = this.Login())
+            {
+                ItemType parttype = session.Store.ItemType("plmOS.Design.Part");
+               
+                Queries.Item query = session.Create(parttype);
+                query.Condition = new Conditions.Property(parttype.PropertyType("Number"), Conditions.Operators.eq, "5678");
+                query.Execute();
+
+                foreach (Item item in query.Items)
+                {
+                    Design.Part part = (Design.Part)item;
+
+                    using (Transaction transaction = session.BeginTransaction())
+                    {
+                        Design.Part part2 = (Design.Part)part.Branch(transaction);
+                        part2.Revision.Value = "02";
+                        transaction.Commit();
+                    }
+                }
+            }
+        }
+
         public void Execute()
         {
             //this.CreateBOM();
+            //this.BranchPart();
             this.GetBOM();
         }
 

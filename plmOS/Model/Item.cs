@@ -118,7 +118,7 @@ namespace plmOS.Model
         public Item Branch(Transaction Transaction)
         {
             // Create new Branch
-            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
+            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.Session });
             newitem.ItemID = this.ItemID;
             newitem.BranchID = Guid.NewGuid();
             newitem.VersionID = Guid.NewGuid();
@@ -148,7 +148,7 @@ namespace plmOS.Model
             Transaction.LockItem(this, LockActions.Supercede);
 
             // Create new Version
-            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.ItemType });
+            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.Session });
             newitem.ItemID = this.ItemID;
             newitem.BranchID = this.BranchID;
             newitem.VersionID = Guid.NewGuid();
