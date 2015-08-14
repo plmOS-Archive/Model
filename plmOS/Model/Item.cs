@@ -34,7 +34,13 @@ namespace plmOS.Model
     {
         public Session Session { get; private set; }
 
-        public ItemType ItemType { get; private set; }
+        public ItemType ItemType
+        {
+            get
+            {
+                return this.Session.Store.AllItemType(this.GetType().FullName);
+            }
+        }
 
         public Guid ItemID { get; private set; }
 
@@ -81,22 +87,7 @@ namespace plmOS.Model
             throw new ArgumentException("Invalid PropertyType");
         }
 
-        public String PropertyStringValue(String Name)
-        {
-            return ((Properties.String)this.ItemType.PropertyType(Name).PropertyInfo.GetValue(this)).Value;
-        }
-
-        public Double? PropertyDoubleValue(String Name)
-        {
-            return ((Properties.Double)this.ItemType.PropertyType(Name).PropertyInfo.GetValue(this)).Value;
-        }
-
-        public Item PropertyItemValue(String Name)
-        {
-            return ((Properties.Item)this.ItemType.PropertyType(Name).PropertyInfo.GetValue(this)).Value;
-        }
-
-        internal void CopyProperties(Item Item)
+        private void CopyProperties(Item Item)
         {
             foreach(PropertyType proptype in this.ItemType.PropertyTypes)
             {
@@ -241,7 +232,6 @@ namespace plmOS.Model
         public Item(Session Session)
         {
             this.Session = Session;
-            this.ItemType = this.Session.Store.AllItemType(this.GetType().FullName);
             this.ItemID = Guid.NewGuid();
             this.BranchID = Guid.NewGuid();
             this.VersionID = Guid.NewGuid();
@@ -254,7 +244,6 @@ namespace plmOS.Model
         public Item(Session Session, Database.IItem DatabaseItem)
         {
             this.Session = Session;
-            this.ItemType = this.Session.Store.AllItemType(this.GetType().FullName);
             this.VersionID = DatabaseItem.VersionID;
             this.BranchID = DatabaseItem.BranchID;
             this.ItemID = DatabaseItem.ItemID;

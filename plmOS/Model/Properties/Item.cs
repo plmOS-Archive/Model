@@ -59,13 +59,27 @@ namespace plmOS.Model.Properties
             }
             else
             {
-                if (Object is Model.Item)
+                if (Object == null)
                 {
-                    base.SetObject(Object);
+                    base.SetObject(null);
                 }
                 else
                 {
-                    throw new ArgumentException("Value must be of type: plmOS.Model.Item");
+                    if (Object is Model.Item)
+                    {
+                        if (((PropertyTypes.Item)this.PropertyType).PropertyItemType.Equals(((Model.Item)Object).ItemType))
+                        {
+                            base.SetObject(Object);
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Value must be of type: plmOS.Model.Item");
+                    }
                 }
             }
         }

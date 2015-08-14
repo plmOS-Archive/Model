@@ -73,6 +73,7 @@ namespace plmOS.Model
             else
             {
                 ret = (Item)Activator.CreateInstance(DatabaseItem.ItemType.Type, new object[] { this, DatabaseItem });
+                this.AddItemToCache(ret);
             }
 
             return ret;
@@ -89,6 +90,7 @@ namespace plmOS.Model
             else
             {
                 ret = (Relationship)Activator.CreateInstance(DatabaseRelationship.RelationshipType.Type, new object[] { this, DatabaseRelationship });
+                this.AddItemToCache(ret);
             }
 
             return ret;
@@ -102,7 +104,7 @@ namespace plmOS.Model
             // Add to Transaction
             Transaction.LockItem(item, LockActions.Create);
 
-            // Add to Item Store Cache
+            // Add to Item Cache
             this.AddItemToCache(item);
 
             return item;
