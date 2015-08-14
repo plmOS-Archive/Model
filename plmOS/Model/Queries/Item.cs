@@ -48,7 +48,7 @@ namespace plmOS.Model.Queries
 
             foreach(Database.IItem databaseitem in this.Session.Store.Database.Get(this))
             {
-                this._items.Add(this.Session.Store.Create(databaseitem));
+                this._items.Add(this.Session.Create(databaseitem));
             }
         }
 

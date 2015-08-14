@@ -47,8 +47,8 @@ namespace plmOS.Model
         [PropertyAttributes.ItemProperty(false, false)]
         public Database.Properties.IItem Child { get; private set; }
 
-        public Relationship(RelationshipType RelationshipType, Item Parent, Item Child)
-            : base(RelationshipType)
+        public Relationship(Session Session, RelationshipType RelationshipType, Item Parent, Item Child)
+            : base(Session, RelationshipType)
         {
             // Check Parent is correct ItemType
             if (!this.RelationshipType.ParentItemType.IsSubclassOf(Parent.ItemType) && !this.RelationshipType.ParentItemType.Equals(Parent.ItemType))
@@ -71,8 +71,8 @@ namespace plmOS.Model
             ((Model.Properties.Item)this.Child).SetObject(Child);
         }
 
-        public Relationship(Database.IRelationship DatabaseRelationship)
-            :base(DatabaseRelationship)
+        public Relationship(Session Session, Database.IRelationship DatabaseRelationship)
+            :base(Session, DatabaseRelationship)
         {
             this.InitialiseProperty("Parent", DatabaseRelationship);
             this.InitialiseProperty("Child", DatabaseRelationship);

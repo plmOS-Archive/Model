@@ -43,16 +43,67 @@ namespace plmOS.Model
             return new Transaction(this);
         }
 
+        private Dictionary<Guid, Item> ItemCache;
+
+        internal void AddItemToCache(Item Item)
+        {
+            this.ItemCache[Item.VersionID] = Item;
+        }
+
+        internal Item GetItemFromCache(Guid VersionID)
+        {
+            if (this.ItemCache.ContainsKey(VersionID))
+            {
+                return this.ItemCache[VersionID];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        internal Item Create(Database.IItem DatabaseItem)
+        {
+            Item ret = this.GetItemFromCache(DatabaseItem.VersionID);
+
+            if (ret != null)
+            {
+                ret.Superceded = DatabaseItem.Superceded;
+            }
+            else
+            {
+                ret = (Item)Activator.CreateInstance(DatabaseItem.ItemType.Type, new object[] { this, DatabaseItem });
+            }
+
+            return ret;
+        }
+
+        internal Relationship Create(Database.IRelationship DatabaseRelationship)
+        {
+            Relationship ret = (Relationship)this.GetItemFromCache(DatabaseRelationship.VersionID);
+
+            if (ret != null)
+            {
+                ret.Superceded = DatabaseRelationship.Superceded;
+            }
+            else
+            {
+                ret = (Relationship)Activator.CreateInstance(DatabaseRelationship.RelationshipType.Type, new object[] { this, DatabaseRelationship });
+            }
+
+            return ret;
+        }
+
         public Item Create(ItemType ItemType, Transaction Transaction)
         {
             // Create Item
-            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { ItemType });
+            Item item = (Item)Activator.CreateInstance(ItemType.Type, new object[] { this, ItemType });
 
             // Add to Transaction
             Transaction.LockItem(item, LockActions.Create);
 
             // Add to Item Store Cache
-            this.Store.AddItemToCache(item);
+            this.AddItemToCache(item);
 
             return item;
         }
@@ -60,13 +111,13 @@ namespace plmOS.Model
         public Relationship Create(RelationshipType RelationshipType, Item Parent, Item Child, Transaction Transaction)
         {
             // Create Relationship
-            Relationship relationship = (Relationship)Activator.CreateInstance(RelationshipType.Type, new object[] { RelationshipType, Parent, Child });
+            Relationship relationship = (Relationship)Activator.CreateInstance(RelationshipType.Type, new object[] { this, RelationshipType, Parent, Child });
 
             // Add to Transaction
             Transaction.LockItem(relationship, LockActions.Create);
 
             // Add to Item Store Cache
-            this.Store.AddItemToCache(relationship);
+            this.AddItemToCache(relationship);
 
             return relationship;
         }
@@ -103,6 +154,7 @@ namespace plmOS.Model
             this.ID = Guid.NewGuid();
             this.Store = Store;
             this.Identity = Identity;
+            this.ItemCache = new Dictionary<Guid, Item>();
         }
     }
 }

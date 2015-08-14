@@ -32,6 +32,8 @@ namespace plmOS.Model
 {
     public abstract class Item : Database.IItem
     {
+        public Session Session { get; private set; }
+
         public ItemType ItemType { get; private set; }
 
         public Guid ItemID { get; internal set; }
@@ -127,7 +129,7 @@ namespace plmOS.Model
             Transaction.LockItem(newitem, LockActions.Create);
 
             // Add to Item Store Cache
-            this.ItemType.Store.AddItemToCache(newitem);
+            this.Session.AddItemToCache(newitem);
 
             return newitem;
         }
@@ -156,7 +158,7 @@ namespace plmOS.Model
             Transaction.LockItem(newitem, LockActions.Create);
 
             // Add to Item Store Cache
-            this.ItemType.Store.AddItemToCache(newitem);
+            this.Session.AddItemToCache(newitem);
 
             return newitem;
         }
@@ -216,7 +218,7 @@ namespace plmOS.Model
 
                     if (databaseprop.Object != null)
                     {
-                        this.PropertiesCache[proptype].SetObject(this.ItemType.Store.Create((Database.IItem)databaseprop.Object));
+                        this.PropertiesCache[proptype].SetObject(this.Session.Create((Database.IItem)databaseprop.Object));
                     }
 
                     break;
@@ -230,8 +232,9 @@ namespace plmOS.Model
             proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
         }
 
-        public Item(ItemType ItemType)
+        public Item(Session Session, ItemType ItemType)
         {
+            this.Session = Session;
             this.ItemType = ItemType;
             this.ItemID = Guid.NewGuid();
             this.BranchID = Guid.NewGuid();
@@ -242,8 +245,9 @@ namespace plmOS.Model
             this.PropertiesCache = new Dictionary<PropertyType, Property>();
         }
 
-        public Item(Database.IItem DatabaseItem)
+        public Item(Session Session, Database.IItem DatabaseItem)
         {
+            this.Session = Session;
             this.PropertiesCache = new Dictionary<PropertyType, Property>();
             this.ItemType = DatabaseItem.ItemType;
             this.VersionID = DatabaseItem.VersionID;

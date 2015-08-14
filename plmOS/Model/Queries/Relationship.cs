@@ -50,7 +50,7 @@ namespace plmOS.Model.Queries
 
             foreach (Database.IRelationship databaserelationship in this.Session.Store.Database.Get(this))
             {
-                this._relationships.Add(this.Session.Store.Create(databaserelationship));
+                this._relationships.Add(this.Session.Create(databaserelationship));
             }
         }
 

@@ -132,57 +132,6 @@ namespace plmOS.Model
             }
         }
 
-        private Dictionary<Guid, Item> ItemCache;
-
-        internal void AddItemToCache(Item Item)
-        {
-            this.ItemCache[Item.VersionID] = Item;
-        }
-
-        internal Item GetItemFromCache(Guid VersionID)
-        {
-            if (this.ItemCache.ContainsKey(VersionID))
-            {
-                return this.ItemCache[VersionID];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        internal Item Create(Database.IItem DatabaseItem)
-        {
-            Item ret = this.GetItemFromCache(DatabaseItem.VersionID);
-
-            if (ret != null)
-            {
-                ret.Superceded = DatabaseItem.Superceded;
-            }
-            else
-            {
-                ret = (Item)Activator.CreateInstance(DatabaseItem.ItemType.Type, new object[] { DatabaseItem });
-            }
-
-            return ret;
-        }
-
-        internal Relationship Create(Database.IRelationship DatabaseRelationship)
-        {
-            Relationship ret = (Relationship)this.GetItemFromCache(DatabaseRelationship.VersionID);
-
-            if (ret != null)
-            {
-                ret.Superceded = DatabaseRelationship.Superceded;
-            }
-            else
-            {
-                ret = (Relationship)Activator.CreateInstance(DatabaseRelationship.RelationshipType.Type, new object[] { DatabaseRelationship });
-            }
-
-            return ret;
-        }
-
         public void Dispose()
         {
 
@@ -195,8 +144,7 @@ namespace plmOS.Model
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
-            this.ItemCache = new Dictionary<Guid, Item>();
-
+            
             // Load Base ItemTypes
             this.AddItemTypeToCache(typeof(Item));
             this.AddRelationshipTypeToCache(typeof(Relationship));
