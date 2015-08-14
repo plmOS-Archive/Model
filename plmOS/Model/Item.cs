@@ -36,15 +36,15 @@ namespace plmOS.Model
 
         public ItemType ItemType { get; private set; }
 
-        public Guid ItemID { get; internal set; }
+        public Guid ItemID { get; private set; }
 
-        public Guid BranchID { get; internal set; }
+        public Guid BranchID { get; private set; }
 
-        public Guid VersionID { get; internal set; }
+        public Guid VersionID { get; private set; }
 
-        public Int64 Branched { get; internal set; }
+        public Int64 Branched { get; private set; }
 
-        public Int64 Versioned { get; internal set; }
+        public Int64 Versioned { get; private set; }
 
         public Int64 Superceded { get; internal set; }
 
@@ -136,7 +136,7 @@ namespace plmOS.Model
             // Add new Branch to Transaction
             Transaction.LockItem(newitem, LockActions.Create);
 
-            // Add to Item Store Cache
+            // Add to Item Cache
             this.Session.AddItemToCache(newitem);
 
             return newitem;
@@ -144,29 +144,24 @@ namespace plmOS.Model
 
         public Item Version(Transaction Transaction)
         {
-            // Add Item to Transaction
-            Transaction.LockItem(this, LockActions.Supercede);
-
             // Create new Version
             Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.Session });
             newitem.ItemID = this.ItemID;
             newitem.BranchID = this.BranchID;
             newitem.VersionID = Guid.NewGuid();
             newitem.Versioned = DateTime.UtcNow.Ticks;
-
-            if (newitem.Versioned <= this.Versioned)
-            {
-                newitem.Versioned = this.Versioned + 1;
-            }
-
             newitem.Superceded = -1;
             this.CopyProperties(newitem);
 
             // Add new version to Transaction
             Transaction.LockItem(newitem, LockActions.Create);
 
-            // Add to Item Store Cache
+            // Add to Item Cache
             this.Session.AddItemToCache(newitem);
+
+            // Supercede this Item
+            this.Superceded = newitem.Versioned - 1;
+            Transaction.LockItem(this, LockActions.Supercede);
 
             return newitem;
         }
@@ -174,6 +169,7 @@ namespace plmOS.Model
         public void Delete(Transaction Transaction)
         {
             // Add this Item to Transaction
+            this.Superceded = DateTime.UtcNow.Ticks;
             Transaction.LockItem(this, LockActions.Supercede);
         }
 

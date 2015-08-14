@@ -38,9 +38,6 @@ namespace plmOS.Model
 
         public void Commit()
         {
-            // Get Transaction Time
-            Int64 transactiontime = DateTime.UtcNow.Ticks;
-
             // Make Required Changes to Database
             using(Database.ITransaction databasetransaction = this.Session.Store.Database.BeginTransaction())
             {
@@ -56,7 +53,7 @@ namespace plmOS.Model
                                 this.Session.Store.Database.Create(databaserelationship, databasetransaction);
                                 break;
                             case LockActions.Supercede:
-                                this.Session.Store.Database.Supercede(databaserelationship, transactiontime, databasetransaction);
+                                this.Session.Store.Database.Supercede(databaserelationship, databasetransaction);
                                 break;
                         }
                     }
@@ -70,28 +67,13 @@ namespace plmOS.Model
                                 this.Session.Store.Database.Create(databaseitem, databasetransaction);
                                 break;
                             case LockActions.Supercede:
-                                this.Session.Store.Database.Supercede(databaseitem, transactiontime, databasetransaction);
+                                this.Session.Store.Database.Supercede(databaseitem, databasetransaction);
                                 break;
                         }
                     }
                 }
 
                 databasetransaction.Commit();
-            }
-
-            // Update Items
-            foreach (Lock thislock in this.LockCache)
-            {
-                switch (thislock.Action)
-                {
-                    case LockActions.Create:
-                        break;
-                    case LockActions.Supercede:
-                        thislock.Item.Superceded = transactiontime;
-                        break;
-                }
-
-                thislock.Item.Lock = null;
             }
         }
 

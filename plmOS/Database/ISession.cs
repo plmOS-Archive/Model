@@ -38,7 +38,7 @@ namespace plmOS.Database
 
         void Create(IItem Item, ITransaction Transaction);
 
-        void Supercede(IItem Item, System.Int64 Time, ITransaction Transaction);
+        void Supercede(IItem Item, ITransaction Transaction);
 
         IEnumerable<IItem> Get(Model.Queries.Item Query);
 

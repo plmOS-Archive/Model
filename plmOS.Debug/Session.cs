@@ -97,7 +97,7 @@ namespace plmOS.Model.Debug
                 foreach(Item item in query.Items)
                 {
                     Design.Part part = (Design.Part)item;
-                    Console.WriteLine(part.Number.Value + "/" + part.Revision.Value);
+                    Console.WriteLine(part.Number.Value + "/" + part.Revision.Value + " " + part.Name.Value);
 
                     Queries.Relationship bomquery = session.Create(item, bomlinetype);
                     bomquery.Execute();
@@ -106,7 +106,7 @@ namespace plmOS.Model.Debug
                     {
                         Design.BOMLine bomline = (Design.BOMLine)rel;
                         Design.Part child = (Design.Part)bomline.Child.Value;
-                        Console.WriteLine("  - " + child.Number.Value + "/" + child.Revision.Value + " " + bomline.Quantity.Value.ToString());
+                        Console.WriteLine("  - " + child.Number.Value + "/" + child.Revision.Value + " " + child.Name.Value + " " + bomline.Quantity.Value.ToString());
                     }
                 }
             }
@@ -136,10 +136,35 @@ namespace plmOS.Model.Debug
             }
         }
 
+        private void VersionPart()
+        {
+            using (Model.Session session = this.Login())
+            {
+                ItemType parttype = session.Store.ItemType("plmOS.Design.Part");
+
+                Queries.Item query = session.Create(parttype);
+                query.Condition = new Conditions.Property(parttype.PropertyType("Number"), Conditions.Operators.eq, "5678");
+                query.Execute();
+
+                foreach (Item item in query.Items)
+                {
+                    Design.Part part = (Design.Part)item;
+
+                    using (Transaction transaction = session.BeginTransaction())
+                    {
+                        Design.Part part2 = (Design.Part)part.Version(transaction);
+                        part2.Name.Value = "Revised Test Part";
+                        transaction.Commit();
+                    }
+                }
+            }
+        }
+
         public void Execute()
         {
             //this.CreateBOM();
             //this.BranchPart();
+            //this.VersionPart();
             this.GetBOM();
         }
 
