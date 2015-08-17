@@ -60,7 +60,7 @@ namespace plmOS.Model
                 {
                     ParameterInfo[] parameters = constructors[i].GetParameters();
 
-                    if (parameters.Length == 2 && parameters[1].Name == "Parent")
+                    if (parameters.Length == 2 && parameters[1].ParameterType.IsSubclassOf(typeof(Model.Item)))
                     {
                         this._parentItemType = this.Store.AllItemType(parameters[1].ParameterType.FullName);
                         this._parentItemType.AddRelationshipType(this);

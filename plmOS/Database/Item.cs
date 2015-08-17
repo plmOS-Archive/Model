@@ -101,7 +101,15 @@ namespace plmOS.Database
 
         public IProperty Property(Model.PropertyType PropertyType)
         {
-            return this._properties[PropertyType];
+            foreach(Model.PropertyType proptype in this._properties.Keys)
+            {
+                if (proptype.Name == PropertyType.Name)
+                {
+                    return this._properties[proptype];
+                }
+            }
+
+            return null;
         }
 
         internal Item(Model.Item ModelItem)
