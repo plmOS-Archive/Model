@@ -63,6 +63,10 @@
       <Project>{e8985f58-9a3d-478f-afff-4bd2a931151a}</Project>
       <Name>plmOS.Auth.Windows</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Database.SharePoint\plmOS.Database.SharePoint\plmOS.Database.SharePoint.csproj">
+      <Project>{3287a42d-07c9-4af8-9f9a-7178c00d01fc}</Project>
+      <Name>plmOS.Database.SharePoint</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Database.SQLServer\plmOS.Database.SQLServer\plmOS.Database.SQLServer.csproj">
       <Project>{599bbb9e-3217-4ded-8d2d-dbc955ef410f}</Project>
       <Name>plmOS.Database.SQLServer</Name>

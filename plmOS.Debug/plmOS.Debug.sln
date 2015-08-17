@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plmOS.Database.SQLServer", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plmOS", "..\plmOS\plmOS.csproj", "{1556CA37-8B2E-4D29-BD7C-55E342DBC611}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plmOS.Database.SharePoint", "..\..\Database.SharePoint\plmOS.Database.SharePoint\plmOS.Database.SharePoint.csproj", "{3287A42D-07C9-4AF8-9F9A-7178C00D01FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1556CA37-8B2E-4D29-BD7C-55E342DBC611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1556CA37-8B2E-4D29-BD7C-55E342DBC611}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1556CA37-8B2E-4D29-BD7C-55E342DBC611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3287A42D-07C9-4AF8-9F9A-7178C00D01FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3287A42D-07C9-4AF8-9F9A-7178C00D01FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3287A42D-07C9-4AF8-9F9A-7178C00D01FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3287A42D-07C9-4AF8-9F9A-7178C00D01FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -34,10 +34,61 @@ namespace plmOS.Model.Debug
     public class Session
     {
 
-        private Model.Session Login()
+        private Model.Session LoginSharePoint()
         {
             Auth.Windows.Manager auth = new Auth.Windows.Manager();
-            Database.SQLServer.Session database = new Database.SQLServer.Session(Properties.Settings.Default.ConnectionString, new DirectoryInfo(Properties.Settings.Default.VaultDirectory));
+
+            //Properties.Settings.Default.Reset();
+
+            if (String.IsNullOrEmpty(Properties.Settings.Default.SharePointURL))
+            {
+                Console.Write("SharePoint URL: ");
+                Properties.Settings.Default.SharePointURL = Console.ReadLine();
+                Properties.Settings.Default.Save();
+            }
+
+            if (String.IsNullOrEmpty(Properties.Settings.Default.SharePointLibrary))
+            {
+                Console.Write("SharePoint Library: ");
+                Properties.Settings.Default.SharePointLibrary = Console.ReadLine();
+                Properties.Settings.Default.Save();
+            }
+
+            if (String.IsNullOrEmpty(Properties.Settings.Default.SharePointUsername))
+            {
+                Console.Write("SharePoint Username: ");
+                Properties.Settings.Default.SharePointUsername = Console.ReadLine();
+                Properties.Settings.Default.Save();
+            }
+
+            if (String.IsNullOrEmpty(Properties.Settings.Default.SharePointPassword))
+            {
+                Console.Write("SharePoint Password: ");
+                Properties.Settings.Default.SharePointPassword = Console.ReadLine();
+                Properties.Settings.Default.Save();
+            }
+            
+            Database.SharePoint.Session database = new Database.SharePoint.Session(Properties.Settings.Default.SharePointURL, Properties.Settings.Default.SharePointLibrary, Properties.Settings.Default.SharePointUsername, Properties.Settings.Default.SharePointPassword);
+
+            using (Model.Store store = new Model.Store(auth, database))
+            {
+                store.LoadAssembly(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\plmOS.Design.dll");
+                Auth.Windows.Credentials credentials = new Auth.Windows.Credentials();
+                return store.Login(credentials);
+            }
+        }
+
+        private Model.Session LoginSQL()
+        {
+            if (String.IsNullOrEmpty(Properties.Settings.Default.SQLConnection))
+            {
+                Console.Write("SQL Connection: ");
+                Properties.Settings.Default.SQLConnection = Console.ReadLine();
+                Properties.Settings.Default.Save();
+            }
+
+            Auth.Windows.Manager auth = new Auth.Windows.Manager();
+            Database.SQLServer.Session database = new Database.SQLServer.Session(Properties.Settings.Default.SQLConnection, new DirectoryInfo(Properties.Settings.Default.SQLVault));
     
             using (Model.Store store = new Model.Store(auth, database))
             {
@@ -45,6 +96,11 @@ namespace plmOS.Model.Debug
                 Auth.Windows.Credentials credentials = new Auth.Windows.Credentials();
                 return store.Login(credentials);
             }
+        }
+
+        private Model.Session Login()
+        {
+            return this.LoginSharePoint();
         }
 
         private void CreateBOM()
@@ -205,12 +261,12 @@ namespace plmOS.Model.Debug
 
         public void Execute()
         {
-            //this.CreateBOM();
+            this.CreateBOM();
             //this.BranchPart();
             //this.VersionPart();
             //this.GetBOM();
             //this.CreateFile();
-            this.ReadFile();
+            //this.ReadFile();
         }
 
         public Session()

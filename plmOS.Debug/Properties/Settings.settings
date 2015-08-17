@@ -2,11 +2,26 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="plmOS.Model.Debug.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ConnectionString" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">user id=plmOS; password=plmOS; server=WIN-HBC9KO4SQ6E\SQL2012; Trusted_Connection=no; database=plmOSDevelopment;</Value>
+    <Setting Name="SQLConnection" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="VaultDirectory" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">c:\temp\plmOSVault</Value>
+    <Setting Name="SQLVault" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\temp\SQLVault</Value>
+    </Setting>
+    <Setting Name="SharePointURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SharePointLibrary" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SharePointUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SharePointPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SharePointCache" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\temp\SharePointCache</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -23,22 +23,87 @@ namespace plmOS.Model.Debug.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("user id=plmOS; password=plmOS; server=WIN-HBC9KO4SQ6E\\SQL2012; Trusted_Connection" +
-            "=no; database=plmOSDevelopment;")]
-        public string ConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SQLConnection {
             get {
-                return ((string)(this["ConnectionString"]));
+                return ((string)(this["SQLConnection"]));
+            }
+            set {
+                this["SQLConnection"] = value;
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\temp\\plmOSVault")]
-        public string VaultDirectory {
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\temp\\SQLVault")]
+        public string SQLVault {
             get {
-                return ((string)(this["VaultDirectory"]));
+                return ((string)(this["SQLVault"]));
+            }
+            set {
+                this["SQLVault"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointURL {
+            get {
+                return ((string)(this["SharePointURL"]));
+            }
+            set {
+                this["SharePointURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointLibrary {
+            get {
+                return ((string)(this["SharePointLibrary"]));
+            }
+            set {
+                this["SharePointLibrary"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointUsername {
+            get {
+                return ((string)(this["SharePointUsername"]));
+            }
+            set {
+                this["SharePointUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SharePointPassword {
+            get {
+                return ((string)(this["SharePointPassword"]));
+            }
+            set {
+                this["SharePointPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\temp\\SharePointCache")]
+        public string SharePointCache {
+            get {
+                return ((string)(this["SharePointCache"]));
+            }
+            set {
+                this["SharePointCache"] = value;
             }
         }
     }
