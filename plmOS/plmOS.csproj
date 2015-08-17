@@ -52,9 +52,6 @@
     <Compile Include="Database\ISession.cs" />
     <Compile Include="Database\Item.cs" />
     <Compile Include="Database\ITransactioncs.cs" />
-    <Compile Include="Database\Properties\IDouble.cs" />
-    <Compile Include="Database\Properties\IString.cs" />
-    <Compile Include="Database\Properties\IItem.cs" />
     <Compile Include="Database\Property.cs" />
     <Compile Include="Database\Relationship.cs" />
     <Compile Include="Model\Condition.cs" />
@@ -68,6 +65,9 @@
     <Compile Include="Model\Exceptions\ItemLockedException.cs" />
     <Compile Include="Model\File.cs" />
     <Compile Include="Model\Item.cs" />
+    <Compile Include="Model\Properties\DateTime.cs" />
+    <Compile Include="Model\PropertyAttributes\DateTimePropertyAttribute.cs" />
+    <Compile Include="Model\PropertyTypes\DateTime.cs" />
     <Compile Include="Model\Queries\Relationship.cs" />
     <Compile Include="Model\Queries\Item.cs" />
     <Compile Include="Model\Query.cs" />

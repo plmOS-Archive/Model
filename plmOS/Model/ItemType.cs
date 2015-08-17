@@ -179,6 +179,11 @@ namespace plmOS.Model
                             case PropertyTypeValues.String:
                                 this.PropertyTypeCache[proptype.Name] = new PropertyTypes.String(this, proptype.PropertyInfo, (PropertyAttributes.StringPropertyAttribute)proptype.AttributeInfo, (PropertyTypes.String)proptype);
                                 break;
+                            case PropertyTypeValues.DateTime:
+                                this.PropertyTypeCache[proptype.Name] = new PropertyTypes.DateTime(this, proptype.PropertyInfo, (PropertyAttributes.DateTimePropertyAttribute)proptype.AttributeInfo, (PropertyTypes.DateTime)proptype);
+                                break;
+                            default:
+                                throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                         }
                     }
                 }
@@ -201,6 +206,9 @@ namespace plmOS.Model
                                         break;
                                     case "StringPropertyAttribute":
                                         this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.String(this, propinfo, (PropertyAttributes.StringPropertyAttribute)custatt, null);
+                                        break;
+                                    case "DateTimePropertyAttribute":
+                                        this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.DateTime(this, propinfo, (PropertyAttributes.DateTimePropertyAttribute)custatt, null);
                                         break;
                                     default:
                                         throw new NotImplementedException("Property Attribute Type not implemented: " + custatt.GetType().Name);

@@ -31,7 +31,7 @@ using System.ComponentModel;
 
 namespace plmOS.Model
 {
-    public enum PropertyTypeValues { String, Double, Item };
+    public enum PropertyTypeValues { String, Double, Item, DateTime };
 
     public abstract class Property : Database.IProperty, INotifyPropertyChanged
     {

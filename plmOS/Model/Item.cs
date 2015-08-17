@@ -124,6 +124,8 @@ namespace plmOS.Model
                     case PropertyTypeValues.Double:
                         ((Properties.Double)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Double)proptype.PropertyInfo.GetValue(this)).Object);
                         break;
+                    default:
+                        throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
             }
         }
@@ -201,6 +203,11 @@ namespace plmOS.Model
                     case PropertyTypeValues.String:
                         this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
                         break;
+                    case PropertyTypeValues.DateTime:
+                        this.PropertiesCache[proptype] = new Properties.DateTime(this, (PropertyTypes.DateTime)proptype);
+                        break;
+                    default:
+                        throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
 
                 proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
@@ -245,6 +252,12 @@ namespace plmOS.Model
                         this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
                         this.PropertiesCache[proptype].SetObject(databaseprop.Object);
                         break;
+                    case PropertyTypeValues.DateTime:
+                        this.PropertiesCache[proptype] = new Properties.DateTime(this, (PropertyTypes.DateTime)proptype);
+                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                        break;
+                    default:
+                        throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
 
                 proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);

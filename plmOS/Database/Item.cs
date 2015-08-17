@@ -90,7 +90,7 @@ namespace plmOS.Database
             }
         }
 
-        private Dictionary<Model.PropertyType, Property> _properties;
+        private Dictionary<String, Property> _properties;
         public IEnumerable<IProperty> Properties 
         { 
             get
@@ -101,25 +101,17 @@ namespace plmOS.Database
 
         public IProperty Property(Model.PropertyType PropertyType)
         {
-            foreach(Model.PropertyType proptype in this._properties.Keys)
-            {
-                if (proptype.Name == PropertyType.Name)
-                {
-                    return this._properties[proptype];
-                }
-            }
-
-            return null;
+            return this._properties[PropertyType.Name];
         }
 
         internal Item(Model.Item ModelItem)
         {
             this.ModelItem = ModelItem;
-            this._properties = new Dictionary<Model.PropertyType, Property>();
+            this._properties = new Dictionary<String, Property>();
 
             foreach(Model.Property prop in this.ModelItem.Properties)
             {
-                this._properties[prop.PropertyType] = new Property(prop);
+                this._properties[prop.PropertyType.Name] = new Property(prop);
             }
         }
     }

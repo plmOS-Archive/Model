@@ -28,10 +28,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Database.Properties
+namespace plmOS.Model.PropertyTypes
 {
-    public interface IDouble : IProperty
+    public class DateTime : PropertyType
     {
-        System.Double? Value { get; }
+        public override PropertyTypeValues Type
+        {
+            get 
+            { 
+                return PropertyTypeValues.DateTime; 
+            }
+        }
+
+        internal DateTime(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.DateTimePropertyAttribute AttributeInfo, PropertyTypes.DateTime BasePropertyType)
+            :base(ItemType, PropertyInfo, AttributeInfo, BasePropertyType)
+        {
+
+        }
     }
 }

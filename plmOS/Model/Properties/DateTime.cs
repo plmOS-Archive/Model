@@ -28,10 +28,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Database.Properties
+namespace plmOS.Model.Properties
 {
-    public interface IString : IProperty
+    public class DateTime : Property
     {
-        System.String Value { get; }
+        public System.DateTime? Value
+        {
+            get
+            {
+                if (this.Object == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return (System.DateTime)this.Object;
+                }
+            }
+            set
+            {
+                this.Object = value;
+            }
+        }
+
+        internal override void SetObject(Object Object)
+        {
+            if (Object == null)
+            {
+                base.SetObject(Object);
+            }
+            else
+            {
+                if (Object is System.DateTime)
+                {
+                    base.SetObject(Object);
+                }
+                else
+                {
+                    throw new ArgumentException("Value must be of type: System.DateTime");
+                }
+            }
+        }
+
+        internal DateTime(Model.Item Item, PropertyTypes.DateTime PropertyType)
+            : base(Item, PropertyType)
+        {
+
+        }
     }
 }

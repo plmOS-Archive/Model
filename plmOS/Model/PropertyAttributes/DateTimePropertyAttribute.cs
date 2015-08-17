@@ -28,10 +28,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace plmOS.Database.Properties
+namespace plmOS.Model.PropertyAttributes
 {
-    public interface IItem : IProperty
+    public class DateTimePropertyAttribute : PropertyAttribute
     {
-        Model.Item Value { get; }
+        public DateTimePropertyAttribute(Boolean Required, Boolean ReadOnly)
+            :base(Required, ReadOnly)
+        {
+
+        }
     }
 }
