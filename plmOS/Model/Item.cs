@@ -244,7 +244,13 @@ namespace plmOS.Model
 
                         if (databaseprop.Object != null)
                         {
-                            this.PropertiesCache[proptype].SetObject(this.Session.Create((Database.IItem)databaseprop.Object));
+                            Database.IItem databasepropitem = this.Session.Store.Database.Get(((PropertyTypes.Item)proptype).PropertyItemType, (Guid)databaseprop.Object);
+
+                            this.PropertiesCache[proptype].SetObject(this.Session.Create(databasepropitem));
+                        }
+                        else
+                        {
+                            this.PropertiesCache[proptype].SetObject(null);
                         }
 
                         break;

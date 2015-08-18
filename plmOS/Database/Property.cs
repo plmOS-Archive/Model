@@ -62,6 +62,7 @@ namespace plmOS.Database
                         {
                             return ((Model.Properties.Item)this.ModelProperty).Value.BranchID;
                         }
+
                     default:
                         throw new NotImplementedException("PropertyType not implemented: " + this.PropertyType.Type);
                 }

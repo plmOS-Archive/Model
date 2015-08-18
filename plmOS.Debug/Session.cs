@@ -33,7 +33,6 @@ namespace plmOS.Model.Debug
 {
     public class Session
     {
-
         private Model.Session LoginSharePoint()
         {
             Auth.Windows.Manager auth = new Auth.Windows.Manager();
@@ -44,13 +43,6 @@ namespace plmOS.Model.Debug
             {
                 Console.Write("SharePoint URL: ");
                 Properties.Settings.Default.SharePointURL = Console.ReadLine();
-                Properties.Settings.Default.Save();
-            }
-
-            if (String.IsNullOrEmpty(Properties.Settings.Default.SharePointLibrary))
-            {
-                Console.Write("SharePoint Library: ");
-                Properties.Settings.Default.SharePointLibrary = Console.ReadLine();
                 Properties.Settings.Default.Save();
             }
 
@@ -68,7 +60,7 @@ namespace plmOS.Model.Debug
                 Properties.Settings.Default.Save();
             }
             
-            Database.SharePoint.Session database = new Database.SharePoint.Session(Properties.Settings.Default.SharePointURL, Properties.Settings.Default.SharePointLibrary, Properties.Settings.Default.SharePointUsername, Properties.Settings.Default.SharePointPassword);
+            Database.SharePoint.Session database = new Database.SharePoint.Session(new Uri(Properties.Settings.Default.SharePointURL), Properties.Settings.Default.SharePointUsername, Properties.Settings.Default.SharePointPassword, new DirectoryInfo(Properties.Settings.Default.SharePointCache));
 
             using (Model.Store store = new Model.Store(auth, database))
             {
@@ -246,7 +238,6 @@ namespace plmOS.Model.Debug
             {
                 ItemType filetype = session.Store.ItemType("plmOS.Model.File");
 
-
                 Queries.Item query = session.Create(filetype);
                 query.Condition = new Conditions.Property(filetype.PropertyType("Name"), Conditions.Operators.eq, "test.txt");
                 query.Execute();
@@ -261,10 +252,10 @@ namespace plmOS.Model.Debug
 
         public void Execute()
         {
-            this.CreateBOM();
+            //this.CreateBOM();
             //this.BranchPart();
             //this.VersionPart();
-            //this.GetBOM();
+            this.GetBOM();
             //this.CreateFile();
             //this.ReadFile();
         }

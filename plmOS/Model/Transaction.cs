@@ -43,7 +43,7 @@ namespace plmOS.Model
             {
                 foreach(Lock thislock in this.LockCache)
                 {
-                    if (thislock.Item.IsRelationship)
+                    if (thislock.Item is Model.Relationship)
                     {
                         Database.Relationship databaserelationship = new Database.Relationship((Relationship)thislock.Item);
 
@@ -54,6 +54,20 @@ namespace plmOS.Model
                                 break;
                             case LockActions.Supercede:
                                 this.Session.Store.Database.Supercede(databaserelationship, databasetransaction);
+                                break;
+                        }
+                    }
+                    else if (thislock.Item is Model.File)
+                    {
+                        Database.File databasefile = new Database.File((Model.File)thislock.Item);
+
+                        switch (thislock.Action)
+                        {
+                            case LockActions.Create:
+                                this.Session.Store.Database.Create(databasefile, databasetransaction);
+                                break;
+                            case LockActions.Supercede:
+                                this.Session.Store.Database.Supercede(databasefile, databasetransaction);
                                 break;
                         }
                     }

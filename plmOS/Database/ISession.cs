@@ -39,7 +39,13 @@ namespace plmOS.Database
 
         void Create(IItem Item, ITransaction Transaction);
 
+        void Create(IRelationship Relationship, ITransaction Transaction);
+
+        void Create(IFile File, ITransaction Transaction);
+
         void Supercede(IItem Item, ITransaction Transaction);
+
+        IItem Get(Model.ItemType ItemType, Guid BranchID);
 
         IEnumerable<IItem> Get(Model.Queries.Item Query);
 

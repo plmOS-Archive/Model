@@ -62,18 +62,6 @@ namespace plmOS.Model.Debug.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SharePointLibrary {
-            get {
-                return ((string)(this["SharePointLibrary"]));
-            }
-            set {
-                this["SharePointLibrary"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SharePointUsername {
             get {
                 return ((string)(this["SharePointUsername"]));

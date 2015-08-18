@@ -11,9 +11,6 @@
     <Setting Name="SharePointURL" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SharePointLibrary" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="SharePointUsername" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
