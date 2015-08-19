@@ -255,9 +255,9 @@ namespace plmOS.Model.Debug
             //this.CreateBOM();
             //this.BranchPart();
             //this.VersionPart();
-            this.GetBOM();
+            //this.GetBOM();
             //this.CreateFile();
-            //this.ReadFile();
+            this.ReadFile();
         }
 
         public Session()

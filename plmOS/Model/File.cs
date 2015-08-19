@@ -46,26 +46,40 @@ namespace plmOS.Model
 
         public void Read(FileInfo File)
         {
-            byte[] buffer = new byte[buffersize];
-            int bytesread = 0;
-
-            using(FileStream infile = this.Read())
+            if (!this.LockedForCreate)
             {
-                using(FileStream  outfile = new FileStream(File.FullName, FileMode.Create))
+                byte[] buffer = new byte[buffersize];
+                int bytesread = 0;
+
+                using (FileStream infile = this.Read())
                 {
-                    while((bytesread = infile.Read(buffer, 0, buffersize)) > 0)
+                    using (FileStream outfile = new FileStream(File.FullName, FileMode.Create))
                     {
-                        outfile.Write(buffer, 0, bytesread);
+                        while ((bytesread = infile.Read(buffer, 0, buffersize)) > 0)
+                        {
+                            outfile.Write(buffer, 0, bytesread);
+                        }
                     }
                 }
+            }
+            else
+            {
+                throw new Exceptions.ItemLockedException(this);
             }
         }
 
         public FileStream Write(String Name)
         {
-            this.Name.SetObject(Name);
-            Database.File databasefile = new Database.File(this);
-            return this.Session.Store.Database.WriteToVault(databasefile);
+            if (this.LockedForCreate)
+            {
+                this.Name.SetObject(Name);
+                Database.File databasefile = new Database.File(this);
+                return this.Session.Store.Database.WriteToVault(databasefile);
+            }
+            else
+            {
+                throw new Exceptions.ItemNotLockedException(this);
+            }
         }
 
         public void Write(FileInfo File)
