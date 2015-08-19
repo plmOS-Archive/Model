@@ -60,7 +60,7 @@ namespace plmOS.Model.Debug
                 Properties.Settings.Default.Save();
             }
             
-            Database.SharePoint.Session database = new Database.SharePoint.Session(new Uri(Properties.Settings.Default.SharePointURL), Properties.Settings.Default.SharePointUsername, Properties.Settings.Default.SharePointPassword, new DirectoryInfo(Properties.Settings.Default.SharePointCache));
+            Database.SharePoint.Session database = new Database.SharePoint.Session(new Uri(Properties.Settings.Default.SharePointURL), Properties.Settings.Default.SharePointUsername, Properties.Settings.Default.SharePointPassword, new DirectoryInfo(Properties.Settings.Default.SharePointCache), 1);
 
             using (Model.Store store = new Model.Store(auth, database))
             {
