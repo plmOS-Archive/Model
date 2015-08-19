@@ -134,7 +134,10 @@ namespace plmOS.Model
 
         public void Dispose()
         {
-
+            if (this.Database != null)
+            {
+                this.Database.Dispose();
+            }
         }
 
         public Store(Auth.IManager Auth, Database.ISession Database)

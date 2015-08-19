@@ -31,7 +31,7 @@ using System.IO;
 
 namespace plmOS.Database
 {
-    public interface ISession
+    public interface ISession: IDisposable
     {
         void Create(Model.ItemType ItemType);
 

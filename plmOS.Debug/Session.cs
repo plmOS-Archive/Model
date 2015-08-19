@@ -258,6 +258,7 @@ namespace plmOS.Model.Debug
             //this.GetBOM();
             //this.CreateFile();
             this.ReadFile();
+            System.Threading.Thread.Sleep(1000000);
         }
 
         public Session()
