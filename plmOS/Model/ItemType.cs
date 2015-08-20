@@ -102,6 +102,8 @@ namespace plmOS.Model
             }
         }
 
+        private Boolean BaseRelationshipsLoaded;
+
         private Dictionary<String, RelationshipType> RelationshipTypeCache;
 
         internal void AddRelationshipType(RelationshipType RelationshipType)
@@ -109,8 +111,25 @@ namespace plmOS.Model
             this.RelationshipTypeCache[RelationshipType.Name] = RelationshipType;
         }
 
+        private void LoadBaseRelationshipTypes()
+        {
+            if (!this.BaseRelationshipsLoaded)
+            {
+                if (this.BaseItemType != null)
+                {
+                    foreach(RelationshipType reltype in this.BaseItemType.RelationshipTypes)
+                    {
+                        this.RelationshipTypeCache[reltype.Name] = reltype;
+                    }
+                }
+
+                this.BaseRelationshipsLoaded = true;
+            }
+        }
+
         public RelationshipType RelationshipType(String Name)
         {
+            this.LoadBaseRelationshipTypes();
             return this.RelationshipTypeCache[Name];
         }
 
@@ -118,6 +137,7 @@ namespace plmOS.Model
         {
             get
             {
+                this.LoadBaseRelationshipTypes();
                 return this.RelationshipTypeCache.Values;
             }
         }
@@ -238,6 +258,7 @@ namespace plmOS.Model
             this.Store = Store;
             this.Type = Type;
             this.Loaded = false;
+            this.BaseRelationshipsLoaded = false;
         }
     }
 }

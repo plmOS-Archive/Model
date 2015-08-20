@@ -65,15 +65,15 @@ namespace plmOS.Model.Properties
                 }
                 else
                 {
-                    if (Object is Model.Item)
+                    if (Object is Model.Item)   
                     {
-                        if (((PropertyTypes.Item)this.PropertyType).PropertyItemType.Equals(((Model.Item)Object).ItemType))
+                        if (((Model.Item)Object).ItemType.IsSubclassOf(((PropertyTypes.Item)this.PropertyType).PropertyItemType))
                         {
                             base.SetObject(Object);
                         }
                         else
                         {
-
+                            throw new ArgumentException("Value must be of type: " + ((PropertyTypes.Item)this.PropertyType).PropertyItemType.Name);
                         }
                     }
                     else

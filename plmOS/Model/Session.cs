@@ -43,6 +43,11 @@ namespace plmOS.Model
             return new Transaction(this);
         }
 
+        public ItemType ItemType(String Name)
+        {
+            return this.Store.ItemType(Name);
+        }
+
         private Dictionary<Guid, Item> ItemCache;
 
         internal void AddItemToCache(Item Item)
