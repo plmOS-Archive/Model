@@ -80,7 +80,7 @@ namespace plmOS.Model
             }
             else
             {
-                return this.Type.IsSubclassOf(ItemType.Type);
+                return this.Type.IsSubclassOf(ItemType.Type) || this.Type.Equals(ItemType.Type);
             }
         }
 
