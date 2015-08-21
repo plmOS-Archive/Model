@@ -224,7 +224,7 @@ namespace plmOS.Model
         {
             foreach(Database.IProperty prop in DatabaseItem.Properties)
             {
-                if (prop.PropertyType.Equals(PropertyType))
+                if (prop.PropertyType.Name.Equals(PropertyType.Name))
                 {
                     return prop;
                 }

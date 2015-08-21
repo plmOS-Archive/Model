@@ -36,6 +36,14 @@ namespace plmOS.Model
 
         internal Type Type { get; private set; }
 
+        public Guid ID
+        {
+            get
+            {
+                return this.Type.GUID;
+            }
+        }
+
         public String Name
         {
             get
