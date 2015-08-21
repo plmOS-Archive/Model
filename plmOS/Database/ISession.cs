@@ -56,5 +56,9 @@ namespace plmOS.Database
         FileStream WriteToVault(IFile File);
 
         ITransaction BeginTransaction();
+
+        Boolean Initialised { get; }
+
+        Boolean Saving { get; }
     }
 }
