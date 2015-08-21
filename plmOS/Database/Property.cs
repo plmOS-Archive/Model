@@ -52,6 +52,17 @@ namespace plmOS.Database
                     case Model.PropertyTypeValues.String:
                     case Model.PropertyTypeValues.DateTime:
                         return this.ModelProperty.Object;
+                    case Model.PropertyTypeValues.List:
+
+                        if (((Model.Properties.List)this.ModelProperty).Value == null)
+                        {
+                            return null;
+                        }
+                        else
+                        {
+                            return ((Model.Properties.List)this.ModelProperty).Value.Index;
+                        }
+
                     case Model.PropertyTypeValues.Item:
 
                         if (((Model.Properties.Item)this.ModelProperty).Value == null)

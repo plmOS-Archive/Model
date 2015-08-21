@@ -65,9 +65,14 @@
     <Compile Include="Model\Exceptions\ItemLockedException.cs" />
     <Compile Include="Model\File.cs" />
     <Compile Include="Model\Item.cs" />
+    <Compile Include="Model\ListValue.cs" />
+    <Compile Include="Model\List.cs" />
     <Compile Include="Model\Properties\DateTime.cs" />
+    <Compile Include="Model\Properties\List.cs" />
     <Compile Include="Model\PropertyAttributes\DateTimePropertyAttribute.cs" />
+    <Compile Include="Model\PropertyAttributes\ListPropertyAttribute.cs" />
     <Compile Include="Model\PropertyTypes\DateTime.cs" />
+    <Compile Include="Model\PropertyTypes\List.cs" />
     <Compile Include="Model\Queries\Relationship.cs" />
     <Compile Include="Model\Queries\Item.cs" />
     <Compile Include="Model\Query.cs" />

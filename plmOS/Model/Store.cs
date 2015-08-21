@@ -91,6 +91,26 @@ namespace plmOS.Model
             }
         }
 
+        private Dictionary<String, List> ListCache;
+
+        private void AddListTypeToCache(Type Type)
+        {
+            this.ListCache[Type.FullName] = (List)Activator.CreateInstance(Type, new object[] {});
+        }
+
+        public IEnumerable<String> ListNames
+        {
+            get
+            {
+                return this.ListCache.Keys;
+            }
+        }
+
+        public List List(String Name)
+        {
+            return this.ListCache[Name];
+        }
+        
         public void LoadAssembly(String AssemblyFilename)
         {
             this.LoadAssembly(new FileInfo(AssemblyFilename));
@@ -111,6 +131,10 @@ namespace plmOS.Model
                 else if (type.IsSubclassOf(typeof(Item)))
                 {
                     this.AddItemTypeToCache(type);
+                }
+                else if (type.IsSubclassOf(typeof(List)))
+                {
+                    this.AddListTypeToCache(type);
                 }
             }
 
@@ -147,6 +171,7 @@ namespace plmOS.Model
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
+            this.ListCache = new Dictionary<String, List>();
             
             // Load Base ItemTypes
             this.AddItemTypeToCache(typeof(Item));

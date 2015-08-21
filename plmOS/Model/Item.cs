@@ -124,6 +124,9 @@ namespace plmOS.Model
                     case PropertyTypeValues.Double:
                         ((Properties.Double)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Double)proptype.PropertyInfo.GetValue(this)).Object);
                         break;
+                    case PropertyTypeValues.List:
+                        ((Properties.List)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.List)proptype.PropertyInfo.GetValue(this)).Object);
+                        break;
                     default:
                         throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
@@ -206,6 +209,9 @@ namespace plmOS.Model
                     case PropertyTypeValues.DateTime:
                         this.PropertiesCache[proptype] = new Properties.DateTime(this, (PropertyTypes.DateTime)proptype);
                         break;
+                    case PropertyTypeValues.List:
+                        this.PropertiesCache[proptype] = new Properties.List(this, (PropertyTypes.List)proptype);
+                        break;
                     default:
                         throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
@@ -261,6 +267,19 @@ namespace plmOS.Model
                     case PropertyTypeValues.DateTime:
                         this.PropertiesCache[proptype] = new Properties.DateTime(this, (PropertyTypes.DateTime)proptype);
                         this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                        break;
+                    case PropertyTypeValues.List:
+                        this.PropertiesCache[proptype] = new Properties.List(this, (PropertyTypes.List)proptype);
+
+                        if (databaseprop.Object != null)
+                        {
+                            this.PropertiesCache[proptype].SetObject(((PropertyTypes.List)proptype).PropertyList.Value((Int32)databaseprop.Object));
+                        }
+                        else
+                        {
+                            this.PropertiesCache[proptype].SetObject(null);
+                        }
+
                         break;
                     default:
                         throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);

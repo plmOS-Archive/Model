@@ -230,6 +230,9 @@ namespace plmOS.Model
                                     case "DateTimePropertyAttribute":
                                         this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.DateTime(this, propinfo, (PropertyAttributes.DateTimePropertyAttribute)custatt, null);
                                         break;
+                                    case "ListPropertyAttribute":
+                                        this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.List(this, propinfo, (PropertyAttributes.ListPropertyAttribute)custatt, null);
+                                        break;
                                     default:
                                         throw new NotImplementedException("Property Attribute Type not implemented: " + custatt.GetType().Name);
                                 }
