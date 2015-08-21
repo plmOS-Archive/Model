@@ -92,7 +92,7 @@ namespace plmOS.Model.Debug
 
         private Model.Session Login()
         {
-            return this.LoginSharePoint();
+            return this.LoginSQL();
         }
 
         private void CreateBOM()
@@ -135,7 +135,7 @@ namespace plmOS.Model.Debug
                 RelationshipType bomlinetype = parttype.RelationshipType("plmOS.Design.BOMLine");
 
                 Queries.Item query = session.Create(parttype);
-                query.Condition = new Conditions.Property(parttype.PropertyType("Number"), Conditions.Operators.eq, "1234");
+                query.Condition = new Conditions.Property("Number", Conditions.Operators.eq, "1234");
                 query.Execute();
 
                 foreach(Item item in query.Items)
@@ -163,7 +163,7 @@ namespace plmOS.Model.Debug
                 ItemType parttype = session.Store.ItemType("plmOS.Design.Part");
                
                 Queries.Item query = session.Create(parttype);
-                query.Condition = new Conditions.Property(parttype.PropertyType("Number"), Conditions.Operators.eq, "5678");
+                query.Condition = new Conditions.Property("Number", Conditions.Operators.eq, "5678");
                 query.Execute();
 
                 foreach (Item item in query.Items)
@@ -187,7 +187,7 @@ namespace plmOS.Model.Debug
                 ItemType parttype = session.Store.ItemType("plmOS.Design.Part");
 
                 Queries.Item query = session.Create(parttype);
-                query.Condition = new Conditions.Property(parttype.PropertyType("Number"), Conditions.Operators.eq, "5678");
+                query.Condition = new Conditions.Property("Number", Conditions.Operators.eq, "5678");
                 query.Execute();
 
                 foreach (Item item in query.Items)
@@ -239,7 +239,7 @@ namespace plmOS.Model.Debug
                 ItemType filetype = session.Store.ItemType("plmOS.Model.File");
 
                 Queries.Item query = session.Create(filetype);
-                query.Condition = new Conditions.Property(filetype.PropertyType("Name"), Conditions.Operators.eq, "test.txt");
+                query.Condition = new Conditions.Property("Name", Conditions.Operators.eq, "test.txt");
                 query.Execute();
 
                 foreach (Item item in query.Items)
@@ -258,7 +258,7 @@ namespace plmOS.Model.Debug
             //this.GetBOM();
             //this.CreateFile();
             this.ReadFile();
-            System.Threading.Thread.Sleep(1000000);
+            //System.Threading.Thread.Sleep(1000000);
         }
 
         public Session()

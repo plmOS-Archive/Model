@@ -34,16 +34,16 @@ namespace plmOS.Model.Conditions
 
     public class Property : Condition
     {
-        public PropertyType PropertyType { get; private set; }
+        public String Name { get; private set; }
 
         public Operators Operator { get; private set; }
 
         public Object Value { get; private set; }
 
-        public Property(PropertyType PropertyType, Operators Operator, Object Value)
+        public Property(String Name, Operators Operator, Object Value)
             : base()
         {
-            this.PropertyType = PropertyType;
+            this.Name = Name;
             this.Operator = Operator;
             this.Value = Value;
         }
