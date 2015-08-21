@@ -44,6 +44,7 @@
     <Compile Include="Auth\IManager.cs" />
     <Compile Include="Auth\IPrincipal.cs" />
     <Compile Include="Auth\LoginException.cs" />
+    <Compile Include="Conditions.cs" />
     <Compile Include="Database\File.cs" />
     <Compile Include="Database\IFile.cs" />
     <Compile Include="Database\IRelationship.cs" />

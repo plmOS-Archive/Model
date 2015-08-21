@@ -47,7 +47,7 @@ namespace plmOS.Model
             this._children.Add(Child);
         }
 
-        public Condition()
+        internal Condition()
         {
             this._children = new List<Condition>();
         }

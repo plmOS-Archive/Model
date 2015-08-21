@@ -32,12 +32,12 @@ namespace plmOS.Model.Conditions
 {
     public class And : Condition
     {
-        public void AddCondition(Condition Condition)
+        public void Add(Condition Condition)
         {
             this.AddChild(Condition);
         }
 
-        public And(Condition Left, Condition Right)
+        internal And(Condition Left, Condition Right)
             :base()
         {
             this.AddChild(Left);

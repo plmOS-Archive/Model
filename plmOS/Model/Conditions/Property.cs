@@ -40,7 +40,7 @@ namespace plmOS.Model.Conditions
 
         public Object Value { get; private set; }
 
-        public Property(String Name, Operators Operator, Object Value)
+        internal Property(String Name, Operators Operator, Object Value)
             : base()
         {
             this.Name = Name;
