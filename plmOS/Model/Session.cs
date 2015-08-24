@@ -38,19 +38,19 @@ namespace plmOS.Model
 
         public Auth.IIdentity Identity { get; private set; }
 
-        public Boolean Saving
+        public Boolean Writing
         {
             get
             {
-                return this.Store.Database.Saving;
+                return this.Store.Database.Writing;
             }
         }
 
-        public Boolean Initialised
+        public Boolean Reading
         {
             get
             {
-                return this.Store.Database.Initialised;
+                return this.Store.Database.Reading;
             }
         }
 

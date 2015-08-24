@@ -57,8 +57,8 @@ namespace plmOS.Database
 
         ITransaction BeginTransaction();
 
-        Boolean Initialised { get; }
+        Boolean Reading { get; }
 
-        Boolean Saving { get; }
+        Boolean Writing { get; }
     }
 }
