@@ -42,6 +42,11 @@ namespace plmOS.Model
 
         public Item Parent { get; internal set; }
 
+        protected override Item Create()
+        {
+            return (Relationship)Activator.CreateInstance(this.RelationshipType.Type, new object[] { this.Session, this.Parent });
+        }
+
         public Relationship(Session Session, Item Parent)
             : base(Session)
         {
@@ -51,7 +56,7 @@ namespace plmOS.Model
         public Relationship(Session Session, Database.IRelationship DatabaseRelationship)
             :base(Session, DatabaseRelationship)
         {
-
+            this.Parent = this.Session.GetBranchFromCache(DatabaseRelationship.ParentBranchID);
         }
     }
 }

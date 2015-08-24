@@ -160,10 +160,15 @@ namespace plmOS.Model
             return newitem;
         }
 
+        protected virtual Item Create()
+        {
+            return (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.Session });
+        }
+
         public Item Version(Transaction Transaction)
         {
             // Create new Version
-            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.Session });
+            Item newitem = this.Create();
             newitem.ItemID = this.ItemID;
             newitem.BranchID = this.BranchID;
             newitem.VersionID = Guid.NewGuid();

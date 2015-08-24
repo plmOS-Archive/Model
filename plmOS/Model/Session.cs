@@ -66,9 +66,16 @@ namespace plmOS.Model
 
         private Dictionary<Guid, Item> ItemCache;
 
+        private Dictionary<Guid, Item> ItemBranchCache;
+
         internal void AddItemToCache(Item Item)
         {
             this.ItemCache[Item.VersionID] = Item;
+
+            if (Item.Superceded == -1)
+            {
+                this.ItemBranchCache[Item.BranchID] = Item;
+            }
         }
 
         internal Item GetItemFromCache(Guid VersionID)
@@ -76,6 +83,18 @@ namespace plmOS.Model
             if (this.ItemCache.ContainsKey(VersionID))
             {
                 return this.ItemCache[VersionID];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        internal Item GetBranchFromCache(Guid BranchID)
+        {
+            if (this.ItemBranchCache.ContainsKey(BranchID))
+            {
+                return this.ItemBranchCache[BranchID];
             }
             else
             {
@@ -195,6 +214,7 @@ namespace plmOS.Model
             this.Store = Store;
             this.Identity = Identity;
             this.ItemCache = new Dictionary<Guid, Item>();
+            this.ItemBranchCache = new Dictionary<Guid, Item>();
         }
     }
 }
