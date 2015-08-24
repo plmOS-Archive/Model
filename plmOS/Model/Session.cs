@@ -38,22 +38,6 @@ namespace plmOS.Model
 
         public Auth.IIdentity Identity { get; private set; }
 
-        public Boolean Writing
-        {
-            get
-            {
-                return this.Store.Database.Writing;
-            }
-        }
-
-        public Boolean Reading
-        {
-            get
-            {
-                return this.Store.Database.Reading;
-            }
-        }
-
         public Transaction BeginTransaction()
         {
             return new Transaction(this);

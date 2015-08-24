@@ -60,5 +60,9 @@ namespace plmOS.Database
         Boolean Reading { get; }
 
         Boolean Writing { get; }
+
+        Boolean Initialised { get; }
+
+        event EventHandler InitialseCompleted;
     }
 }

@@ -38,6 +38,32 @@ namespace plmOS.Model
 
         public Database.ISession Database { get; private set; }
 
+        public Boolean Writing
+        {
+            get
+            {
+                return this.Database.Writing;
+            }
+        }
+
+        public Boolean Reading
+        {
+            get
+            {
+                return this.Database.Reading;
+            }
+        }
+
+        public Boolean Initialised
+        {
+            get
+            {
+                return this.Database.Initialised;
+            }
+        }
+
+        public event EventHandler InitialseCompleted;
+
         private Dictionary<String, ItemType> AllItemTypeCache;
 
         private Dictionary<String, ItemType> ItemTypeCache;
@@ -168,6 +194,7 @@ namespace plmOS.Model
         {
             this.Auth = Auth;
             this.Database = Database;
+            this.Database.InitialseCompleted += Database_InitialseCompleted;
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
@@ -178,6 +205,14 @@ namespace plmOS.Model
             this.AddItemTypeToCache(typeof(File));
             this.AddRelationshipTypeToCache(typeof(Relationship));
             this.LoadItemTypes();
+        }
+
+        void Database_InitialseCompleted(object sender, EventArgs e)
+        {
+           if (this.InitialseCompleted != null)
+           {
+               this.InitialseCompleted(this, new EventArgs());
+           }
         }
     }
 }
