@@ -92,7 +92,7 @@ namespace plmOS.Model.Debug
 
         private Model.Session Login()
         {
-            return this.LoginSQL();
+            return this.LoginSharePoint();
         }
 
         private void CreateBOM()
@@ -112,11 +112,15 @@ namespace plmOS.Model.Debug
                     part1.Number.Value = "1234";
                     part1.Revision.Value = "01";
                     part1.Name.Value = "Test Assembly";
+                    part1.Created.Value = DateTime.Now;
+                    part1.Modified.Value = DateTime.Now;
 
                     part2 = (Design.Part)session.Create(parttype, transaction);
                     part2.Number.Value = "5678";
                     part2.Revision.Value = "01";
                     part2.Name.Value = "Test Part";
+                    part2.Created.Value = DateTime.Now;
+                    part2.Modified.Value = DateTime.Now;
 
                     bomline = (Design.BOMLine)session.Create(bomlinetype, part1, transaction);
                     bomline.Child.Value = part2;
@@ -138,12 +142,11 @@ namespace plmOS.Model.Debug
                 query.Condition = plmOS.Conditions.Eq("Number", "1234");
                 query.Execute();
 
-                foreach(Item item in query.Items)
+                foreach(Design.Part part in query.Items)
                 {
-                    Design.Part part = (Design.Part)item;
                     Console.WriteLine(part.Number.Value + "/" + part.Revision.Value + " " + part.Name.Value);
 
-                    Queries.Relationship bomquery = session.Create(item, bomlinetype);
+                    Queries.Relationship bomquery = session.Create(part, bomlinetype);
                     bomquery.Execute();
 
                     foreach(Relationship rel in bomquery.Relationships)
@@ -255,9 +258,9 @@ namespace plmOS.Model.Debug
             //this.CreateBOM();
             //this.BranchPart();
             //this.VersionPart();
-            //this.GetBOM();
+            this.GetBOM();
             //this.CreateFile();
-            this.ReadFile();
+            //this.ReadFile();
             //System.Threading.Thread.Sleep(1000000);
         }
 
