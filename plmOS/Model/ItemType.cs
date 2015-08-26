@@ -241,6 +241,9 @@ namespace plmOS.Model
                                     case "ListPropertyAttribute":
                                         this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.List(this, propinfo, (PropertyAttributes.ListPropertyAttribute)custatt, null);
                                         break;
+                                    case "BooleanPropertyAttribute":
+                                        this.PropertyTypeCache[propinfo.Name] = new PropertyTypes.Boolean(this, propinfo, (PropertyAttributes.BooleanPropertyAttribute)custatt, null);
+                                        break;
                                     default:
                                         throw new NotImplementedException("Property Attribute Type not implemented: " + custatt.GetType().Name);
                                 }

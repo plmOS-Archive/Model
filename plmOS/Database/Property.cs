@@ -51,6 +51,7 @@ namespace plmOS.Database
                     case Model.PropertyTypeValues.Double:
                     case Model.PropertyTypeValues.String:
                     case Model.PropertyTypeValues.DateTime:
+                    case Model.PropertyTypeValues.Boolean:
                         return this.ModelProperty.Object;
                     case Model.PropertyTypeValues.List:
 

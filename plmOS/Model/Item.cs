@@ -217,6 +217,9 @@ namespace plmOS.Model
                     case PropertyTypeValues.List:
                         this.PropertiesCache[proptype] = new Properties.List(this, (PropertyTypes.List)proptype);
                         break;
+                    case PropertyTypeValues.Boolean:
+                        this.PropertiesCache[proptype] = new Properties.Boolean(this, (PropertyTypes.Boolean)proptype);
+                        break;
                     default:
                         throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
@@ -246,6 +249,10 @@ namespace plmOS.Model
 
                 switch (proptype.Type)
                 {
+                    case PropertyTypeValues.Boolean:
+                        this.PropertiesCache[proptype] = new Properties.Boolean(this, (PropertyTypes.Boolean)proptype);
+                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                        break;
                     case PropertyTypeValues.Double:
                         this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
                         this.PropertiesCache[proptype].SetObject(databaseprop.Object);
