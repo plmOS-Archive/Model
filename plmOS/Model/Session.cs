@@ -92,7 +92,10 @@ namespace plmOS.Model
 
             if (ret != null)
             {
-                ret.Superceded = DatabaseItem.Superceded;
+                if (DatabaseItem.Superceded > -1)
+                {
+                    ret.Superceded = DatabaseItem.Superceded;
+                }
             }
             else
             {
@@ -109,7 +112,10 @@ namespace plmOS.Model
 
             if (ret != null)
             {
-                ret.Superceded = DatabaseFile.Superceded;
+                if (DatabaseFile.Superceded > -1)
+                {
+                    ret.Superceded = DatabaseFile.Superceded;
+                }
             }
             else
             {
@@ -126,7 +132,10 @@ namespace plmOS.Model
 
             if (ret != null)
             {
-                ret.Superceded = DatabaseRelationship.Superceded;
+                if (DatabaseRelationship.Superceded > -1)
+                {
+                    ret.Superceded = DatabaseRelationship.Superceded;
+                }
             }
             else
             {

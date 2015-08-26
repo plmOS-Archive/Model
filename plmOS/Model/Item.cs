@@ -127,6 +127,12 @@ namespace plmOS.Model
                     case PropertyTypeValues.List:
                         ((Properties.List)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.List)proptype.PropertyInfo.GetValue(this)).Object);
                         break;
+                    case PropertyTypeValues.DateTime:
+                        ((Properties.DateTime)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.DateTime)proptype.PropertyInfo.GetValue(this)).Object);
+                        break;
+                    case PropertyTypeValues.Boolean:
+                        ((Properties.Boolean)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Boolean)proptype.PropertyInfo.GetValue(this)).Object);
+                        break;
                     default:
                         throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
