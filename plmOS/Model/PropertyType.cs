@@ -30,6 +30,8 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
+    public enum PropertyTypeValues { String, Double, Item, DateTime, List, Boolean };
+
     public abstract class PropertyType
     {
         public ItemType ItemType { get; private set; }

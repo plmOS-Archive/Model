@@ -30,11 +30,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace plmOS.Model
 {
-    public abstract class List
+    public abstract class List : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private Dictionary<Int32, ListValue> _values;
         public IEnumerable<ListValue> Values
         {
@@ -46,9 +49,65 @@ namespace plmOS.Model
 
         public ListValue Default { get; private set; }
 
-        public ListValue Value(Int32 Index)
+        private ListValue _selected;
+        public ListValue Selected
         {
-            return this._values[Index];
+            get
+            {
+                return this._selected;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    this._selected = null;
+                }
+                else
+                {
+                    if (value.List.Equals(this))
+                    {
+                        if(!value.Equals(this._selected))
+                        {
+                            this._selected = value;
+
+                            if (this.PropertyChanged != null)
+                            {
+                                this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Selected"));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Invalid ListValue");
+                    }
+                }
+            }
+        }
+
+        public Int32 SelectedIndex
+        {
+            get
+            {
+                if (this.Selected != null)
+                {
+                    return this.Selected.Index;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            set
+            {
+                if (this._values.ContainsKey(value))
+                {
+                    this.Selected = this._values[value];
+                }
+                else
+                {
+                    this.Selected = null;
+                }
+            }
         }
 
         private Int32 Index;
@@ -60,6 +119,7 @@ namespace plmOS.Model
             if (Default)
             {
                 this.Default = this._values[Index];
+                this.Selected = this.Default;
             }
 
             this.Index++;

@@ -68,9 +68,6 @@
     <Compile Include="Model\Item.cs" />
     <Compile Include="Model\ListValue.cs" />
     <Compile Include="Model\List.cs" />
-    <Compile Include="Model\Properties\DateTime.cs" />
-    <Compile Include="Model\Properties\Boolean.cs" />
-    <Compile Include="Model\Properties\List.cs" />
     <Compile Include="Model\PropertyAttributes\DateTimePropertyAttribute.cs" />
     <Compile Include="Model\PropertyAttributes\BooleanPropertyAttribute.cs" />
     <Compile Include="Model\PropertyAttributes\ListPropertyAttribute.cs" />
@@ -92,10 +89,6 @@
     <Compile Include="Model\RelationshipType.cs" />
     <Compile Include="Model\ItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Property.cs" />
-    <Compile Include="Model\Properties\Double.cs" />
-    <Compile Include="Model\Properties\String.cs" />
-    <Compile Include="Model\Properties\Item.cs" />
     <Compile Include="Model\Relationship.cs" />
     <Compile Include="Model\Store.cs" />
     <Compile Include="Model\Session.cs" />

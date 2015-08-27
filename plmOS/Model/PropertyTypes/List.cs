@@ -40,14 +40,6 @@ namespace plmOS.Model.PropertyTypes
             }
         }
 
-        public Model.List PropertyList
-        {
-            get
-            {
-                return this.ItemType.Store.List(((Model.PropertyAttributes.ListPropertyAttribute)this.AttributeInfo).List.FullName);
-            }
-        }
-
         internal List(ItemType ItemType, System.Reflection.PropertyInfo PropertyInfo, PropertyAttributes.ListPropertyAttribute AttributeInfo, PropertyTypes.List BasePropertyType)
             :base(ItemType, PropertyInfo, AttributeInfo, BasePropertyType)
         {

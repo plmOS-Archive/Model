@@ -32,15 +32,9 @@ namespace plmOS.Database
 {
     internal class Property : IProperty
     {
-        internal Model.Property ModelProperty { get; private set; }
+        internal Database.Item Item { get; private set; }
 
-        public Model.PropertyType PropertyType
-        {
-            get
-            {
-                return this.ModelProperty.PropertyType;
-            }
-        }
+        public Model.PropertyType PropertyType {get; private set; }
 
         public Object Object
         {
@@ -52,27 +46,31 @@ namespace plmOS.Database
                     case Model.PropertyTypeValues.String:
                     case Model.PropertyTypeValues.DateTime:
                     case Model.PropertyTypeValues.Boolean:
-                        return this.ModelProperty.Object;
+                        return this.Item.ModelItem.Property(this.PropertyType);
                     case Model.PropertyTypeValues.List:
 
-                        if (((Model.Properties.List)this.ModelProperty).Value == null)
+                        Model.List list = (Model.List)this.Item.ModelItem.Property(this.PropertyType);
+
+                        if (list.Selected == null)
                         {
                             return null;
                         }
                         else
                         {
-                            return ((Model.Properties.List)this.ModelProperty).Value.Index;
+                            return list.Selected.Index;
                         }
 
                     case Model.PropertyTypeValues.Item:
 
-                        if (((Model.Properties.Item)this.ModelProperty).Value == null)
+                        Model.Item item = (Model.Item)this.Item.ModelItem.Property(this.PropertyType);
+
+                        if (item == null)
                         {
                             return null;
                         }
                         else
                         {
-                            return ((Model.Properties.Item)this.ModelProperty).Value.BranchID;
+                            return item.BranchID;
                         }
 
                     default:
@@ -81,9 +79,10 @@ namespace plmOS.Database
             }
         }
 
-        internal Property (Model.Property ModelProperty)
+        internal Property(Database.Item Item, Model.PropertyType PropertyType)
         {
-            this.ModelProperty = ModelProperty;
+            this.Item = Item;
+            this.PropertyType = PropertyType;
         }
     }
 }

@@ -92,7 +92,7 @@ namespace plmOS.Model.Debug
 
         private Model.Session Login()
         {
-            return this.LoginSharePoint();
+            return this.LoginSQL();
         }
 
         private void CreateBOM()
@@ -109,22 +109,24 @@ namespace plmOS.Model.Debug
                 using (Transaction transaction = session.BeginTransaction())
                 {
                     part1 = (Design.Part)session.Create(parttype, transaction);
-                    part1.Number.Value = "1234";
-                    part1.Revision.Value = "01";
-                    part1.Name.Value = "Test Assembly";
-                    part1.Created.Value = DateTime.Now;
-                    part1.Modified.Value = DateTime.Now;
+                    part1.Number = "1234";
+                    part1.Revision = "01";
+                    part1.Name = "Test Assembly";
+                    part1.Created = DateTime.Now;
+                    part1.Modified = DateTime.Now;
+                    part1.Type.SelectedIndex = 1;
+                    part1.Released = true;
 
                     part2 = (Design.Part)session.Create(parttype, transaction);
-                    part2.Number.Value = "5678";
-                    part2.Revision.Value = "01";
-                    part2.Name.Value = "Test Part";
-                    part2.Created.Value = DateTime.Now;
-                    part2.Modified.Value = DateTime.Now;
+                    part2.Number = "5678";
+                    part2.Revision = "01";
+                    part2.Name = "Test Part";
+                    part2.Created = DateTime.Now;
+                    part2.Modified = DateTime.Now;
 
                     bomline = (Design.BOMLine)session.Create(bomlinetype, part1, transaction);
-                    bomline.Child.Value = part2;
-                    bomline.Quantity.Value = 3.0;
+                    bomline.Child = part2;
+                    bomline.Quantity = 3.0;
 
                     transaction.Commit();
                 }
@@ -144,7 +146,7 @@ namespace plmOS.Model.Debug
 
                 foreach(Design.Part part in query.Items)
                 {
-                    Console.WriteLine(part.Number.Value + "/" + part.Revision.Value + " " + part.Name.Value);
+                    Console.WriteLine(part.Number + "/" + part.Revision + " " + part.Name);
 
                     Queries.Relationship bomquery = session.Create(part, bomlinetype);
                     bomquery.Execute();
@@ -152,8 +154,7 @@ namespace plmOS.Model.Debug
                     foreach(Relationship rel in bomquery.Relationships)
                     {
                         Design.BOMLine bomline = (Design.BOMLine)rel;
-                        Design.Part child = (Design.Part)bomline.Child.Value;
-                        Console.WriteLine("  - " + child.Number.Value + "/" + child.Revision.Value + " " + child.Name.Value + " " + bomline.Quantity.Value.ToString());
+                        Console.WriteLine("  - " + bomline.Child.Number + "/" + bomline.Child.Revision + " " + bomline.Child.Name + " " + bomline.Quantity.ToString());
                     }
                 }
             }
@@ -176,7 +177,7 @@ namespace plmOS.Model.Debug
                     using (Transaction transaction = session.BeginTransaction())
                     {
                         Design.Part part2 = (Design.Part)part.Branch(transaction);
-                        part2.Revision.Value = "02";
+                        part2.Revision = "02";
                         transaction.Commit();
                     }
                 }
@@ -200,7 +201,7 @@ namespace plmOS.Model.Debug
                     using (Transaction transaction = session.BeginTransaction())
                     {
                         Design.Part part2 = (Design.Part)part.Version(transaction);
-                        part2.Name.Value = "Revised Test Part";
+                        part2.Name = "Revised Test Part";
                         transaction.Commit();
                     }
                 }
@@ -255,10 +256,10 @@ namespace plmOS.Model.Debug
 
         public void Execute()
         {
-            //this.CreateBOM();
+            this.CreateBOM();
             //this.BranchPart();
             //this.VersionPart();
-            this.GetBOM();
+            //this.GetBOM();
             //this.CreateFile();
             //this.ReadFile();
             //System.Threading.Thread.Sleep(1000000);

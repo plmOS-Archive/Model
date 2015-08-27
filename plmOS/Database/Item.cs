@@ -109,9 +109,9 @@ namespace plmOS.Database
             this.ModelItem = ModelItem;
             this._properties = new Dictionary<String, Property>();
 
-            foreach(Model.Property prop in this.ModelItem.Properties)
+            foreach(Model.PropertyType proptype in this.ModelItem.ItemType.PropertyTypes)
             {
-                this._properties[prop.PropertyType.Name] = new Property(prop);
+                this._properties[proptype.Name] = new Property(this, proptype);
             }
         }
     }

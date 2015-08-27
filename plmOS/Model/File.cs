@@ -36,7 +36,7 @@ namespace plmOS.Model
         const int buffersize = 256;
 
         [Model.PropertyAttributes.StringProperty(true, true, 255)]
-        public Properties.String Name { get; private set; }
+        public String Name { get; private set; }
 
         public FileStream Read()
         {
@@ -72,7 +72,7 @@ namespace plmOS.Model
         {
             if (this.LockedForCreate)
             {
-                this.Name.SetObject(Name);
+                this.Name = Name;
                 Database.File databasefile = new Database.File(this);
                 return this.Session.Store.Database.WriteToVault(databasefile);
             }
@@ -102,7 +102,7 @@ namespace plmOS.Model
         public File(Session Session)
             :base(Session)
         {
-            this.Initialise();
+   
         }
 
         public File(Session Session, Database.IFile DatabaseFile)

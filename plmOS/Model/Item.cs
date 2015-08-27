@@ -86,23 +86,13 @@ namespace plmOS.Model
             }
         }
 
-        private Dictionary<PropertyType, Property> PropertiesCache;
-
-        public IEnumerable<Property> Properties
+        public Object Property(PropertyType PropertyType)
         {
-            get
-            {
-                return this.PropertiesCache.Values;
-            }
-        }
-
-        public Property Property(PropertyType PropertyType)
-        {
-            foreach(PropertyType proptype in this.PropertiesCache.Keys)
+            foreach(PropertyType proptype in this.ItemType.PropertyTypes)
             {
                 if (proptype.Name.Equals(PropertyType.Name))
                 {
-                    return this.PropertiesCache[proptype];
+                    return proptype.PropertyInfo.GetValue(this);
                 }
             }
 
@@ -113,29 +103,7 @@ namespace plmOS.Model
         {
             foreach(PropertyType proptype in this.ItemType.PropertyTypes)
             {
-                switch(proptype.Type)
-                {
-                    case PropertyTypeValues.String:
-                        ((Properties.String)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.String)proptype.PropertyInfo.GetValue(this)).Object);
-                        break;
-                    case PropertyTypeValues.Item:
-                        ((Properties.Item)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Item)proptype.PropertyInfo.GetValue(this)).Object);
-                        break;
-                    case PropertyTypeValues.Double:
-                        ((Properties.Double)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Double)proptype.PropertyInfo.GetValue(this)).Object);
-                        break;
-                    case PropertyTypeValues.List:
-                        ((Properties.List)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.List)proptype.PropertyInfo.GetValue(this)).Object);
-                        break;
-                    case PropertyTypeValues.DateTime:
-                        ((Properties.DateTime)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.DateTime)proptype.PropertyInfo.GetValue(this)).Object);
-                        break;
-                    case PropertyTypeValues.Boolean:
-                        ((Properties.Boolean)proptype.PropertyInfo.GetValue(Item)).SetObject(((Properties.Boolean)proptype.PropertyInfo.GetValue(this)).Object);
-                        break;
-                    default:
-                        throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
-                }
+                proptype.PropertyInfo.SetValue(proptype.PropertyInfo.GetValue(this), Item);
             }
         }
 
@@ -202,38 +170,6 @@ namespace plmOS.Model
             Transaction.LockItem(this, LockActions.Supercede);
         }
 
-        protected void Initialise()
-        {
-            foreach (PropertyType proptype in this.ItemType.PropertyTypes)
-            {
-                switch (proptype.Type)
-                {
-                    case PropertyTypeValues.Double:
-                        this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
-                        break;
-                    case PropertyTypeValues.Item:
-                        this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
-                        break;
-                    case PropertyTypeValues.String:
-                        this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
-                        break;
-                    case PropertyTypeValues.DateTime:
-                        this.PropertiesCache[proptype] = new Properties.DateTime(this, (PropertyTypes.DateTime)proptype);
-                        break;
-                    case PropertyTypeValues.List:
-                        this.PropertiesCache[proptype] = new Properties.List(this, (PropertyTypes.List)proptype);
-                        break;
-                    case PropertyTypeValues.Boolean:
-                        this.PropertiesCache[proptype] = new Properties.Boolean(this, (PropertyTypes.Boolean)proptype);
-                        break;
-                    default:
-                        throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
-                }
-
-                proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
-            }
-        }
-
         private static Database.IProperty DatabaseProperty(Database.IItem DatabaseItem, PropertyType PropertyType)
         {
             foreach(Database.IProperty prop in DatabaseItem.Properties)
@@ -256,54 +192,42 @@ namespace plmOS.Model
                 switch (proptype.Type)
                 {
                     case PropertyTypeValues.Boolean:
-                        this.PropertiesCache[proptype] = new Properties.Boolean(this, (PropertyTypes.Boolean)proptype);
-                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
-                        break;
                     case PropertyTypeValues.Double:
-                        this.PropertiesCache[proptype] = new Properties.Double(this, (PropertyTypes.Double)proptype);
-                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
+                    case PropertyTypeValues.String:
+                    case PropertyTypeValues.DateTime:
+                        proptype.PropertyInfo.SetValue(this, databaseprop.Object);
                         break;
                     case PropertyTypeValues.Item:
-                        this.PropertiesCache[proptype] = new Properties.Item(this, (PropertyTypes.Item)proptype);
 
                         if (databaseprop.Object != null)
                         {
                             Database.IItem databasepropitem = this.Session.Store.Database.Get(((PropertyTypes.Item)proptype).PropertyItemType, (Guid)databaseprop.Object);
-
-                            this.PropertiesCache[proptype].SetObject(this.Session.Create(databasepropitem));
+                            Item item = this.Session.Create(databasepropitem);
+                            proptype.PropertyInfo.SetValue(this, item);
                         }
                         else
                         {
-                            this.PropertiesCache[proptype].SetObject(null);
+                            proptype.PropertyInfo.SetValue(this, null);
                         }
 
                         break;
-                    case PropertyTypeValues.String:
-                        this.PropertiesCache[proptype] = new Properties.String(this, (PropertyTypes.String)proptype);
-                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
-                        break;
-                    case PropertyTypeValues.DateTime:
-                        this.PropertiesCache[proptype] = new Properties.DateTime(this, (PropertyTypes.DateTime)proptype);
-                        this.PropertiesCache[proptype].SetObject(databaseprop.Object);
-                        break;
                     case PropertyTypeValues.List:
-                        this.PropertiesCache[proptype] = new Properties.List(this, (PropertyTypes.List)proptype);
+
+                        List list = (List)proptype.PropertyInfo.GetValue(this);
 
                         if (databaseprop.Object != null)
                         {
-                            this.PropertiesCache[proptype].SetObject(((PropertyTypes.List)proptype).PropertyList.Value((Int32)databaseprop.Object));
+                            list.SelectedIndex = (Int32)databaseprop.Object;
                         }
                         else
                         {
-                            this.PropertiesCache[proptype].SetObject(null);
+                            list.SelectedIndex = -1;
                         }
 
                         break;
                     default:
                         throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
                 }
-
-                proptype.PropertyInfo.SetValue(this, this.PropertiesCache[proptype]);
             }
         }
 
@@ -316,7 +240,6 @@ namespace plmOS.Model
             this.Versioned = DateTime.UtcNow.Ticks;
             this.Branched = this.Versioned;
             this.Superceded = -1;
-            this.PropertiesCache = new Dictionary<PropertyType, Property>();
         }
 
         public Item(Session Session, Database.IItem DatabaseItem)
@@ -328,7 +251,6 @@ namespace plmOS.Model
             this.Branched = DatabaseItem.Branched;
             this.Versioned = DatabaseItem.Versioned;
             this.Superceded = DatabaseItem.Superceded;
-            this.PropertiesCache = new Dictionary<PropertyType, Property>();
         }
     }
 }
