@@ -32,12 +32,10 @@ namespace plmOS.Model.PropertyAttributes
 {
     public class ItemPropertyAttribute : PropertyAttribute
     {
-        public Type Type { get; private set; }
-
-        public ItemPropertyAttribute(Boolean Required, Boolean ReadOnly, Type Type)
+        public ItemPropertyAttribute(Boolean Required, Boolean ReadOnly)
             :base(Required, ReadOnly)
         {
-            this.Type = Type;
+
         }
     }
 }

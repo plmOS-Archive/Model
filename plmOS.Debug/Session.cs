@@ -256,10 +256,10 @@ namespace plmOS.Model.Debug
 
         public void Execute()
         {
-            this.CreateBOM();
+            //this.CreateBOM();
             //this.BranchPart();
             //this.VersionPart();
-            //this.GetBOM();
+            this.GetBOM();
             //this.CreateFile();
             //this.ReadFile();
             //System.Threading.Thread.Sleep(1000000);

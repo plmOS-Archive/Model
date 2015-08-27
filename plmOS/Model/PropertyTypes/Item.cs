@@ -36,7 +36,7 @@ namespace plmOS.Model.PropertyTypes
         {
             get
             {
-                return this.ItemType.Store.AllItemType(((Model.PropertyAttributes.ItemPropertyAttribute)this.AttributeInfo).Type.FullName);
+                return this.ItemType.Store.AllItemType(this.PropertyInfo.PropertyType.FullName);
             }
         }
 
