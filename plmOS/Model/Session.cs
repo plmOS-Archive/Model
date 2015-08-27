@@ -48,6 +48,11 @@ namespace plmOS.Model
             return this.Store.ItemType(Name);
         }
 
+        public ItemType ItemType(Type Type)
+        {
+            return this.Store.ItemType(Type.FullName);
+        }
+
         private Dictionary<Guid, Item> ItemCache;
 
         private Dictionary<Guid, Item> ItemBranchCache;

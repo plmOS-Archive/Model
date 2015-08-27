@@ -80,6 +80,11 @@ namespace plmOS.Model
             return this.ItemTypeCache[Name];
         }
 
+        public ItemType ItemType(Type Type)
+        {
+            return this.ItemType(Type.FullName);
+        }
+
         public IEnumerable<ItemType> ItemTypes
         {
             get

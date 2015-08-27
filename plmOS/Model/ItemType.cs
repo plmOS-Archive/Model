@@ -141,6 +141,11 @@ namespace plmOS.Model
             return this.RelationshipTypeCache[Name];
         }
 
+        public RelationshipType RelationshipType(Type Type)
+        {
+            return this.RelationshipType(Type.FullName);
+        }
+
         public IEnumerable<RelationshipType> RelationshipTypes
         {
             get
