@@ -89,6 +89,12 @@ namespace plmOS.Model
 
                 databasetransaction.Commit();
             }
+
+            // Remove Locks from Items
+            foreach(Lock thislock in this.LockCache)
+            {
+                thislock.Item.Lock = null;
+            }
         }
 
         public void Rollback()

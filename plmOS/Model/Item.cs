@@ -103,7 +103,7 @@ namespace plmOS.Model
         {
             foreach(PropertyType proptype in this.ItemType.PropertyTypes)
             {
-                proptype.PropertyInfo.SetValue(proptype.PropertyInfo.GetValue(this), Item);
+                proptype.PropertyInfo.SetValue(Item, proptype.PropertyInfo.GetValue(this));
             }
         }
 
