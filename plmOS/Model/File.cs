@@ -116,6 +116,20 @@ namespace plmOS.Model
             }
         }
 
+        public void Copy(FileStream Stream, String Name)
+        {
+            byte[] buffer = new byte[buffersize];
+            int bytesread = 0;
+
+            using (FileStream outfile = this.Write(Name))
+            {
+                while ((bytesread = Stream.Read(buffer, 0, buffersize)) > 0)
+                {
+                    outfile.Write(buffer, 0, bytesread);
+                }
+            }
+        }
+
         public File(Session Session)
             :base(Session)
         {
