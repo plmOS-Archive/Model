@@ -38,6 +38,8 @@ namespace plmOS.Model
 
         public Database.ISession Database { get; private set; }
 
+        public Log Log { get; private set; }
+
         public Boolean Writing
         {
             get
@@ -195,10 +197,11 @@ namespace plmOS.Model
             }
         }
 
-        public Store(Auth.IManager Auth, Database.ISession Database)
+        public Store(Auth.IManager Auth, Database.ISession Database, Log Log)
         {
             this.Auth = Auth;
             this.Database = Database;
+            this.Log = Log;
             this.Database.InitialseCompleted += Database_InitialseCompleted;
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();

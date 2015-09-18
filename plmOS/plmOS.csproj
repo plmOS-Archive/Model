@@ -94,6 +94,12 @@
     <Compile Include="Model\Session.cs" />
     <Compile Include="Model\Transaction.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Logging\plmOS.Logging\plmOS.Logging.csproj">
+      <Project>{1f7e6dab-fac1-48d2-8ef1-0f88ccd93f6f}</Project>
+      <Name>plmOS.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
