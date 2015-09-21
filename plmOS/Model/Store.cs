@@ -38,7 +38,7 @@ namespace plmOS.Model
 
         public Database.ISession Database { get; private set; }
 
-        public Log Log { get; private set; }
+        public Logging.Log Log { get; private set; }
 
         public Boolean Writing
         {
@@ -197,7 +197,7 @@ namespace plmOS.Model
             }
         }
 
-        public Store(Auth.IManager Auth, Database.ISession Database, Log Log)
+        public Store(Auth.IManager Auth, Database.ISession Database, Logging.Log Log)
         {
             this.Auth = Auth;
             this.Database = Database;
