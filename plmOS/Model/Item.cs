@@ -107,10 +107,10 @@ namespace plmOS.Model
             }
         }
 
-        public Item Branch(Transaction Transaction)
+        public virtual Item Branch(Transaction Transaction)
         {
             // Create new Branch
-            Item newitem = (Item)Activator.CreateInstance(this.ItemType.Type, new object[] { this.Session });
+            Item newitem = this.Create();
             newitem.ItemID = this.ItemID;
             newitem.BranchID = Guid.NewGuid();
             newitem.VersionID = Guid.NewGuid();
