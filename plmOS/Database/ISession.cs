@@ -28,10 +28,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.ComponentModel;
 
 namespace plmOS.Database
 {
-    public interface ISession: IDisposable
+    public interface ISession: INotifyPropertyChanged, IDisposable
     {
         void Create(Model.ItemType ItemType);
 
@@ -62,7 +63,5 @@ namespace plmOS.Database
         Boolean Writing { get; }
 
         Boolean Initialised { get; }
-
-        event EventHandler InitialseCompleted;
     }
 }

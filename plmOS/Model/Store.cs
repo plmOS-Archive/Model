@@ -29,10 +29,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Reflection;
+using System.ComponentModel;
 
 namespace plmOS.Model
 {
-    public class Store : IDisposable
+    public class Store : INotifyPropertyChanged, IDisposable
     {
         public Auth.IManager Auth { get; private set; }
 
@@ -40,31 +41,84 @@ namespace plmOS.Model
 
         public Logging.Log Log { get; private set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(String Name)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Name));
+            }
+        }
+
+        private Boolean _writing;
         public Boolean Writing
         {
             get
             {
-                return this.Database.Writing;
+                return this._writing;
+            }
+            private set
+            {
+                if (this._writing != value)
+                {
+                    this._writing = value;
+                    this.OnPropertyChanged("Writing");
+                }
             }
         }
 
+        private Boolean _reading;
         public Boolean Reading
         {
             get
             {
-                return this.Database.Reading;
+                return this._reading;
+            }
+            private set
+            {
+                if (this._reading != value)
+                {
+                    this._reading = value;
+                    this.OnPropertyChanged("Reading");
+                }
             }
         }
 
+        private Boolean _initialised;
         public Boolean Initialised
         {
             get
             {
-                return this.Database.Initialised;
+                return this._initialised;
+            }
+            private set
+            {
+                if (this._initialised != value)
+                {
+                    this._initialised = value;
+                    this.OnPropertyChanged("Initialised");
+                }
             }
         }
 
-        public event EventHandler InitialseCompleted;
+        void Database_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case "Reading":
+                    this.Reading = this.Database.Reading;
+                    break;
+                case "Writing":
+                    this.Writing = this.Database.Writing;
+                    break;
+                case "Initialised":
+                    this.Initialised = this.Database.Initialised;
+                    break;
+                default:
+                    throw new NotImplementedException("Database Property Change not Implemeted: " + e.PropertyName);
+            }
+        }
 
         private Dictionary<String, ItemType> AllItemTypeCache;
 
@@ -199,10 +253,14 @@ namespace plmOS.Model
 
         public Store(Auth.IManager Auth, Database.ISession Database, Logging.Log Log)
         {
+            this.Reading = false;
+            this.Writing = false;
+            this.Initialised = false;
+
             this.Auth = Auth;
             this.Database = Database;
             this.Log = Log;
-            this.Database.InitialseCompleted += Database_InitialseCompleted;
+            this.Database.PropertyChanged += Database_PropertyChanged;
             this.AllItemTypeCache = new Dictionary<String, ItemType>();
             this.ItemTypeCache = new Dictionary<String, ItemType>();
             this.RelationshipTypeCache = new Dictionary<String, RelationshipType>();
@@ -213,14 +271,6 @@ namespace plmOS.Model
             this.AddItemTypeToCache(typeof(File));
             this.AddRelationshipTypeToCache(typeof(Relationship));
             this.LoadItemTypes();
-        }
-
-        void Database_InitialseCompleted(object sender, EventArgs e)
-        {
-           if (this.InitialseCompleted != null)
-           {
-               this.InitialseCompleted(this, new EventArgs());
-           }
         }
     }
 }
