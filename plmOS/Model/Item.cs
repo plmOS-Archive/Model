@@ -189,44 +189,47 @@ namespace plmOS.Model
             {
                 Database.IProperty databaseprop = DatabaseProperty(DatabaseItem, proptype);
 
-                switch (proptype.Type)
+                if (databaseprop != null)
                 {
-                    case PropertyTypeValues.Boolean:
-                    case PropertyTypeValues.Double:
-                    case PropertyTypeValues.String:
-                    case PropertyTypeValues.DateTime:
-                        proptype.PropertyInfo.SetValue(this, databaseprop.Object);
-                        break;
-                    case PropertyTypeValues.Item:
+                    switch (proptype.Type)
+                    {
+                        case PropertyTypeValues.Boolean:
+                        case PropertyTypeValues.Double:
+                        case PropertyTypeValues.String:
+                        case PropertyTypeValues.DateTime:
+                            proptype.PropertyInfo.SetValue(this, databaseprop.Object);
+                            break;
+                        case PropertyTypeValues.Item:
 
-                        if (databaseprop.Object != null)
-                        {
-                            Database.IItem databasepropitem = this.Session.Store.Database.Get(((PropertyTypes.Item)proptype).PropertyItemType, (Guid)databaseprop.Object);
-                            Item item = this.Session.Create(databasepropitem);
-                            proptype.PropertyInfo.SetValue(this, item);
-                        }
-                        else
-                        {
-                            proptype.PropertyInfo.SetValue(this, null);
-                        }
+                            if (databaseprop.Object != null)
+                            {
+                                Database.IItem databasepropitem = this.Session.Store.Database.Get(((PropertyTypes.Item)proptype).PropertyItemType, (Guid)databaseprop.Object);
+                                Item item = this.Session.Create(databasepropitem);
+                                proptype.PropertyInfo.SetValue(this, item);
+                            }
+                            else
+                            {
+                                proptype.PropertyInfo.SetValue(this, null);
+                            }
 
-                        break;
-                    case PropertyTypeValues.List:
+                            break;
+                        case PropertyTypeValues.List:
 
-                        List list = (List)proptype.PropertyInfo.GetValue(this);
+                            List list = (List)proptype.PropertyInfo.GetValue(this);
 
-                        if (databaseprop.Object != null)
-                        {
-                            list.SelectedIndex = (Int32)databaseprop.Object;
-                        }
-                        else
-                        {
-                            list.SelectedIndex = -1;
-                        }
+                            if (databaseprop.Object != null)
+                            {
+                                list.SelectedIndex = (Int32)databaseprop.Object;
+                            }
+                            else
+                            {
+                                list.SelectedIndex = -1;
+                            }
 
-                        break;
-                    default:
-                        throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
+                            break;
+                        default:
+                            throw new NotImplementedException("PropertyType not implemented: " + proptype.Type);
+                    }
                 }
             }
         }
