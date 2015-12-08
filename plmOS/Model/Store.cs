@@ -68,6 +68,40 @@ namespace plmOS.Model
             }
         }
 
+        private Int32 _writingTotal;
+        public Int32 WritingTotal
+        {
+            get
+            {
+                return this._writingTotal;
+            }
+            private set
+            {
+                if (this._writingTotal != value)
+                {
+                    this._writingTotal = value;
+                    this.OnPropertyChanged("WritingTotal");
+                }
+            }
+        }
+
+        private Int32 _writingNumber;
+        public Int32 WritingNumber
+        {
+            get
+            {
+                return this._writingNumber;
+            }
+            private set
+            {
+                if (this._writingNumber != value)
+                {
+                    this._writingNumber = value;
+                    this.OnPropertyChanged("WritingNumber");
+                }
+            }
+        }
+
         private Boolean _reading;
         public Boolean Reading
         {
@@ -81,6 +115,40 @@ namespace plmOS.Model
                 {
                     this._reading = value;
                     this.OnPropertyChanged("Reading");
+                }
+            }
+        }
+
+        private Int32 _readingTotal;
+        public Int32 ReadingTotal
+        {
+            get
+            {
+                return this._readingTotal;
+            }
+            private set
+            {
+                if (this._readingTotal != value)
+                {
+                    this._readingTotal = value;
+                    this.OnPropertyChanged("ReadingTotal");
+                }
+            }
+        }
+
+        private Int32 _readingNumber;
+        public Int32 ReadingNumber
+        {
+            get
+            {
+                return this._readingNumber;
+            }
+            private set
+            {
+                if (this._readingNumber != value)
+                {
+                    this._readingNumber = value;
+                    this.OnPropertyChanged("ReadingNumber");
                 }
             }
         }
@@ -109,8 +177,20 @@ namespace plmOS.Model
                 case "Reading":
                     this.Reading = this.Database.Reading;
                     break;
+                case "ReadingTotal":
+                    this.ReadingTotal = this.Database.ReadingTotal;
+                    break;
+                case "ReadingNumber":
+                    this.ReadingNumber = this.Database.ReadingNumber;
+                    break;
                 case "Writing":
                     this.Writing = this.Database.Writing;
+                    break;
+                case "WritingTotal":
+                    this.WritingTotal = this.Database.WritingTotal;
+                    break;
+                case "WritingNumber":
+                    this.WritingNumber = this.Database.WritingNumber;
                     break;
                 case "Initialised":
                     this.Initialised = this.Database.Initialised;
@@ -254,7 +334,11 @@ namespace plmOS.Model
         public Store(Auth.IManager Auth, Database.ISession Database, Logging.Log Log)
         {
             this.Reading = false;
+            this.ReadingNumber = 0;
+            this.ReadingTotal = 0;
             this.Writing = false;
+            this.WritingNumber = 0;
+            this.WritingTotal = 0;
             this.Initialised = false;
 
             this.Auth = Auth;

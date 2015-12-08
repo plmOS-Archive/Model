@@ -27,49 +27,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using System.ComponentModel;
 
 namespace plmOS.Database
 {
-    public interface ISession: INotifyPropertyChanged, IDisposable
+    public class NotInitialisedException : Exception
     {
-        void Create(Model.ItemType ItemType);
+        public NotInitialisedException()
+            :base("Database is not initialised")
+        {
 
-        void Create(Model.RelationshipType RelationshipType);
-
-        void Create(IItem Item, ITransaction Transaction);
-
-        void Create(IRelationship Relationship, ITransaction Transaction);
-
-        void Create(IFile File, ITransaction Transaction);
-
-        void Supercede(IItem Item, ITransaction Transaction);
-
-        IItem Get(Model.ItemType ItemType, Guid BranchID);
-
-        IEnumerable<IItem> Get(Model.Queries.Item Query);
-
-        IEnumerable<IRelationship> Get(Model.Queries.Relationship Query);
-
-        FileStream ReadFromVault(IFile File);
-
-        FileStream WriteToVault(IFile File);
-
-        ITransaction BeginTransaction();
-
-        Boolean Reading { get; }
-
-        Int32 ReadingTotal { get; }
-
-        Int32 ReadingNumber { get; }
-
-        Boolean Writing { get; }
-
-        Int32 WritingTotal { get; }
-
-        Int32 WritingNumber { get; }
-
-        Boolean Initialised { get; }
+        }
     }
 }
