@@ -71,7 +71,6 @@
     <Compile Include="Database\ISession.cs" />
     <Compile Include="Database\Item.cs" />
     <Compile Include="Database\ITransactioncs.cs" />
-    <Compile Include="Database\ITransferStatus.cs" />
     <Compile Include="Database\NotInitialisedException.cs" />
     <Compile Include="Database\Property.cs" />
     <Compile Include="Database\Relationship.cs" />
