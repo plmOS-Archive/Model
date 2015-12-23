@@ -32,6 +32,11 @@ namespace plmOS.Model
 {
     public class Session : IDisposable
     {
+        public static String ReplaceURLSpecialChar(String Value)
+        {
+            return Value.Replace('"', '-').Replace('#', '-').Replace('%', '-').Replace('*', '-').Replace(':', '-').Replace('<', '-').Replace('>', '-').Replace('?', '-').Replace('/', '-').Replace('|', '-');
+        }
+
         public Store Store { get; private set; }
 
         public Guid ID { get; private set; }
