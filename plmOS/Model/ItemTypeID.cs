@@ -30,34 +30,14 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
-    [ItemTypeID("bb0d08f9-379c-3023-b5e7-9331e4ff2bbc")]
-    public abstract class Relationship : Item
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
+    public class ItemTypeID : Attribute
     {
-        public RelationshipType RelationshipType
-        {
-            get
-            {
-                return (RelationshipType)this.ItemType;
-            }
-        }
+        public Guid ID { get; private set; }
 
-        public Item Parent { get; internal set; }
-
-        protected override Item Create()
+        public ItemTypeID(String ID)
         {
-            return (Relationship)Activator.CreateInstance(this.RelationshipType.Type, new object[] { this.Session, this.Parent });
-        }
-
-        public Relationship(Session Session, Item Parent)
-            : base(Session)
-        {
-            this.Parent = Parent;
-        }
-
-        public Relationship(Session Session, Database.IRelationship DatabaseRelationship)
-            :base(Session, DatabaseRelationship)
-        {
-            this.Parent = this.Session.GetBranchFromCache(DatabaseRelationship.ParentBranchID);
+            this.ID = Guid.Parse(ID);
         }
     }
 }

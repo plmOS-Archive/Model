@@ -36,11 +36,16 @@ namespace plmOS.Model
 
         internal Type Type { get; private set; }
 
+        private Guid _iD;
         public Guid ID
         {
             get
             {
-                return this.Type.GUID;
+                return this._iD;
+            }
+            private set
+            {
+                this._iD = value;
             }
         }
 
@@ -278,6 +283,18 @@ namespace plmOS.Model
             this.Type = Type;
             this.Loaded = false;
             this.BaseRelationshipsLoaded = false;
+
+            // Set ID
+            object[] typeids = this.Type.GetCustomAttributes(typeof(Model.ItemTypeID), false);
+
+            if (typeids.Length == 1)
+            {
+                this.ID = ((Model.ItemTypeID)typeids[0]).ID;
+            }
+            else
+            {
+                throw new Exceptions.AttributeException("Class must have a TypeID Attribute: " + this.Type.FullName);
+            }
         }
     }
 }

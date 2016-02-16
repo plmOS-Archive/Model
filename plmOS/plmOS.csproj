@@ -80,6 +80,7 @@
     <Compile Include="Model\Conditions\Property.cs" />
     <Compile Include="Model\Exceptions\ItemNotLockedException.cs" />
     <Compile Include="Model\Exceptions\LoginException.cs" />
+    <Compile Include="Model\Exceptions\AttributeException.cs" />
     <Compile Include="Model\Exceptions\StringLengthException.cs" />
     <Compile Include="Model\Exceptions\ReadOnlyException.cs" />
     <Compile Include="Model\Exceptions\ItemLockedException.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Model\Item.cs" />
     <Compile Include="Model\ListValue.cs" />
     <Compile Include="Model\List.cs" />
+    <Compile Include="Model\ItemTypeID.cs" />
     <Compile Include="Model\PropertyAttributes\DateTimePropertyAttribute.cs" />
     <Compile Include="Model\PropertyAttributes\BooleanPropertyAttribute.cs" />
     <Compile Include="Model\PropertyAttributes\ListPropertyAttribute.cs" />

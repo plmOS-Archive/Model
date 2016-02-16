@@ -31,6 +31,7 @@ using System.IO;
 
 namespace plmOS.Model
 {
+    [Model.ItemTypeID("35E5A1B3-5E52-3482-BC7D-097F1435EFA0")]
     public class File : Item
     {
         const int buffersize = 256;

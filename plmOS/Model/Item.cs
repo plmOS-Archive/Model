@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 
 namespace plmOS.Model
 {
+    [ItemTypeID("118ed87c-1ac2-3872-9adf-ce850083a62b")]
     public abstract class Item
     {
         public Session Session { get; private set; }
