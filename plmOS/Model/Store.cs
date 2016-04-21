@@ -311,16 +311,7 @@ namespace plmOS.Model
 
         public Session Login(Auth.ICredentials Credentials)
         {
-            Auth.IIdentity identity =  this.Auth.Login(Credentials);
-
-            if (identity.IsAuthenticated)
-            {
-                return new Session(this, identity);
-            }
-            else
-            {
-                throw new Exceptions.LoginException();
-            }
+            return new Session(this, this.Auth.Login(Credentials));
         }
 
         public void Dispose()
